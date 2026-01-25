@@ -146,8 +146,8 @@ export default function AdminProductsPage() {
     const fetchData = async () => {
       try {
         const [productsRes, categoriesRes] = await Promise.all([
-          adminFetch("/api/products?active=false"),
-          adminFetch("/api/categories?active=false"),
+          adminFetch("/api/products"),
+          adminFetch("/api/categories"),
         ]);
 
         if (productsRes.ok) {
@@ -179,7 +179,7 @@ export default function AdminProductsPage() {
   // Refetch products after import
   const refetchProducts = async () => {
     try {
-      const productsRes = await adminFetch("/api/products?active=false");
+      const productsRes = await adminFetch("/api/products");
       if (productsRes.ok) {
         const productsData = await productsRes.json();
         const productsWithTiers = await Promise.all(
@@ -199,7 +199,7 @@ export default function AdminProductsPage() {
   // Refetch categories (called when new categories are created during import)
   const refetchCategories = async () => {
     try {
-      const categoriesRes = await adminFetch("/api/categories?active=false");
+      const categoriesRes = await adminFetch("/api/categories");
       if (categoriesRes.ok) {
         const categoriesData = await categoriesRes.json();
         setCategories(categoriesData);

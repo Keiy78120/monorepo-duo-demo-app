@@ -50,7 +50,7 @@ export default function AdminCategoriesPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await adminFetch("/api/categories?active=false");
+        const response = await adminFetch("/api/categories");
         if (response.ok) {
           const data = await response.json();
           setCategories(data);
