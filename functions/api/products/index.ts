@@ -17,10 +17,21 @@ interface PagesContext {
 
 function rowToProduct(row: ProductRow): Product {
   return {
-    ...row,
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    description: row.description,
+    price: row.price,
+    currency: row.currency,
     images: parseJSON<string[]>(row.images, []),
-    tags: parseJSON<string[]>(row.tags, []),
+    category_id: row.category_id,
     is_active: intToBool(row.is_active),
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    variety: row.variety,
+    cost_price_per_gram: row.cost_price_per_gram,
+    margin_percentage: row.margin_percentage,
+    stock_quantity: row.stock_quantity,
   };
 }
 
@@ -28,17 +39,11 @@ export async function onRequestGet(context: PagesContext): Promise<Response> {
   const { env } = context;
   const url = new URL(context.request.url);
 
-  const category = url.searchParams.get('category');
   const categoryId = url.searchParams.get('category_id');
   const activeParam = url.searchParams.get('active');
 
   let sql = 'SELECT * FROM products WHERE 1=1';
   const params: unknown[] = [];
-
-  if (category) {
-    sql += ' AND category = ?';
-    params.push(category);
-  }
 
   if (categoryId) {
     sql += ' AND category_id = ?';
@@ -106,10 +111,10 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     await execute(
       env.DB,
       `INSERT INTO products (
-        id, name, slug, description, price, currency, images, category, tags,
-        farm_label, origin_flag, is_active, created_at, updated_at,
+        id, name, slug, description, price, currency, images,
+        is_active, created_at, updated_at,
         category_id, variety, cost_price_per_gram, margin_percentage, stock_quantity
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         body.name,
@@ -118,10 +123,6 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
         body.price ?? 0,
         body.currency ?? 'EUR',
         JSON.stringify(body.images ?? []),
-        body.category ?? null,
-        JSON.stringify(body.tags ?? []),
-        body.farm_label ?? null,
-        body.origin_flag ?? null,
         boolToInt(body.is_active ?? true),
         now,
         now,

@@ -14,14 +14,10 @@ export interface Product {
   price: number;
   currency: string;
   images: string[]; // Parsed from JSON
-  category: string | null;
-  tags: string[]; // Parsed from JSON
-  farm_label: string | null;
-  origin_flag: string | null;
+  category_id: string | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;
-  category_id: string | null;
   variety: string | null;
   cost_price_per_gram: number;
   margin_percentage: number;
@@ -36,14 +32,10 @@ export interface ProductRow {
   price: number;
   currency: string;
   images: string; // JSON string
-  category: string | null;
-  tags: string; // JSON string
-  farm_label: string | null;
-  origin_flag: string | null;
+  category_id: string | null;
   is_active: number; // SQLite integer
   created_at: string;
   updated_at: string;
-  category_id: string | null;
   variety: string | null;
   cost_price_per_gram: number;
   margin_percentage: number;

@@ -18,10 +18,21 @@ interface PagesContext {
 
 function rowToProduct(row: ProductRow): Product {
   return {
-    ...row,
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    description: row.description,
+    price: row.price,
+    currency: row.currency,
     images: parseJSON<string[]>(row.images, []),
-    tags: parseJSON<string[]>(row.tags, []),
+    category_id: row.category_id,
     is_active: intToBool(row.is_active),
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    variety: row.variety,
+    cost_price_per_gram: row.cost_price_per_gram,
+    margin_percentage: row.margin_percentage,
+    stock_quantity: row.stock_quantity,
   };
 }
 
@@ -95,8 +106,7 @@ export async function onRequestPut(context: PagesContext): Promise<Response> {
       env.DB,
       `UPDATE products SET
         name = ?, slug = ?, description = ?, price = ?, currency = ?,
-        images = ?, category = ?, tags = ?, farm_label = ?, origin_flag = ?,
-        is_active = ?, updated_at = ?, category_id = ?, variety = ?,
+        images = ?, is_active = ?, updated_at = ?, category_id = ?, variety = ?,
         cost_price_per_gram = ?, margin_percentage = ?, stock_quantity = ?
       WHERE id = ?`,
       [
@@ -106,10 +116,6 @@ export async function onRequestPut(context: PagesContext): Promise<Response> {
         body.price ?? existing.price,
         body.currency ?? existing.currency,
         body.images ? JSON.stringify(body.images) : existing.images,
-        body.category ?? existing.category,
-        body.tags ? JSON.stringify(body.tags) : existing.tags,
-        body.farm_label ?? existing.farm_label,
-        body.origin_flag ?? existing.origin_flag,
         body.is_active !== undefined ? boolToInt(body.is_active) : existing.is_active,
         now,
         body.category_id ?? existing.category_id,
