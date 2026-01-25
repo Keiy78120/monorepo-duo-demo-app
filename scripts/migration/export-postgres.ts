@@ -9,7 +9,16 @@
 import { Pool } from 'pg';
 import * as fs from 'fs';
 import * as path from 'path';
-import 'dotenv/config';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env.local from project root
+dotenv.config({ path: path.join(__dirname, '../../.env.local') });
+
+console.log('Connecting to:', process.env.DATABASE_URL?.substring(0, 40) + '...');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

@@ -94,7 +94,7 @@ export async function uploadToR2(
 
   return {
     key: result.key,
-    url: `/${result.key}`, // Relative URL, will be served via R2 public access or custom domain
+    url: `/api/media/${result.key}`, // Served via media proxy route
     size: result.size,
     contentType,
   };

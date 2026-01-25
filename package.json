@@ -23,12 +23,14 @@
     "@cloudflare/workers-types": "^4.20240129.0"
   },
   "devDependencies": {
+    "@supabase/supabase-js": "^2.39.3",
     "@types/node": "^20.11.0",
-    "typescript": "^5.3.3",
-    "wrangler": "^3.25.0",
+    "@types/pg": "^8.16.0",
     "dotenv": "^16.4.0",
     "pg": "^8.11.3",
-    "@supabase/supabase-js": "^2.39.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.25.0"
   },
   "engines": {
     "node": ">=18.0.0"

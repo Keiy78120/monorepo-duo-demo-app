@@ -9,6 +9,10 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const EXPORT_DIR = path.join(__dirname, '../../data/export');
 const IMPORT_FILE = path.join(__dirname, '../../data/import.sql');

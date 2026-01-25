@@ -1,23 +1,19 @@
-# vhash-cloudflare-app Wrangler Configuration
-name = "vhash-cloudflare-app"
+# vhash-cloudflare-app Wrangler Configuration (Pages)
+name = "vhash"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "./out"
 
 # ============================================================================
 # D1 DATABASE BINDINGS
 # ============================================================================
-# Production database - replace database_id after running:
-# wrangler d1 create vhash-prod
 [[d1_databases]]
 binding = "DB"
 database_name = "vhash-prod"
-database_id = "YOUR_PROD_DATABASE_ID"
+database_id = "0fa01da8-bc87-44fe-b9e1-6b19db316c9d"
 
 # ============================================================================
 # R2 BUCKET BINDINGS
 # ============================================================================
-# Media storage - replace after running:
-# wrangler r2 bucket create vhash-media
 [[r2_buckets]]
 binding = "MEDIA"
 bucket_name = "vhash-media"
@@ -27,46 +23,25 @@ bucket_name = "vhash-media"
 # ============================================================================
 [vars]
 ENVIRONMENT = "production"
+GROQ_MODEL = "llama-3.3-70b-versatile"
+CANNABIS_API_URL = "https://the-cannabis-ayix5e7fr-piyush-bhors-projects.vercel.app/api/strains/"
 
 # ============================================================================
-# SECRETS (set via wrangler secret put)
+# PREVIEW ENVIRONMENT (for PR previews)
 # ============================================================================
-# wrangler secret put TELEGRAM_BOT_TOKEN
-# wrangler secret put ADMIN_SESSION_SECRET
-# wrangler secret put ADMIN_TELEGRAM_IDS
+[env.preview]
+name = "vhash-preview"
 
-# ============================================================================
-# STAGING ENVIRONMENT
-# ============================================================================
-[env.staging]
-name = "vhash-cloudflare-app-staging"
-
-[[env.staging.d1_databases]]
+[[env.preview.d1_databases]]
 binding = "DB"
 database_name = "vhash-staging"
-database_id = "YOUR_STAGING_DATABASE_ID"
+database_id = "0f17deef-3f4a-4696-80dd-ed9c9e4e748a"
 
-[[env.staging.r2_buckets]]
+[[env.preview.r2_buckets]]
 binding = "MEDIA"
-bucket_name = "vhash-media-staging"
+bucket_name = "vhash-media"
 
-[env.staging.vars]
-ENVIRONMENT = "staging"
-
-# ============================================================================
-# LOCAL DEVELOPMENT
-# ============================================================================
-[env.dev]
-name = "vhash-cloudflare-app-dev"
-
-[[env.dev.d1_databases]]
-binding = "DB"
-database_name = "vhash-dev"
-database_id = "local"
-
-[[env.dev.r2_buckets]]
-binding = "MEDIA"
-bucket_name = "vhash-media-dev"
-
-[env.dev.vars]
-ENVIRONMENT = "development"
+[env.preview.vars]
+ENVIRONMENT = "preview"
+GROQ_MODEL = "llama-3.3-70b-versatile"
+CANNABIS_API_URL = "https://the-cannabis-ayix5e7fr-piyush-bhors-projects.vercel.app/api/strains/"

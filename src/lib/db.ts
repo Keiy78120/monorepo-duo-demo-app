@@ -12,6 +12,11 @@ export type Env = {
   ADMIN_SESSION_SECRET: string;
   ADMIN_TELEGRAM_IDS: string;
   ENVIRONMENT: string;
+  // AI/Groq
+  GROQ_API_KEY?: string;
+  GROQ_MODEL?: string;
+  // Cannabis API (optional)
+  CANNABIS_API_URL?: string;
 };
 
 /**
