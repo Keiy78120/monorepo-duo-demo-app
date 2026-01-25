@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCartStore, formatPrice } from "@/lib/store/cart";
 import { useHapticFeedback } from "@/lib/store/telegram";
-import { PricingTierSelect } from "@/components/PricingTierSelect";
+import { ProductDetailModal } from "@/components/ProductDetailModal";
 import { DeliveryBadge } from "@/components/DeliveryBadge";
 import { CountryBadge } from "@/components/CountryBadge";
 import type { ProductWithPricing } from "@/lib/supabase/database.types";
@@ -23,7 +23,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpan }: ProductCardProps) {
   const [isAdded, setIsAdded] = useState(false);
-  const [showTierSelect, setShowTierSelect] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
   const { impact, notification } = useHapticFeedback();
 
@@ -42,9 +42,10 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
     ? tiers.reduce((min, t) => (t.price < min.price ? t : min), tiers[0])
     : null;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (hasTiers) {
-      setShowTierSelect(true);
+      setShowDetailModal(true);
       impact("light");
     } else {
       addItem(product, null, 1);
@@ -53,6 +54,11 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 1500);
     }
+  };
+
+  const handleCardClick = () => {
+    setShowDetailModal(true);
+    impact("light");
   };
 
   const categoryName = product.category_info?.name || product.category;
@@ -74,7 +80,8 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.05, duration: 0.3 }}
-          className="group"
+          className="group cursor-pointer"
+          onClick={handleCardClick}
         >
           <div className="product-card overflow-hidden flex flex-row items-stretch">
             {/* Image Container */}
@@ -189,16 +196,13 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
           </div>
         </motion.div>
 
-        {/* Pricing Tier Selection Modal */}
-        {hasTiers && (
-          <PricingTierSelect
-            product={product}
-            tiers={tiers}
-            category={product.category_info}
-            open={showTierSelect}
-            onOpenChange={setShowTierSelect}
-          />
-        )}
+        {/* Product Detail Modal */}
+        <ProductDetailModal
+          product={product}
+          category={product.category_info}
+          open={showDetailModal}
+          onOpenChange={setShowDetailModal}
+        />
       </>
     );
   }
@@ -211,7 +215,8 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.03, duration: 0.25 }}
-          className="group h-full"
+          className="group h-full cursor-pointer"
+          onClick={handleCardClick}
         >
           <div className="product-card overflow-hidden flex h-full flex-col">
             {/* Image Container - Square */}
@@ -268,16 +273,13 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
           </div>
         </motion.div>
 
-        {/* Pricing Tier Selection Modal */}
-        {hasTiers && (
-          <PricingTierSelect
-            product={product}
-            tiers={tiers}
-            category={product.category_info}
-            open={showTierSelect}
-            onOpenChange={setShowTierSelect}
-          />
-        )}
+        {/* Product Detail Modal */}
+        <ProductDetailModal
+          product={product}
+          category={product.category_info}
+          open={showDetailModal}
+          onOpenChange={setShowDetailModal}
+        />
       </>
     );
   }
@@ -290,7 +292,8 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.08, duration: 0.35 }}
-          className="group h-full"
+          className="group h-full cursor-pointer"
+          onClick={handleCardClick}
         >
           <div className="product-card overflow-hidden flex h-full flex-col">
             {/* Image Container - Wide */}
@@ -408,16 +411,13 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
           </div>
         </motion.div>
 
-        {/* Pricing Tier Selection Modal */}
-        {hasTiers && (
-          <PricingTierSelect
-            product={product}
-            tiers={tiers}
-            category={product.category_info}
-            open={showTierSelect}
-            onOpenChange={setShowTierSelect}
-          />
-        )}
+        {/* Product Detail Modal */}
+        <ProductDetailModal
+          product={product}
+          category={product.category_info}
+          open={showDetailModal}
+          onOpenChange={setShowDetailModal}
+        />
       </>
     );
   }
@@ -429,7 +429,8 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: index * 0.05, duration: 0.3 }}
-        className={cn("group h-full", bentoClass)}
+        className={cn("group h-full cursor-pointer", bentoClass)}
+        onClick={handleCardClick}
       >
         <div className="product-card overflow-hidden flex h-full flex-col">
           {/* Image Container - Square on mobile, taller on larger screens */}
@@ -547,16 +548,13 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
         </div>
       </motion.div>
 
-      {/* Pricing Tier Selection Modal */}
-      {hasTiers && (
-        <PricingTierSelect
-          product={product}
-          tiers={tiers}
-          category={product.category_info}
-          open={showTierSelect}
-          onOpenChange={setShowTierSelect}
-        />
-      )}
+      {/* Product Detail Modal */}
+      <ProductDetailModal
+        product={product}
+        category={product.category_info}
+        open={showDetailModal}
+        onOpenChange={setShowDetailModal}
+      />
     </>
   );
 }
