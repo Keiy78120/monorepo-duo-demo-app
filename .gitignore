@@ -31,3 +31,14 @@ npm-debug.log*
 
 # Cloudflare
 .mf/
+
+# Frontend (Next.js)
+frontend/.next/
+frontend/.vercel/
+frontend/node_modules/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/.playwright-mcp/
+frontend/public/uploads/*
+!frontend/public/uploads/.gitkeep

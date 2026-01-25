@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4ade80" />
+      <stop offset="100%" stop-color="#16a34a" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)" />
+  <rect x="80" y="80" width="640" height="640" rx="180" fill="#16a34a" fill-opacity="0.12" />
+  <path d="M400 160c35 55 55 115 55 175 0 90-55 175-55 245 0-70-55-155-55-245 0-60 20-120 55-175z" fill="url(#leaf)" fill-opacity="0.5" />
+  <path d="M400 230c-100 25-150 80-170 150 80-5 140-35 170-150z" fill="#22c55e" fill-opacity="0.4" />
+  <path d="M400 230c100 25 150 80 170 150-80-5-140-35-170-150z" fill="#22c55e" fill-opacity="0.4" />
+  <path d="M400 330c-70 55-110 110-120 180 70-20 110-70 120-180z" fill="#4ade80" fill-opacity="0.35" />
+  <path d="M400 330c70 55 110 110 120 180-70-20-110-70-120-180z" fill="#4ade80" fill-opacity="0.35" />
+  <circle cx="400" cy="340" r="20" fill="#fbbf24" fill-opacity="0.85" />
+</svg>

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
+  "rewrites": [
+    {
+      "source": "/api/:path((?!auth|admin|upload|categories|products|orders|drivers|reviews|settings|pricing-tiers|telegram|address|setup|strain-data).*)",
+      "destination": "https://vhash.pages.dev/api/:path*"
+    }
+  ]
+}

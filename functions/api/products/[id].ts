@@ -2,6 +2,7 @@
  * Product by ID API
  * GET /api/products/:id - Get single product
  * PUT /api/products/:id - Update product (admin only)
+ * PATCH /api/products/:id - Partial update product (admin only)
  * DELETE /api/products/:id - Delete product (admin only)
  */
 
@@ -147,6 +148,131 @@ export async function onRequestPut(context: PagesContext): Promise<Response> {
     }
     console.error('Error updating product:', error);
     return new Response(JSON.stringify({ error: 'Failed to update product' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
+
+export async function onRequestPatch(context: PagesContext): Promise<Response> {
+  const { request, env, params } = context;
+  const { id } = params;
+
+  try {
+    await requireAdmin(request, env.DB, env.ADMIN_SESSION_SECRET, env.ADMIN_TELEGRAM_IDS);
+
+    const existing = await queryOne<ProductRow>(env.DB, 'SELECT * FROM products WHERE id = ?', [id]);
+
+    if (!existing) {
+      return new Response(JSON.stringify({ error: 'Product not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const body = await request.json() as Partial<Product>;
+
+    // Check slug uniqueness if changing
+    if (body.slug && body.slug !== existing.slug) {
+      const slugExists = await queryOne<{ id: string }>(
+        env.DB,
+        'SELECT id FROM products WHERE slug = ? AND id != ?',
+        [body.slug, id]
+      );
+      if (slugExists) {
+        return new Response(JSON.stringify({ error: 'Slug already exists' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
+    // Build dynamic update query with only provided fields
+    const updates: string[] = [];
+    const values: unknown[] = [];
+
+    if (body.name !== undefined) {
+      updates.push('name = ?');
+      values.push(body.name);
+    }
+    if (body.slug !== undefined) {
+      updates.push('slug = ?');
+      values.push(body.slug);
+    }
+    if (body.description !== undefined) {
+      updates.push('description = ?');
+      values.push(body.description);
+    }
+    if (body.price !== undefined) {
+      updates.push('price = ?');
+      values.push(body.price);
+    }
+    if (body.currency !== undefined) {
+      updates.push('currency = ?');
+      values.push(body.currency);
+    }
+    if (body.images !== undefined) {
+      updates.push('images = ?');
+      values.push(JSON.stringify(body.images));
+    }
+    if (body.is_active !== undefined) {
+      updates.push('is_active = ?');
+      values.push(boolToInt(body.is_active));
+    }
+    if (body.category_id !== undefined) {
+      updates.push('category_id = ?');
+      values.push(body.category_id);
+    }
+    if (body.variety !== undefined) {
+      updates.push('variety = ?');
+      values.push(body.variety);
+    }
+    if (body.cost_price_per_gram !== undefined) {
+      updates.push('cost_price_per_gram = ?');
+      values.push(body.cost_price_per_gram);
+    }
+    if (body.margin_percentage !== undefined) {
+      updates.push('margin_percentage = ?');
+      values.push(body.margin_percentage);
+    }
+    if (body.stock_quantity !== undefined) {
+      updates.push('stock_quantity = ?');
+      values.push(body.stock_quantity);
+    }
+
+    // Always update updated_at
+    updates.push('updated_at = ?');
+    values.push(nowISO());
+
+    // Add id for WHERE clause
+    values.push(id);
+
+    await execute(
+      env.DB,
+      `UPDATE products SET ${updates.join(', ')} WHERE id = ?`,
+      values
+    );
+
+    const updated = await queryOne<ProductRow>(env.DB, 'SELECT * FROM products WHERE id = ?', [id]);
+
+    return new Response(JSON.stringify(rowToProduct(updated!)), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'Unauthorized') {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    if (error instanceof Error && error.message.includes('Admin')) {
+      return new Response(JSON.stringify({ error: 'Forbidden' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    console.error('Error patching product:', error);
+    return new Response(JSON.stringify({ error: 'Failed to patch product' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
