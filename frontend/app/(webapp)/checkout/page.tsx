@@ -13,6 +13,7 @@ import { useCartStore, formatPrice } from "@/lib/store/cart";
 import { useTelegramStore } from "@/lib/store/telegram";
 import { DeliveryTimeline } from "@/components/DeliveryTimeline";
 import { useAppModeStore } from "@/lib/store/app-mode";
+import { demoFetch } from "@/lib/api/demo-fetch";
 
 interface AddressFields {
   street: string;
@@ -287,7 +288,7 @@ export default function CheckoutPage() {
         };
       });
 
-      const response = await fetch("/api/orders", {
+      const response = await demoFetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

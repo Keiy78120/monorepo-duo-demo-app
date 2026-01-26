@@ -8,6 +8,42 @@
 **Architecture**: Monorepo avec frontend Next.js + backend Cloudflare
 **Déploiement**: Frontend sur Vercel, Backend (API) sur Cloudflare Pages/Workers
 **Bot Telegram**: [@yx_bot_app](https://t.me/yx_bot_app)
+**Production URL**: [https://monorepo-duo-demo-app.vercel.app](https://monorepo-duo-demo-app.vercel.app)
+
+## 🎯 Système de Démo Multi-Utilisateurs
+
+L'application inclut un **système de démo avancé** permettant à plusieurs utilisateurs d'explorer simultanément l'application avec des données isolées:
+
+### Caractéristiques
+
+- **Isolation par session UUID**: Chaque utilisateur reçoit un identifiant de session unique
+- **Pas de Telegram requis**: Accès direct via URL de production
+- **Sélection de mode**: Mode "Simple" ou "Advanced" au démarrage
+- **Accès admin en démo**: Bouton direct pour explorer l'interface admin
+- **Bouton retour**: Navigation facile vers la sélection de mode
+- **Données isolées**: Orders et reviews sont filtrés par session
+
+### Architecture Technique
+
+```
+User Flow:
+1. Visit production URL → ModeSelector page
+2. Select mode (Simple/Advanced) → Generate UUID → localStorage
+3. All API calls include x-demo-session-id header
+4. Backend filters data by demo_session_id column
+5. Admin access bypassed if demo session exists
+```
+
+### Fichiers Clés
+
+- `frontend/lib/store/demo-session.ts` - Store Zustand pour sessions
+- `frontend/lib/api/demo-fetch.ts` - Helper fetch avec header UUID
+- `frontend/components/ModeSelector.tsx` - Page de sélection
+- `migration-demo-session.sql` - Migration DB pour isolation
+
+### Setup Guide Rapide
+
+Voir `SETUP-CLIENT.md` pour un guide complet de 5 minutes pour déployer une instance client.
 
 ## Stack Technique
 

@@ -4,6 +4,7 @@ import { verifyTelegramInitData } from "@/lib/telegram/verifyInitData";
 import { getSession } from "@/lib/auth/guard";
 import { z } from "zod";
 import { isMaintenanceMode } from "@/lib/maintenance";
+import { getDemoSessionFromRequest } from "@/lib/api/demo-fetch";
 import type { Order, Driver } from "@/lib/db/types";
 
 type OrderWithDriver = Order & {
@@ -86,7 +87,10 @@ export async function GET(request: NextRequest) {
   try {
     await cleanupOldOrders();
     const session = await getSession();
-    if (!session) {
+    const demoSessionId = getDemoSessionFromRequest(request);
+
+    // Allow access if either authenticated OR has demo session
+    if (!session && !demoSessionId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -98,6 +102,12 @@ export async function GET(request: NextRequest) {
     const conditions: string[] = [];
     const params: string[] = [];
     let paramIndex = 1;
+
+    // Filter by demo session if present (isolation)
+    if (demoSessionId) {
+      conditions.push(`o.demo_session_id = $${paramIndex++}`);
+      params.push(demoSessionId);
+    }
 
     if (status && status !== "all") {
       conditions.push(`o.status = $${paramIndex++}`);
@@ -168,6 +178,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get demo session ID if present
+    const demoSessionId = getDemoSessionFromRequest(request);
+
     // Verify Telegram user if initData provided
     let telegramUserId = "anonymous";
     let username: string | null = null;
@@ -175,7 +188,7 @@ export async function POST(request: NextRequest) {
     // Dev mode: accept requests without Telegram verification
     const isDev = process.env.NODE_ENV === "development";
     if (isDev) {
-      telegramUserId = "dev_user_123";
+      telegramUserId = demoSessionId || "dev_user_123";
       username = "dev_user";
     } else if (parsed.data.initData && process.env.TELEGRAM_BOT_TOKEN) {
       const { valid, data } = verifyTelegramInitData(
@@ -233,10 +246,10 @@ export async function POST(request: NextRequest) {
     );
     const dailyOrderNumber = (lastOrder?.daily_order_number ?? 0) + 1;
 
-    // Insert order
+    // Insert order with demo_session_id if present
     const order = await queryOne<Order>(
-      `INSERT INTO orders (telegram_user_id, username, items, total, currency, notes, delivery_address, status, order_day, daily_order_number)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8, $9)
+      `INSERT INTO orders (telegram_user_id, username, items, total, currency, notes, delivery_address, status, order_day, daily_order_number, demo_session_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8, $9, $10)
        RETURNING *`,
       [
         telegramUserId,
@@ -248,6 +261,7 @@ export async function POST(request: NextRequest) {
         parsed.data.delivery_address,
         today,
         dailyOrderNumber,
+        demoSessionId || null,
       ]
     );
 

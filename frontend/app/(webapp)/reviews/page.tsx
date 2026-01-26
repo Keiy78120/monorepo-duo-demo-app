@@ -10,6 +10,7 @@ import { ReviewCard, StarRatingInput } from "@/components/ReviewCard";
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { useTelegramStore, useHapticFeedback } from "@/lib/store/telegram";
+import { demoFetch } from "@/lib/api/demo-fetch";
 import type { Review } from "@/lib/db/types";
 
 export default function ReviewsPage() {
@@ -27,7 +28,7 @@ export default function ReviewsPage() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch("/api/reviews?status=published");
+        const response = await demoFetch("/api/reviews?status=published");
         if (!response.ok) {
           throw new Error("Failed to fetch reviews");
         }
@@ -50,7 +51,7 @@ export default function ReviewsPage() {
     impact("medium");
 
     try {
-      const response = await fetch("/api/reviews", {
+      const response = await demoFetch("/api/reviews", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

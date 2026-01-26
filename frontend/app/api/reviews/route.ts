@@ -4,6 +4,7 @@ import { verifyTelegramInitData } from "@/lib/telegram/verifyInitData";
 import { z } from "zod";
 import { isMaintenanceMode } from "@/lib/maintenance";
 import { getSession } from "@/lib/auth/guard";
+import { getDemoSessionFromRequest } from "@/lib/api/demo-fetch";
 
 interface Review {
   id: string;
@@ -33,10 +34,17 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     const productId = searchParams.get("product_id");
+    const demoSessionId = getDemoSessionFromRequest(request);
 
     let sql = `SELECT * FROM reviews`;
     const params: string[] = [];
     const conditions: string[] = [];
+
+    // Filter by demo session if present (isolation)
+    if (demoSessionId) {
+      params.push(demoSessionId);
+      conditions.push(`demo_session_id = $${params.length}`);
+    }
 
     // Filter by status (default to published for public access)
     if (status) {
@@ -98,6 +106,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get demo session ID if present
+    const demoSessionId = getDemoSessionFromRequest(request);
+
     // Verify Telegram user if initData provided
     let telegramUserId = "anonymous";
     let username: string | null = null;
@@ -105,7 +116,7 @@ export async function POST(request: NextRequest) {
     // Dev mode: accept requests without Telegram verification
     const isDev = process.env.NODE_ENV === "development";
     if (isDev) {
-      telegramUserId = "dev_user_123";
+      telegramUserId = demoSessionId || "dev_user_123";
       username = "dev_user";
     } else if (parsed.data.initData && process.env.TELEGRAM_BOT_TOKEN) {
       const { valid, data } = verifyTelegramInitData(
@@ -132,8 +143,8 @@ export async function POST(request: NextRequest) {
     }
 
     const review = await queryOne<Review>(
-      `INSERT INTO reviews (product_id, telegram_user_id, username, rating, content, status)
-       VALUES ($1, $2, $3, $4, $5, 'pending')
+      `INSERT INTO reviews (product_id, telegram_user_id, username, rating, content, status, demo_session_id)
+       VALUES ($1, $2, $3, $4, $5, 'pending', $6)
        RETURNING *`,
       [
         parsed.data.product_id || null,
@@ -141,6 +152,7 @@ export async function POST(request: NextRequest) {
         username,
         parsed.data.rating,
         parsed.data.content,
+        demoSessionId || null,
       ]
     );
 

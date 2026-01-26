@@ -4,6 +4,17 @@ Monorepo for Telegram bot demos showcasing mini app integrations with Cloudflare
 
 **Telegram Bot**: [@yx_bot_app](https://t.me/yx_bot_app)
 
+**Production URL**: [https://monorepo-duo-demo-app.vercel.app](https://monorepo-duo-demo-app.vercel.app)
+
+## 🎯 Demo Mode Features
+
+This app includes a **multi-user demo mode** that allows multiple users to explore the app simultaneously with isolated data:
+
+- **Session-based isolation**: Each demo session gets a unique UUID
+- **No Telegram required**: Direct access via production URL
+- **Mode selection**: Choose between "Simple" and "Advanced" demo experiences
+- **Easy client setup**: See `SETUP-CLIENT.md` for 5-minute deployment guide
+
 ## Architecture
 
 - **Cloudflare Pages** - Static frontend hosting
@@ -16,6 +27,16 @@ Monorepo for Telegram bot demos showcasing mini app integrations with Cloudflare
 - Node.js >= 18
 - Wrangler CLI (`npm install -g wrangler`)
 - Cloudflare account
+
+## 🚀 Quick Client Setup
+
+For a fast client-specific deployment, see **`SETUP-CLIENT.md`** for the 5-minute setup guide.
+
+Or use the interactive setup script:
+
+```bash
+bash scripts/client-setup.sh
+```
 
 ## Quick Start
 

@@ -21,6 +21,7 @@ import { useSession } from "@/lib/auth/client";
 import { useTelegramStore } from "@/lib/store/telegram";
 import { adminFetch } from "@/lib/api/admin-fetch";
 import { useAppModeStore } from "@/lib/store/app-mode";
+import { useDemoSessionStore } from "@/lib/store/demo-session";
 
 const navItems = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -41,6 +42,7 @@ export default function AdminLayout({
   const { data: session, isPending } = useSession();
   const { userId, initData, initialize } = useTelegramStore();
   const { mode, loadMode } = useAppModeStore();
+  const { sessionId, loadDemoSession } = useDemoSessionStore();
   const isSimple = mode === "simple";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [adminCheckDone, setAdminCheckDone] = useState(false);
@@ -55,7 +57,8 @@ export default function AdminLayout({
 
   useEffect(() => {
     loadMode();
-  }, [loadMode]);
+    loadDemoSession();
+  }, [loadMode, loadDemoSession]);
 
   useEffect(() => {
     let cancelled = false;
@@ -105,10 +108,11 @@ export default function AdminLayout({
     fetchServerSession();
   }, []);
 
-  // Skip auth in development
+  // Skip auth in development or demo mode
   const isDev = process.env.NODE_ENV === "development";
   const isPublicAdminPage = pathname === "/admin/login" || pathname === "/admin/unauthorized";
-  const hasAdminAccess = isDev || !!session || !!serverSession || adminAccess;
+  const hasDemoSession = !!sessionId; // Allow access if demo session exists
+  const hasAdminAccess = isDev || !!session || !!serverSession || adminAccess || hasDemoSession;
 
   const visibleNavItems = isSimple
     ? navItems.filter((item) =>

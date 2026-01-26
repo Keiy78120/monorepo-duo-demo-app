@@ -1,0 +1,117 @@
+feat: Implement multi-user demo system with session isolation
+
+Implements a complete multi-user demo mode allowing simultaneous access
+with isolated data per session. No Telegram authentication required for
+demo mode.
+
+## ✨ New Features
+
+### Demo Session System
+- UUID-based session isolation for orders and reviews
+- LocalStorage persistence of demo sessions
+- Automatic session header injection in API calls
+- Mode selection screen (Simple vs Advanced)
+- Return button for easy navigation back to mode selector
+
+### Admin Access
+- Bypass authentication in demo mode
+- Session-filtered admin views
+- Dedicated admin shield button in header
+
+### UI Improvements
+- Fixed title CSS (max-w-md → max-w-xl)
+- Added text-balance for better typography
+- Return button with RotateCcw icon in navbar
+
+## 📁 Files Created (11)
+
+- frontend/lib/store/demo-session.ts
+- frontend/lib/api/demo-fetch.ts
+- migration-demo-session.sql
+- .env.template
+- SETUP-CLIENT.md
+- scripts/client-setup.sh
+- frontend/lib/branding.ts
+- IMPLEMENTATION-SUMMARY.md
+- TESTING-GUIDE.md
+- COMMIT-MESSAGE.txt
+
+## 🔧 Files Modified (10)
+
+- frontend/components/ModeSelector.tsx
+- frontend/components/PageHeader.tsx
+- frontend/app/admin/layout.tsx
+- frontend/app/api/orders/route.ts
+- frontend/app/api/reviews/route.ts
+- frontend/app/(webapp)/checkout/page.tsx
+- frontend/app/(webapp)/reviews/page.tsx
+- frontend/lib/api/admin-fetch.ts
+- README.md
+- CONTEXTE.md
+
+## 🗄️ Database Changes
+
+- Added demo_session_id column to orders table
+- Added demo_session_id column to reviews table
+- Created indexes for performance optimization
+
+## 📚 Documentation
+
+- Complete setup guide for 5-minute client deployment
+- Interactive bash script for configuration
+- Environment variables template
+- Comprehensive testing guide
+- Implementation summary with metrics
+
+## 🚀 Deployment
+
+Run migration before deploying:
+```bash
+wrangler d1 execute demo-app-prod --file=./migration-demo-session.sql
+```
+
+Production URL: https://monorepo-duo-demo-app.vercel.app
+
+## 🧪 Testing
+
+See TESTING-GUIDE.md for complete test suite.
+
+Key tests:
+- Session isolation (orders & reviews)
+- Admin access bypass
+- Return navigation
+- CSS fixes
+- Multi-user simultaneous access
+
+## 💡 Implementation Details
+
+Architecture:
+- Zustand store for session management
+- Fetch wrapper for automatic header injection
+- Server-side filtering by demo_session_id
+- Client-side localStorage persistence
+- Admin auth bypass with session check
+
+Performance:
+- Minimal overhead (~36 bytes per request)
+- Indexed database queries
+- No impact on existing flows
+
+## ⚠️ Notes
+
+- Demo sessions should be cleaned periodically (see IMPLEMENTATION-SUMMARY.md)
+- Rate limiting recommended for production
+- Sessions persist indefinitely in localStorage (by design)
+
+## 🎯 Closes
+
+- Fixes CSS title line-breaking issue
+- Implements multi-user demo isolation
+- Adds easy navigation controls
+- Enables admin access in demo mode
+- Provides 5-minute client setup process
+
+Breaking Changes: None
+Backward Compatible: Yes
+
+Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>

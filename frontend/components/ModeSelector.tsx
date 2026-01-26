@@ -5,19 +5,23 @@ import { ArrowRight, Sparkles, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useAppModeStore } from "@/lib/store/app-mode";
+import { useDemoSessionStore } from "@/lib/store/demo-session";
 
 export function ModeSelector() {
   const router = useRouter();
   const { setMode } = useAppModeStore();
+  const { initDemoSession } = useDemoSessionStore();
 
   const handleSelect = (mode: "simple" | "advanced") => {
+    // Initialize demo session with UUID
+    initDemoSession();
     setMode(mode);
     router.replace("/");
   };
 
   return (
     <div className="min-h-screen bg-[var(--color-background)] px-5 py-10">
-      <div className="mx-auto w-full max-w-md space-y-6">
+      <div className="mx-auto w-full max-w-xl space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -26,7 +30,7 @@ export function ModeSelector() {
           <p className="text-xs uppercase tracking-[0.3em] text-[var(--color-muted-foreground)]">
             YX-MINI-APP
           </p>
-          <h1 className="text-3xl font-bold text-[var(--color-foreground)]">
+          <h1 className="text-3xl font-bold text-[var(--color-foreground)] text-balance">
             Quelle démo veux-tu voir ?
           </h1>
           <p className="text-sm text-[var(--color-muted-foreground)]">

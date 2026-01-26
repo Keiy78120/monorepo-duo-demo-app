@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { IoArrowBack, IoInformationCircle } from "react-icons/io5";
-import { Shield } from "lucide-react";
+import { Shield, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useHapticFeedback, useTelegramStore } from "@/lib/store/telegram";
 import { InfoDialog } from "@/components/InfoDialog";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { useAppModeStore } from "@/lib/store/app-mode";
+import { useDemoSessionStore } from "@/lib/store/demo-session";
 
 interface PageHeaderProps {
   title: string;
@@ -26,6 +27,8 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
   const [isAdmin, setIsAdmin] = useState(false);
   const userId = useTelegramStore((s) => s.userId);
   const mode = useAppModeStore((s) => s.mode);
+  const { clearMode } = useAppModeStore();
+  const { clearDemoSession } = useDemoSessionStore();
   const isSimple = mode === "simple";
   const showInfoButton = showInfo && !isSimple;
 
@@ -84,6 +87,20 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                 </p>
               )}
             </div>
+            <motion.button
+              onClick={() => {
+                selection();
+                clearMode();
+                clearDemoSession();
+                router.replace("/");
+              }}
+              className="h-10 w-10 rounded-xl bg-[var(--color-muted)]/20 flex items-center justify-center hover:bg-[var(--color-muted)]/30 transition-colors shrink-0"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title="Retour à la sélection de démo"
+            >
+              <RotateCcw className="w-5 h-5 text-[var(--color-foreground)]" />
+            </motion.button>
             {isAdmin && (
               <motion.button
                 onClick={() => {
@@ -163,6 +180,20 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
               )}
             </div>
             <div className="flex items-center gap-2">
+              <motion.button
+                onClick={() => {
+                  selection();
+                  clearMode();
+                  clearDemoSession();
+                  router.replace("/");
+                }}
+                className="h-10 w-10 rounded-xl bg-[var(--color-muted)]/20 flex items-center justify-center hover:bg-[var(--color-muted)]/30 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                title="Retour à la sélection de démo"
+              >
+                <RotateCcw className="w-5 h-5 text-[var(--color-foreground)]" />
+              </motion.button>
               <ThemeSwitcher />
               {isAdmin && (
                 <motion.button
