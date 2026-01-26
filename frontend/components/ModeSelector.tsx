@@ -21,7 +21,7 @@ export function ModeSelector() {
 
   return (
     <div className="min-h-screen bg-[var(--color-background)] px-5 py-10">
-      <div className="mx-auto w-full max-w-xl space-y-6">
+      <div className="mx-auto w-full max-w-2xl space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -30,7 +30,7 @@ export function ModeSelector() {
           <p className="text-xs uppercase tracking-[0.3em] text-[var(--color-muted-foreground)]">
             YX-MINI-APP
           </p>
-          <h1 className="text-3xl font-bold text-[var(--color-foreground)] text-balance">
+          <h1 className="text-3xl font-bold text-[var(--color-foreground)]">
             Quelle démo veux-tu voir ?
           </h1>
           <p className="text-sm text-[var(--color-muted-foreground)]">
