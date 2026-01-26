@@ -1,262 +1,129 @@
 # monorepo-duo-demo-app
 
-Monorepo for Telegram bot demos showcasing mini app integrations with Cloudflare (Pages + Workers + D1 + R2).
+Telegram Mini App démo avec multi-user sessions et intégration Cloudflare (Pages + D1 + R2).
 
-**Telegram Bot**: [@yx_bot_app](https://t.me/yx_bot_app)
+**🌐 Production**: [monorepo-duo-demo-app.vercel.app](https://monorepo-duo-demo-app.vercel.app)
+**🤖 Bot**: [@yx_bot_app](https://t.me/yx_bot_app)
 
-**Production URL**: [https://monorepo-duo-demo-app.vercel.app](https://monorepo-duo-demo-app.vercel.app)
+---
 
-## 🎯 Demo Mode Features
+## 📚 Documentation
 
-This app includes a **multi-user demo mode** that allows multiple users to explore the app simultaneously with isolated data:
+| Fichier | Description |
+|---------|-------------|
+| **SETUP-CLIENT.md** | 🚀 Guide rapide 5 min pour cloner l'app |
+| **DEVELOPER-GUIDE.md** | 🛠️ Architecture, tests, troubleshooting complet |
+| **CONTEXTE.md** | 📖 Contexte technique du projet |
 
-- **Session-based isolation**: Each demo session gets a unique UUID
-- **No Telegram required**: Direct access via production URL
-- **Mode selection**: Choose between "Simple" and "Advanced" demo experiences
-- **Easy client setup**: See `SETUP-CLIENT.md` for 5-minute deployment guide
+---
 
-## Architecture
+## ✨ Features
 
-- **Cloudflare Pages** - Static frontend hosting
-- **Pages Functions** - API routes (Workers)
-- **D1** - SQLite database
-- **R2** - Object storage for media
+### Multi-User Demo Mode
+- **Session isolée** par utilisateur (UUID unique)
+- **Pas de Telegram requis** pour tester
+- **Mode Simple** ou **Advanced** au choix
+- **Admin ouvert** à tous en démo
 
-## Prerequisites
+### Stack
+```
+Frontend (Vercel) → Middleware → Cloudflare API → D1 Database
+```
 
-- Node.js >= 18
-- Wrangler CLI (`npm install -g wrangler`)
-- Cloudflare account
+- Next.js 16 + React 19 + TypeScript
+- Cloudflare Pages Functions + D1 (SQLite)
+- Zustand state management
+- Tailwind CSS + Motion animations
 
-## 🚀 Quick Client Setup
+---
 
-For a fast client-specific deployment, see **`SETUP-CLIENT.md`** for the 5-minute setup guide.
+## 🚀 Quick Start
 
-Or use the interactive setup script:
+### Cloner pour un Client
 
 ```bash
+# 1. Clone
+git clone https://github.com/Keiy78120/monorepo-duo-demo-app.git
+cd monorepo-duo-demo-app
+
+# 2. Setup interactif (5 min)
 bash scripts/client-setup.sh
+
+# 3. Deploy
+cd frontend && vercel --prod
 ```
 
-## Quick Start
+Voir **`SETUP-CLIENT.md`** pour le guide complet.
 
-### 1. Setup Cloudflare Resources
+### Développement Local
 
 ```bash
-# Login to Cloudflare
-wrangler login
-
-# Create D1 databases
-wrangler d1 create demo-app-prod
-wrangler d1 create demo-app-staging
-
-# Create R2 buckets
-wrangler r2 bucket create demo-app-media
-wrangler r2 bucket create demo-app-media-staging
-
-# Create Pages project
-wrangler pages project create monorepo-duo-demo-app
-```
-
-### 2. Configure wrangler.toml
-
-Update `wrangler.toml` with your database IDs:
-
-```toml
-[[d1_databases]]
-binding = "DB"
-database_name = "demo-app-prod"
-database_id = "YOUR_PROD_DATABASE_ID"  # From step 1
-```
-
-### 3. Apply Schema
-
-```bash
-# Production
-wrangler d1 execute demo-app-prod --file=./schema.sql
-
-# Staging
-wrangler d1 execute demo-app-staging --file=./schema.sql
-
-# Local development
-wrangler d1 execute demo-app-dev --local --file=./schema.sql
-```
-
-### 4. Set Secrets
-
-```bash
-wrangler secret put TELEGRAM_BOT_TOKEN
-wrangler secret put ADMIN_SESSION_SECRET
-wrangler secret put ADMIN_TELEGRAM_IDS
-```
-
-### 5. Install Dependencies
-
-```bash
+# Install
 npm install
-```
+cd frontend && npm install
 
-### 6. Local Development
+# Configure Cloudflare
+wrangler login
+wrangler d1 create demo-app-dev
 
-```bash
+# Apply schema
+wrangler d1 execute demo-app-dev --local --file=./schema.sql
+
+# Run dev
 npm run dev
 ```
 
-## Data Migration
+Voir **`DEVELOPER-GUIDE.md`** pour les détails complets.
 
-### Export from PostgreSQL
+---
 
-1. Set up environment:
+## 📦 Déploiement
+
+### Vercel (Frontend)
 ```bash
-cp .env.example .env.local
-# Edit .env.local with your PostgreSQL connection string
+cd frontend
+vercel --prod
 ```
 
-2. Export data:
+### Cloudflare (Backend API)
 ```bash
-npm run migration:export
+wrangler pages deploy
 ```
 
-### Import to D1
+---
 
-1. Generate SQL:
-```bash
-npm run migration:import
-```
+## 🔑 Variables d'Environnement
 
-2. Apply to D1:
-```bash
-wrangler d1 execute demo-app-prod --file=./data/import.sql
-```
+**Essentielles**:
+- `TELEGRAM_BOT_TOKEN` - Token du bot (@BotFather)
+- `NEXT_PUBLIC_TELEGRAM_BOT_USERNAME` - Username du bot
+- `ADMIN_TELEGRAM_IDS` - IDs admin (vide pour démo)
+- `CLOUDFLARE_API_URL` - URL backend Cloudflare
 
-### Migrate Media
+Voir `.env.template` pour la liste complète.
 
-```bash
-npm run migration:media
-```
+---
 
-## Deployment
+## 📖 Guides
 
-```bash
-# Production
-npm run deploy
+### Pour les Clients
+→ **SETUP-CLIENT.md** - Configuration en 5 minutes
 
-# Staging
-npm run deploy:staging
-```
+### Pour les Développeurs
+→ **DEVELOPER-GUIDE.md** - Architecture, tests, troubleshooting
 
-## API Routes
+### Contexte Technique
+→ **CONTEXTE.md** - Stack, features, fichiers clés
 
-| Endpoint | Methods | Auth | Description |
-|----------|---------|------|-------------|
-| `/api/products` | GET, POST | Public/Admin | Product catalog |
-| `/api/products/:id` | GET, PUT, DELETE | Public/Admin | Single product |
-| `/api/categories` | GET, POST | Public/Admin | Product categories |
-| `/api/categories/:id` | GET, PUT, DELETE | Public/Admin | Single category |
-| `/api/pricing-tiers` | GET, POST, PUT | Public/Admin | Pricing tiers |
-| `/api/orders` | GET, POST | Admin/Public | Orders |
-| `/api/orders/:id` | GET, PUT, DELETE | User/Admin | Single order |
-| `/api/orders/user` | GET | User | User's orders |
-| `/api/reviews` | GET, POST | Public | Reviews |
-| `/api/reviews/:id` | GET, PUT, DELETE | Public/Admin | Single review |
-| `/api/drivers` | GET, POST | Admin | Drivers |
-| `/api/drivers/:id` | GET, PUT, DELETE | Admin | Single driver |
-| `/api/settings` | GET, PUT | Public/Admin | Settings |
-| `/api/telegram/verify` | POST | Public | Verify Telegram initData |
-| `/api/upload` | POST, DELETE | Admin | File upload/delete |
-| `/api/admin/check` | GET | Public | Check admin status |
-| `/api/admin/session` | DELETE | Public | Logout |
-| `/api/admin/contacts` | GET, PUT | Admin | Telegram contacts |
+---
 
-## Free Tier Limits
+## 🆘 Support
 
-| Service | Limit |
-|---------|-------|
-| Workers | 100k requests/day, 10ms CPU/request |
-| D1 | 5M reads/day, 100k writes/day, 5GB storage |
-| R2 | 10GB storage, 1M Class A ops, 10M Class B ops/month |
-| Pages | 500 builds/month |
+- **Issues**: https://github.com/Keiy78120/monorepo-duo-demo-app/issues
+- **Documentation**: Voir les fichiers MD ci-dessus
 
-## Project Structure
+---
 
-```
-monorepo-duo-demo-app/
-├── functions/api/          # API routes (Pages Functions)
-│   ├── products/
-│   ├── categories/
-│   ├── pricing-tiers/
-│   ├── orders/
-│   ├── reviews/
-│   ├── drivers/
-│   ├── settings/
-│   ├── telegram/
-│   ├── upload/
-│   └── admin/
-├── src/lib/                # Shared utilities
-│   ├── db.ts               # D1 database client
-│   ├── auth.ts             # Authentication
-│   ├── telegram.ts         # Telegram verification
-│   ├── r2.ts               # R2 storage helpers
-│   └── types.ts            # TypeScript types
-├── scripts/migration/      # Migration scripts
-├── schema.sql              # D1 schema
-├── wrangler.toml           # Cloudflare config
-└── package.json
-```
+## 📄 License
 
-## Authentication
-
-The app uses a custom authentication system based on Telegram initData verification:
-
-1. User opens Mini App in Telegram
-2. Frontend sends `initData` to `/api/telegram/verify`
-3. Backend verifies using HMAC-SHA256 (Web Crypto API)
-4. If admin, sets `tg_admin` cookie (JWT-like token)
-
-Admin is determined by:
-- `ADMIN_TELEGRAM_IDS` environment variable
-- `is_admin` field in `telegram_contacts` table
-
-## Development
-
-### Type Checking
-
-```bash
-npm run typecheck
-```
-
-### Adding New Routes
-
-1. Create file in `functions/api/`
-2. Export `onRequestGet`, `onRequestPost`, etc.
-3. Use `requireAdmin()` for protected routes
-
-Example:
-```typescript
-import type { Env } from '../../src/lib/db';
-import { requireAdmin } from '../../src/lib/auth';
-
-export async function onRequestGet(context: { request: Request; env: Env }) {
-  await requireAdmin(context.request, context.env.DB, context.env.ADMIN_SESSION_SECRET, context.env.ADMIN_TELEGRAM_IDS);
-  // Handle request
-}
-```
-
-## Troubleshooting
-
-### "Browser not installed"
-```bash
-wrangler pages dev --d1=DB=demo-app-dev ./out
-```
-
-### Database errors
-```bash
-# Check D1 status
-wrangler d1 info demo-app-prod
-
-# Execute raw SQL
-wrangler d1 execute demo-app-prod --command "SELECT * FROM settings"
-```
-
-### R2 upload errors
-Ensure R2 bucket is correctly bound in `wrangler.toml`.
+Propriétaire - Voir LICENSE

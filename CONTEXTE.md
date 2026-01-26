@@ -1,6 +1,14 @@
 # Contexte du Projet - Telegram Mini App Demo
 
-> Documentation pour cloner, configurer et personnaliser rapidement l'application pour vos clients.
+> Documentation pour comprendre, cloner et configurer l'application pour vos clients.
+
+## 📚 Documentation
+
+- **README.md** - Vue d'ensemble et installation de base
+- **SETUP-CLIENT.md** - Guide rapide 5 min pour cloner l'app pour un client
+- **DEVELOPER-GUIDE.md** - Guide complet dev (architecture, tests, troubleshooting)
+
+---
 
 ## Vue d'ensemble
 
