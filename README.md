@@ -2,6 +2,8 @@
 
 Monorepo for Telegram bot demos showcasing mini app integrations with Cloudflare (Pages + Workers + D1 + R2).
 
+**Telegram Bot**: [@yx_bot_app](https://t.me/yx_bot_app)
+
 ## Architecture
 
 - **Cloudflare Pages** - Static frontend hosting

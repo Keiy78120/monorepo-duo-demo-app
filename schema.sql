@@ -1,4 +1,4 @@
--- demo-app D1 Schema
+-- monorepo-duo-demo-app D1 Schema
 -- Migration from PostgreSQL to SQLite (D1)
 -- Conversions: UUID → TEXT, TIMESTAMPTZ → TEXT (ISO 8601), BOOLEAN → INTEGER (0/1), JSONB → TEXT, ENUM → TEXT with CHECK
 

@@ -1,5 +1,5 @@
 /**
- * Pricing utilities for VHash cannabis dispensary
+ * Pricing utilities for Demo App cannabis dispensary
  * All prices are in centimes (1€ = 100 centimes)
  */
 

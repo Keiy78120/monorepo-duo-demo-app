@@ -1,10 +1,10 @@
-# Contexte du Projet - VHash
+# Contexte du Projet - Demo App
 
 > Fichier de référence rapide pour les agents IA. Mis à jour le 2026-01-24.
 
 ## Vue d'ensemble
 
-**Nom**: VHash
+**Nom**: Demo App
 **Type**: Telegram Mini App - E-commerce Cannabis Premium
 **Design**: UI Glassmorphisme inspiré Apple VisionOS
 **Status**: Production
