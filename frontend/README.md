@@ -24,7 +24,7 @@ A premium Telegram Mini App with Apple/VisionOS-inspired dark UI design.
 - **Language**: TypeScript 5.9.3
 - **State**: Zustand 5.0.10
 - **Animation**: Motion 12.29.0 (Framer Motion)
-- **Database**: Supabase (PostgreSQL)
+- **Database**: Cloudflare D1 (via API)
 - **Auth**: Better Auth 1.4.17
 - **UI Components**: shadcn/ui
 
@@ -34,7 +34,6 @@ A premium Telegram Mini App with Apple/VisionOS-inspired dark UI design.
 
 - Node.js 20+
 - pnpm (recommended) or npm
-- Supabase account
 - Telegram Bot (from @BotFather)
 
 ### Installation
@@ -56,13 +55,9 @@ A premium Telegram Mini App with Apple/VisionOS-inspired dark UI design.
    ```
 
 4. Configure your `.env` file with:
-   - Supabase URL and keys
    - Telegram Bot Token
    - Better Auth secret
-
-5. Set up the database:
-   - Run the migration in `supabase/migrations/001_initial_schema.sql`
-   - Or use Supabase CLI: `supabase db push`
+   - `CLOUDFLARE_API_URL` (backend URL)
 
 6. Start the development server:
    ```bash
@@ -109,9 +104,8 @@ components/
 lib/
 ├─ telegram/           # Telegram utilities
 ├─ auth/               # Better Auth setup
-├─ supabase/           # Supabase client
-├─ store/              # Zustand stores
-└─ env.ts              # Environment validation
+├─ db/                 # Shared DB types
+└─ store/              # Zustand stores
 ```
 
 ## Design System
@@ -139,11 +133,6 @@ The app uses a premium dark theme inspired by Apple's VisionOS:
 ## Environment Variables
 
 ```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-
 # Telegram
 TELEGRAM_BOT_TOKEN=
 
@@ -153,6 +142,9 @@ BETTER_AUTH_URL=
 
 # App
 NEXT_PUBLIC_APP_URL=
+
+# Backend
+CLOUDFLARE_API_URL=
 ```
 
 ## Deployment

@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Send, ExternalLink } from "lucide-react";
 import { useTelegramStore } from "@/lib/store/telegram";
+import { useAppModeStore } from "@/lib/store/app-mode";
 import { Button } from "@/components/ui/button";
+import { ModeSelector } from "@/components/ModeSelector";
 
 interface TelegramGateProps {
   children: React.ReactNode;
@@ -13,6 +15,7 @@ interface TelegramGateProps {
 
 export function TelegramGate({ children, botUsername = "your_bot" }: TelegramGateProps) {
   const { isReady, isInTelegram, initialize, enablePreview } = useTelegramStore();
+  const { mode, isReady: modeReady, loadMode } = useAppModeStore();
   const [mounted, setMounted] = useState(false);
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [maintenanceMessage, setMaintenanceMessage] = useState<string | null>(null);
@@ -22,6 +25,10 @@ export function TelegramGate({ children, botUsername = "your_bot" }: TelegramGat
     setMounted(true);
     initialize();
   }, [initialize]);
+
+  useEffect(() => {
+    loadMode();
+  }, [loadMode]);
 
   useEffect(() => {
     if (!isReady) return;
@@ -95,7 +102,7 @@ export function TelegramGate({ children, botUsername = "your_bot" }: TelegramGat
   }, []);
 
   // Show nothing until mounted (prevents hydration mismatch)
-  if (!mounted || !isReady || !previewChecked) {
+  if (!mounted || !isReady || !previewChecked || !modeReady) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--color-background)]">
         <motion.div
@@ -216,6 +223,10 @@ export function TelegramGate({ children, botUsername = "your_bot" }: TelegramGat
         </motion.div>
       </div>
     );
+  }
+
+  if (!mode) {
+    return <ModeSelector />;
   }
 
   // User is in Telegram, show children

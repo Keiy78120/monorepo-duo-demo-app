@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { query } from "@/lib/db/client";
-import type { Order } from "@/lib/supabase/database.types";
+import { query, execute } from "@/lib/db/client";
+import type { Order } from "@/lib/db/types";
 
 // GET /api/orders/user - Get orders for current Telegram user
 export async function GET(request: NextRequest) {
   try {
+    await execute(`DELETE FROM orders WHERE created_at < NOW() - INTERVAL '1 day'`);
     const { searchParams } = new URL(request.url);
     const telegramUserId = searchParams.get("telegram_user_id");
 

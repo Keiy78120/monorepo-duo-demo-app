@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { OrderStatusSelect } from "./OrderStatusSelect";
 import { DriverSelect } from "./DriverSelect";
 import { formatPrice } from "@/lib/store/cart";
-import type { Order, Driver, OrderItem } from "@/lib/supabase/database.types";
+import type { Order, Driver, OrderItem } from "@/lib/db/types";
 
 type OrderStatus = "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled";
 

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { adminFetch } from "@/lib/api/admin-fetch";
-import type { Driver } from "@/lib/supabase/database.types";
+import type { Driver } from "@/lib/db/types";
 
 interface DriverSelectProps {
   value: string | null;

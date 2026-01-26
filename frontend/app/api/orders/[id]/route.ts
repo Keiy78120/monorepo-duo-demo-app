@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { queryOne } from "@/lib/db/client";
 import { getSession } from "@/lib/auth/guard";
 import { z } from "zod";
-import type { Order, Driver } from "@/lib/supabase/database.types";
+import type { Order, Driver } from "@/lib/db/types";
 
 type OrderWithDriver = Order & { driver_name?: string | null };
 

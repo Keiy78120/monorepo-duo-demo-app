@@ -2,14 +2,14 @@
 
 Contexte
 - Objectif: migration complete vers Cloudflare (frontend + backend), free tier, securite max.
-- Contrainte: zero downtime. Nouveau repo possible: vhash-cloudflare-app.
+- Contrainte: zero downtime. Nouveau repo possible: demo-app-cloudflare-app.
 - Charge cible: <2000 users, <100 simultanes.
  - Decision: tout doit etre gere par Cloudflare (frontend, backend, DB, storage, auth, CI/CD).
 
 1) Recommande sans casser l'app actuelle (zero downtime)
-- Creer un nouveau repo `vhash-cloudflare-app` et une nouvelle stack Cloudflare en parallele.
+- Creer un nouveau repo `demo-app-cloudflare-app` et une nouvelle stack Cloudflare en parallele.
 - Garder le projet actuel (Vercel + VPS) en production pendant toute la phase de migration.
-- Utiliser un domaine/projet Pages distinct (ex: vhash-cloudflare-app.pages.dev) pour staging/prod parallele.
+- Utiliser un domaine/projet Pages distinct (ex: demo-app-cloudflare-app.pages.dev) pour staging/prod parallele.
 - Mettre en place un mode dual-write (ancien backend + nouveau backend) pour eviter toute perte pendant la transition.
 - Cutover progressif:
   - tests internes sur le nouveau domaine
@@ -62,7 +62,7 @@ Checklist changements code (high level)
 
 5) Plan de migration recommande (phases)
 Phase A - Preparation (parallele)
-- Creer repo vhash-cloudflare-app.
+- Creer repo demo-app-cloudflare-app.
 - Choisir compat Next.js (OpenNext + Next 15/14) ou SSG/CSR.
 - Definir schema D1 (equivalent Postgres) et migration data.
 - Definir buckets R2 (images, videos) et naming.

@@ -10,7 +10,7 @@ import { ReviewCard, StarRatingInput } from "@/components/ReviewCard";
 import { EmptyState } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { useTelegramStore, useHapticFeedback } from "@/lib/store/telegram";
-import type { Review } from "@/lib/supabase/database.types";
+import type { Review } from "@/lib/db/types";
 
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);

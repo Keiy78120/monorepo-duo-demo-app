@@ -10,7 +10,7 @@ export default function WebAppLayout({
   children: React.ReactNode;
 }) {
   return (
-    <TelegramGate botUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "vhash94_bot"}>
+    <TelegramGate botUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "demo-app94_bot"}>
       <AdminPreviewBar />
       <main className="min-h-screen pb-nav">
         {children}

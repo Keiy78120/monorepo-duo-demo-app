@@ -18,7 +18,7 @@ import { OrderStatusBadge } from "@/components/admin/OrderStatusSelect";
 import { OrderDetailModal } from "@/components/admin/OrderDetailModal";
 import { formatPrice } from "@/lib/store/cart";
 import { adminFetch } from "@/lib/api/admin-fetch";
-import type { Order, Driver, OrderItem } from "@/lib/supabase/database.types";
+import type { Order, Driver, OrderItem } from "@/lib/db/types";
 
 type OrderStatus = "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled";
 

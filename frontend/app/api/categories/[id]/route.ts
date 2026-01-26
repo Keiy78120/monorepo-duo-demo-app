@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { query, execute } from "@/lib/db/client";
 import { requireAuth } from "@/lib/auth/guard";
-import type { ProductCategory } from "@/lib/supabase/database.types";
+import type { ProductCategory } from "@/lib/db/types";
 
 type RouteParams = { params: Promise<{ id: string }> };
 

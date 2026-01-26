@@ -4,7 +4,7 @@
  */
 
 import type { Env } from '../../../src/lib/db';
-import { query, parseJSON } from '../../../src/lib/db';
+import { query, parseJSON, execute } from '../../../src/lib/db';
 import { verifyTelegramInitData } from '../../../src/lib/telegram';
 import type { OrderRow, Order, OrderItem } from '../../../src/lib/types';
 
@@ -21,11 +21,19 @@ function rowToOrder(row: OrderRow): Order {
   };
 }
 
+async function cleanupOldOrders(db: Env["DB"]) {
+  await execute(
+    db,
+    "DELETE FROM orders WHERE datetime(created_at) <= datetime('now', '-1 day')"
+  );
+}
+
 export async function onRequestGet(context: PagesContext): Promise<Response> {
   const { request, env } = context;
   const url = new URL(request.url);
 
   try {
+    await cleanupOldOrders(env.DB);
     const initData = url.searchParams.get('initData');
 
     if (!initData) {

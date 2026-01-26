@@ -7,6 +7,7 @@ import { IoGridOutline, IoCartOutline, IoStarOutline, IoPersonOutline, IoGrid, I
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/lib/store/cart";
 import { useHapticFeedback } from "@/lib/store/telegram";
+import { useAppModeStore } from "@/lib/store/app-mode";
 
 const navItems = [
   {
@@ -40,11 +41,14 @@ export function NavbarGlass() {
   const pathname = usePathname();
   const itemCount = useCartStore((state) => state.getItemCount());
   const { selection } = useHapticFeedback();
+  const mode = useAppModeStore((state) => state.mode);
+  const isSimple = mode === "simple";
+  const visibleItems = isSimple ? navItems.filter((item) => item.href !== "/profile") : navItems;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 pb-safe px-4 py-3">
       <div className="glass-nav-modern mx-auto max-w-[340px] flex items-center justify-around px-4 py-2.5">
-        {navItems.map((item) => {
+        {visibleItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = isActive ? item.iconActive : item.icon;
           const showBadge = item.showBadge && itemCount > 0;

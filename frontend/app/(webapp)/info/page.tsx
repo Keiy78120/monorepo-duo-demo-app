@@ -16,6 +16,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/PageHeader";
 import { useTelegramStore, useHapticFeedback } from "@/lib/store/telegram";
+import { useAppModeStore } from "@/lib/store/app-mode";
+import { ModeRestricted } from "@/components/ModeRestricted";
 
 interface InfoSection {
   title: string;
@@ -47,6 +49,16 @@ export default function InfoPage() {
   const [loading, setLoading] = useState(true);
   const { webApp } = useTelegramStore();
   const { impact } = useHapticFeedback();
+  const mode = useAppModeStore((state) => state.mode);
+
+  if (mode === "simple") {
+    return (
+      <ModeRestricted
+        title="Infos indisponibles"
+        description="Les pages d’informations sont masquées dans la démo simple."
+      />
+    );
+  }
 
   // Fetch info from settings
   useEffect(() => {

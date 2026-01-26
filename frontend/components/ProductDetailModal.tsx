@@ -28,7 +28,7 @@ import type {
   PricingTier,
   ProductWithPricing,
   ProductCategory,
-} from "@/lib/supabase/database.types";
+} from "@/lib/db/types";
 
 interface ProductDetailModalProps {
   product: ProductWithPricing;

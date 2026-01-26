@@ -6,11 +6,23 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAppModeStore } from "@/lib/store/app-mode";
+import { ModeRestricted } from "@/components/ModeRestricted";
 
 export default function WhoAmIPage() {
   const router = useRouter();
   const { initData, userId, username, firstName, lastName } = useTelegramStore();
   const [copied, setCopied] = useState(false);
+  const mode = useAppModeStore((state) => state.mode);
+
+  if (mode === "simple") {
+    return (
+      <ModeRestricted
+        title="Page désactivée"
+        description="Cette page est réservée à la démo advanced."
+      />
+    );
+  }
 
   const telegramUserId = userId?.toString() || "Non connecté";
   const displayUsername = username || "Aucun";

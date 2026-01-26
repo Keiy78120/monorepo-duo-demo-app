@@ -3,7 +3,7 @@ import { z } from "zod";
 import { query, execute } from "@/lib/db/client";
 import { getSession, requireAuth } from "@/lib/auth/guard";
 import { isMaintenanceMode } from "@/lib/maintenance";
-import type { PricingTier } from "@/lib/supabase/database.types";
+import type { PricingTier } from "@/lib/db/types";
 
 // GET /api/pricing-tiers - List pricing tiers (optionally filter by product)
 export async function GET(request: NextRequest) {

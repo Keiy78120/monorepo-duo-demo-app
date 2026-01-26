@@ -27,22 +27,22 @@ echo ""
 echo "📦 Creating D1 Databases..."
 
 # Create production database
-echo "  → Creating vhash-prod database..."
-PROD_DB_OUTPUT=$(wrangler d1 create vhash-prod 2>&1 || true)
+echo "  → Creating demo-app-prod database..."
+PROD_DB_OUTPUT=$(wrangler d1 create demo-app-prod 2>&1 || true)
 if echo "$PROD_DB_OUTPUT" | grep -q "already exists"; then
-    echo "  ✓ vhash-prod already exists"
+    echo "  ✓ demo-app-prod already exists"
 else
-    echo "  ✓ vhash-prod created"
+    echo "  ✓ demo-app-prod created"
     echo "$PROD_DB_OUTPUT" | grep "database_id"
 fi
 
 # Create staging database
-echo "  → Creating vhash-staging database..."
-STAGING_DB_OUTPUT=$(wrangler d1 create vhash-staging 2>&1 || true)
+echo "  → Creating demo-app-staging database..."
+STAGING_DB_OUTPUT=$(wrangler d1 create demo-app-staging 2>&1 || true)
 if echo "$STAGING_DB_OUTPUT" | grep -q "already exists"; then
-    echo "  ✓ vhash-staging already exists"
+    echo "  ✓ demo-app-staging already exists"
 else
-    echo "  ✓ vhash-staging created"
+    echo "  ✓ demo-app-staging created"
     echo "$STAGING_DB_OUTPUT" | grep "database_id"
 fi
 
@@ -50,27 +50,27 @@ echo ""
 echo "🪣 Creating R2 Buckets..."
 
 # Create production bucket
-echo "  → Creating vhash-media bucket..."
-if wrangler r2 bucket create vhash-media 2>&1 | grep -q "already exists"; then
-    echo "  ✓ vhash-media already exists"
+echo "  → Creating demo-app-media bucket..."
+if wrangler r2 bucket create demo-app-media 2>&1 | grep -q "already exists"; then
+    echo "  ✓ demo-app-media already exists"
 else
-    echo "  ✓ vhash-media created"
+    echo "  ✓ demo-app-media created"
 fi
 
 # Create staging bucket
-echo "  → Creating vhash-media-staging bucket..."
-if wrangler r2 bucket create vhash-media-staging 2>&1 | grep -q "already exists"; then
-    echo "  ✓ vhash-media-staging already exists"
+echo "  → Creating demo-app-media-staging bucket..."
+if wrangler r2 bucket create demo-app-media-staging 2>&1 | grep -q "already exists"; then
+    echo "  ✓ demo-app-media-staging already exists"
 else
-    echo "  ✓ vhash-media-staging created"
+    echo "  ✓ demo-app-media-staging created"
 fi
 
 echo ""
 echo "📄 Creating Pages Project..."
-if wrangler pages project create vhash-cloudflare-app --production-branch main 2>&1 | grep -q "already exists"; then
-    echo "  ✓ vhash-cloudflare-app already exists"
+if wrangler pages project create demo-app-cloudflare-app --production-branch main 2>&1 | grep -q "already exists"; then
+    echo "  ✓ demo-app-cloudflare-app already exists"
 else
-    echo "  ✓ vhash-cloudflare-app created"
+    echo "  ✓ demo-app-cloudflare-app created"
 fi
 
 echo ""
@@ -84,7 +84,7 @@ echo "1. Update wrangler.toml with your database IDs:"
 echo "   wrangler d1 list"
 echo ""
 echo "2. Apply the schema:"
-echo "   wrangler d1 execute vhash-prod --file=./schema.sql"
+echo "   wrangler d1 execute demo-app-prod --file=./schema.sql"
 echo ""
 echo "3. Set secrets:"
 echo "   wrangler secret put TELEGRAM_BOT_TOKEN"

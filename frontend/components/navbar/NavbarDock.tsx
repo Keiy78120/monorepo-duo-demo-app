@@ -5,6 +5,7 @@ import { IoHome, IoCart, IoStar, IoPersonCircle } from "react-icons/io5";
 import { MenuDock, type MenuDockItem } from "@/components/ui/menu-dock";
 import { useCartStore } from "@/lib/store/cart";
 import { useHapticFeedback } from "@/lib/store/telegram";
+import { useAppModeStore } from "@/lib/store/app-mode";
 
 const navItems = [
   {
@@ -35,8 +36,11 @@ export function NavbarDock() {
   const router = useRouter();
   const itemCount = useCartStore((state) => state.getItemCount());
   const { selection } = useHapticFeedback();
+  const mode = useAppModeStore((state) => state.mode);
+  const isSimple = mode === "simple";
+  const visibleItems = isSimple ? navItems.filter((item) => item.href !== "/profile") : navItems;
 
-  const menuItems: MenuDockItem[] = navItems.map((item) => ({
+  const menuItems: MenuDockItem[] = visibleItems.map((item) => ({
     label: item.label,
     icon: item.icon,
     isActive: pathname === item.href,

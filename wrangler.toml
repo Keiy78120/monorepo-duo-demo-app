@@ -1,5 +1,5 @@
-# vhash-cloudflare-app Wrangler Configuration (Pages)
-name = "vhash"
+# monorepo-duo-demo-app Wrangler Configuration (Pages)
+name = "monorepo-duo-demo"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "./out"
 
@@ -8,7 +8,7 @@ pages_build_output_dir = "./out"
 # ============================================================================
 [[d1_databases]]
 binding = "DB"
-database_name = "vhash-prod"
+database_name = "demo-app-prod"
 database_id = "0fa01da8-bc87-44fe-b9e1-6b19db316c9d"
 
 # ============================================================================
@@ -16,7 +16,7 @@ database_id = "0fa01da8-bc87-44fe-b9e1-6b19db316c9d"
 # ============================================================================
 [[r2_buckets]]
 binding = "MEDIA"
-bucket_name = "vhash-media"
+bucket_name = "demo-app-media"
 
 # ============================================================================
 # ENVIRONMENT VARIABLES (non-secret)
@@ -30,16 +30,16 @@ CANNABIS_API_URL = "https://the-cannabis-ayix5e7fr-piyush-bhors-projects.vercel.
 # PREVIEW ENVIRONMENT (for PR previews)
 # ============================================================================
 [env.preview]
-name = "vhash-preview"
+name = "monorepo-duo-demo-preview"
 
 [[env.preview.d1_databases]]
 binding = "DB"
-database_name = "vhash-staging"
+database_name = "demo-app-staging"
 database_id = "0f17deef-3f4a-4696-80dd-ed9c9e4e748a"
 
 [[env.preview.r2_buckets]]
 binding = "MEDIA"
-bucket_name = "vhash-media"
+bucket_name = "demo-app-media"
 
 [env.preview.vars]
 ENVIRONMENT = "preview"

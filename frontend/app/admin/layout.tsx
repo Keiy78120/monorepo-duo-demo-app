@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth/client";
 import { useTelegramStore } from "@/lib/store/telegram";
 import { adminFetch } from "@/lib/api/admin-fetch";
+import { useAppModeStore } from "@/lib/store/app-mode";
 
 const navItems = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -39,6 +40,8 @@ export default function AdminLayout({
   const pathname = usePathname();
   const { data: session, isPending } = useSession();
   const { userId, initData, initialize } = useTelegramStore();
+  const { mode, loadMode } = useAppModeStore();
+  const isSimple = mode === "simple";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [adminCheckDone, setAdminCheckDone] = useState(false);
   const [adminAccess, setAdminAccess] = useState(false);
@@ -49,6 +52,10 @@ export default function AdminLayout({
   useEffect(() => {
     initialize();
   }, [initialize]);
+
+  useEffect(() => {
+    loadMode();
+  }, [loadMode]);
 
   useEffect(() => {
     let cancelled = false;
@@ -102,6 +109,28 @@ export default function AdminLayout({
   const isDev = process.env.NODE_ENV === "development";
   const isPublicAdminPage = pathname === "/admin/login" || pathname === "/admin/unauthorized";
   const hasAdminAccess = isDev || !!session || !!serverSession || adminAccess;
+
+  const visibleNavItems = isSimple
+    ? navItems.filter((item) =>
+        ["/admin", "/admin/products", "/admin/reviews", "/admin/contacts", "/admin/settings"].includes(item.href)
+      )
+    : navItems;
+
+  useEffect(() => {
+    if (!isSimple) return;
+    const allowed = [
+      "/admin",
+      "/admin/products",
+      "/admin/reviews",
+      "/admin/contacts",
+      "/admin/settings",
+      "/admin/login",
+      "/admin/unauthorized",
+    ];
+    if (!allowed.includes(pathname)) {
+      router.replace("/admin");
+    }
+  }, [isSimple, pathname, router]);
 
   // Check admin access via API
   useEffect(() => {
@@ -217,7 +246,7 @@ export default function AdminLayout({
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2">
-            {navItems.map((item) => {
+            {visibleNavItems.map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
 

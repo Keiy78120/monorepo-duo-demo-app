@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { useCartStore, formatPrice } from "@/lib/store/cart";
 import { useTelegramStore } from "@/lib/store/telegram";
 import { DeliveryTimeline } from "@/components/DeliveryTimeline";
+import { useAppModeStore } from "@/lib/store/app-mode";
 
 interface AddressFields {
   street: string;
@@ -31,6 +32,8 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, getTotal, clearCart } = useCartStore();
   const { initData } = useTelegramStore();
+  const mode = useAppModeStore((state) => state.mode);
+  const isSimple = mode === "simple";
   const [address, setAddress] = useState<AddressFields>({
     street: "",
     postalCode: "",
@@ -196,17 +199,23 @@ export default function CheckoutPage() {
           <CheckCircle className="w-10 h-10 text-[var(--color-primary)]" />
         </motion.div>
         <h1 className="text-2xl font-bold text-[var(--color-foreground)] mb-2">
-          Commande confirmée !
+          {isSimple ? "Demande envoyée" : "Commande confirmée !"}
         </h1>
         <p className="text-[var(--color-muted-foreground)] text-center mb-4">
-          Votre commande premium a été enregistrée. Un driver dédié vous contactera sous peu.
+          {isSimple
+            ? "Votre demande a été transmise au gérant. Il vous contactera rapidement via Telegram."
+            : "Votre commande premium a été enregistrée. Un driver dédié vous contactera sous peu."}
         </p>
-        <div className="w-full max-w-sm mb-6">
-          <DeliveryTimeline currentStep="confirmed" />
-        </div>
-        <p className="text-xs text-[var(--color-muted-foreground)] text-center mb-6">
-          Suivi en temps réel disponible via Telegram
-        </p>
+        {!isSimple && (
+          <>
+            <div className="w-full max-w-sm mb-6">
+              <DeliveryTimeline currentStep="confirmed" />
+            </div>
+            <p className="text-xs text-[var(--color-muted-foreground)] text-center mb-6">
+              Suivi en temps réel disponible via Telegram
+            </p>
+          </>
+        )}
         <Button onClick={() => router.push("/")}>
           Retour à l'accueil
         </Button>

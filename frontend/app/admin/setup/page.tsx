@@ -162,7 +162,7 @@ export default function AdminSetupPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@vhash.com"
+                    placeholder="admin@demo-app.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-12"

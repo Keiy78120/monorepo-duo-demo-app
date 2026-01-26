@@ -6,7 +6,7 @@
 J'ai créé la page `/whoami` qui affiche ton Telegram ID.
 
 ### Étape 2 : Récupérer ton ID
-1. Ouvre le bot Telegram : **@vhash94_bot**
+1. Ouvre le bot Telegram : **@demo-app94_bot**
 2. Clique sur "Ouvrir l'app"
 3. Va sur l'URL : `/whoami`
 4. Note ton **Telegram User ID** (ex: `123456789`)
@@ -38,7 +38,7 @@ npm run dev
 ## 3. Tester l'accès admin
 
 ### ✅ Avec ton compte autorisé
-1. Ouvre le bot : **@vhash94_bot**
+1. Ouvre le bot : **@demo-app94_bot**
 2. Va sur `/admin`
 3. ✅ Tu devrais voir le dashboard admin
 

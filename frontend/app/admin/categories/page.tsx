@@ -23,7 +23,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { adminFetch } from "@/lib/api/admin-fetch";
-import type { ProductCategory } from "@/lib/supabase/database.types";
+import type { ProductCategory } from "@/lib/db/types";
 
 type CategoryFormData = Omit<ProductCategory, "id" | "created_at">;
 

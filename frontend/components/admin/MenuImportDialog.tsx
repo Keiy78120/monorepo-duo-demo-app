@@ -34,7 +34,7 @@ import {
 import Image from "next/image";
 import { formatPrice } from "@/lib/store/cart";
 import { adminFetch } from "@/lib/api/admin-fetch";
-import type { ProductCategory } from "@/lib/supabase/database.types";
+import type { ProductCategory } from "@/lib/db/types";
 
 interface ParsedProduct {
   name: string;

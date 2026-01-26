@@ -49,7 +49,7 @@ import { ImageUploader } from "@/components/admin/ImageUploader";
 import { MenuImportDialog } from "@/components/admin/MenuImportDialog";
 import { FlagSelect } from "@/components/admin/FlagSelect";
 import { adminFetch } from "@/lib/api/admin-fetch";
-import type { Product, ProductCategory, PricingTier } from "@/lib/supabase/database.types";
+import type { Product, ProductCategory, PricingTier } from "@/lib/db/types";
 
 interface TierFormData {
   quantity_grams: number;

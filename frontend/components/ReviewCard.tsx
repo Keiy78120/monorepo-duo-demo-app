@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Review } from "@/lib/supabase/database.types";
+import type { Review } from "@/lib/db/types";
 
 interface ReviewCardProps {
   review: Review;

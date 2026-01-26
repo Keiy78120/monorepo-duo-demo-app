@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { Save, Plus, Trash2, Loader2, ExternalLink, AlertTriangle, Sparkles } from "lucide-react";
 import { SettingsAIDialog } from "@/components/admin/SettingsAIDialog";
@@ -21,6 +22,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { adminFetch } from "@/lib/api/admin-fetch";
+import { useAppModeStore } from "@/lib/store/app-mode";
+import { useTelegramStore } from "@/lib/store/telegram";
 
 interface InfoSection {
   id: string;
@@ -89,10 +92,13 @@ const defaultSettings: AppSettings = {
 };
 
 export default function AdminSettingsPage() {
+  const router = useRouter();
   const [settings, setSettings] = useState<AppSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [orderWarningMessage, setOrderWarningMessage] = useState<string>("");
+  const [orderChatId, setOrderChatId] = useState<string>("");
+  const [savingOrderChatId, setSavingOrderChatId] = useState(false);
   const [savingWarning, setSavingWarning] = useState(false);
   const [emergencyOpen, setEmergencyOpen] = useState(false);
   const [emergencyConfirm, setEmergencyConfirm] = useState("");
@@ -111,6 +117,9 @@ export default function AdminSettingsPage() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("Sauvegarde effectuée");
   const [aiDialogOpen, setAIDialogOpen] = useState(false);
+  const { mode, setMode } = useAppModeStore();
+  const { userId } = useTelegramStore();
+  const isSimple = mode === "simple";
 
   // Fetch settings
   useEffect(() => {
@@ -143,6 +152,21 @@ export default function AdminSettingsPage() {
           if (data.setting?.value) {
             setOrderWarningMessage(data.setting.value);
           }
+        }
+
+        const chatIdResponse = await adminFetch("/api/settings?key=order_chat_id");
+        if (chatIdResponse.ok) {
+          const data = await chatIdResponse.json();
+          const rawValue = data?.setting?.value;
+          let parsedValue: unknown = rawValue;
+          if (typeof rawValue === "string") {
+            try {
+              parsedValue = JSON.parse(rawValue);
+            } catch {
+              parsedValue = rawValue;
+            }
+          }
+          setOrderChatId(parsedValue ? String(parsedValue) : "");
         }
 
         // Fetch maintenance mode
@@ -323,6 +347,32 @@ export default function AdminSettingsPage() {
       console.error("Failed to save warning message:", error);
     } finally {
       setSavingWarning(false);
+    }
+  };
+
+  const handleSaveOrderChatId = async () => {
+    setSavingOrderChatId(true);
+    try {
+      const response = await adminFetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: "order_chat_id",
+          value: orderChatId.trim(),
+          description: "Telegram chat id receiving orders",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save");
+      }
+
+      setSuccessMessage("Destinataire Telegram mis à jour");
+      setSuccessOpen(true);
+    } catch (error) {
+      console.error("Failed to save order chat id:", error);
+    } finally {
+      setSavingOrderChatId(false);
     }
   };
 
@@ -600,14 +650,16 @@ export default function AdminSettingsPage() {
           </p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          <Button
-            variant="warning"
-            onClick={() => setAIDialogOpen(true)}
-            className="flex-1 sm:flex-none"
-          >
-            <Sparkles className="w-5 h-5 mr-2" />
-            Importer avec IA
-          </Button>
+          {!isSimple && (
+            <Button
+              variant="warning"
+              onClick={() => setAIDialogOpen(true)}
+              className="flex-1 sm:flex-none"
+            >
+              <Sparkles className="w-5 h-5 mr-2" />
+              Importer avec IA
+            </Button>
+          )}
           <Button variant="success" onClick={handleSave} disabled={saving} className="flex-1 sm:flex-none">
             {saving ? (
               <Loader2 className="w-5 h-5 mr-2 animate-spin" />
@@ -620,14 +672,14 @@ export default function AdminSettingsPage() {
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="general" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="general">Général</TabsTrigger>
-          <TabsTrigger value="orders">Commandes</TabsTrigger>
-          <TabsTrigger value="info">Page Infos</TabsTrigger>
-          <TabsTrigger value="contact">Contact</TabsTrigger>
-          <TabsTrigger value="links">Liens</TabsTrigger>
-        </TabsList>
+        <Tabs defaultValue="general" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="general">Général</TabsTrigger>
+            <TabsTrigger value="orders">Commandes</TabsTrigger>
+            {!isSimple && <TabsTrigger value="info">Page Infos</TabsTrigger>}
+            {!isSimple && <TabsTrigger value="contact">Contact</TabsTrigger>}
+            {!isSimple && <TabsTrigger value="links">Liens</TabsTrigger>}
+          </TabsList>
 
         {/* General Settings */}
         <TabsContent value="general">
@@ -713,6 +765,39 @@ export default function AdminSettingsPage() {
                     disabled={maintenanceLoading}
                   />
                 </div>
+
+                <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--color-glass)]">
+                  <div>
+                    <p className="font-medium text-[var(--color-foreground)]">
+                      Mode de démo
+                    </p>
+                    <p className="text-sm text-[var(--color-muted-foreground)]">
+                      Actuel : {mode || "non défini"}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={mode === "simple" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => {
+                        setMode("simple");
+                        router.push("/");
+                      }}
+                    >
+                      Simple
+                    </Button>
+                    <Button
+                      variant={mode === "advanced" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => {
+                        setMode("advanced");
+                        router.push("/");
+                      }}
+                    >
+                      Advanced
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -747,6 +832,47 @@ export default function AdminSettingsPage() {
                   <p className="text-xs text-[var(--color-muted-foreground)]">
                     Ce message sera affiché aux clients lors de la finalisation de leur commande.
                   </p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="orderChatId">Destinataire Telegram (chat_id)</Label>
+                  <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                    <Input
+                      id="orderChatId"
+                      value={orderChatId}
+                      onChange={(e) => setOrderChatId(e.target.value)}
+                      placeholder="Ex: 123456789"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        if (userId) setOrderChatId(userId.toString());
+                      }}
+                      disabled={!userId}
+                    >
+                      Utiliser mon ID
+                    </Button>
+                  </div>
+                  <p className="text-xs text-[var(--color-muted-foreground)]">
+                    Le bot doit avoir reçu /start de ce compte pour pouvoir envoyer les commandes.
+                  </p>
+                  <div className="flex justify-end">
+                    <Button
+                      variant="success"
+                      onClick={handleSaveOrderChatId}
+                      disabled={savingOrderChatId}
+                    >
+                      {savingOrderChatId ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Enregistrement...
+                        </>
+                      ) : (
+                        "Sauvegarder le destinataire"
+                      )}
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="flex justify-end">
@@ -1241,11 +1367,13 @@ export default function AdminSettingsPage() {
         </DialogContent>
       </Dialog>
 
-      <SettingsAIDialog
-        open={aiDialogOpen}
-        onOpenChange={setAIDialogOpen}
-        onApply={handleApplyAISettings}
-      />
+      {!isSimple && (
+        <SettingsAIDialog
+          open={aiDialogOpen}
+          onOpenChange={setAIDialogOpen}
+          onApply={handleApplyAISettings}
+        />
+      )}
     </div>
   );
 }

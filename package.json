@@ -1,21 +1,20 @@
 {
-  "name": "vhash-cloudflare-app",
+  "name": "monorepo-duo-demo-app",
   "version": "1.0.0",
-  "description": "VHash Telegram Mini App - Cloudflare Migration",
+  "description": "Monorepo for Telegram bot demos - Duo app showcase with Cloudflare",
   "private": true,
   "scripts": {
-    "dev": "wrangler pages dev --d1=DB=vhash-dev --r2=MEDIA ./out",
+    "dev": "wrangler pages dev --d1=DB=demo-app-dev --r2=MEDIA ./out",
     "build": "echo 'Add frontend build command here'",
     "deploy": "wrangler pages deploy ./out",
     "deploy:staging": "wrangler pages deploy ./out --env staging",
-    "db:create": "wrangler d1 create vhash-prod && wrangler d1 create vhash-staging",
-    "db:migrate": "wrangler d1 execute vhash-prod --file=./schema.sql",
-    "db:migrate:staging": "wrangler d1 execute vhash-staging --file=./schema.sql",
-    "db:migrate:local": "wrangler d1 execute vhash-dev --local --file=./schema.sql",
-    "r2:create": "wrangler r2 bucket create vhash-media && wrangler r2 bucket create vhash-media-staging",
+    "db:create": "wrangler d1 create demo-app-prod && wrangler d1 create demo-app-staging",
+    "db:migrate": "wrangler d1 execute demo-app-prod --file=./schema.sql",
+    "db:migrate:staging": "wrangler d1 execute demo-app-staging --file=./schema.sql",
+    "db:migrate:local": "wrangler d1 execute demo-app-dev --local --file=./schema.sql",
+    "r2:create": "wrangler r2 bucket create demo-app-media && wrangler r2 bucket create demo-app-media-staging",
     "migration:export": "npx ts-node scripts/migration/export-postgres.ts",
     "migration:import": "npx ts-node scripts/migration/import-d1.ts",
-    "migration:media": "npx ts-node scripts/migration/migrate-media.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ."
   },
@@ -23,7 +22,6 @@
     "@cloudflare/workers-types": "^4.20240129.0"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "^2.39.3",
     "@types/node": "^20.11.0",
     "@types/pg": "^8.16.0",
     "dotenv": "^16.4.0",

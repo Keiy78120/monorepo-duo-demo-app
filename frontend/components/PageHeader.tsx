@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useHapticFeedback, useTelegramStore } from "@/lib/store/telegram";
 import { InfoDialog } from "@/components/InfoDialog";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { useAppModeStore } from "@/lib/store/app-mode";
 
 interface PageHeaderProps {
   title: string;
@@ -24,6 +25,9 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
   const [infoOpen, setInfoOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const userId = useTelegramStore((s) => s.userId);
+  const mode = useAppModeStore((s) => s.mode);
+  const isSimple = mode === "simple";
+  const showInfoButton = showInfo && !isSimple;
 
   useEffect(() => {
     if (!userId) return;
@@ -107,7 +111,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                 <Shield className="w-5 h-5 text-white" />
               </motion.button>
             )}
-            {showInfo && (
+            {showInfoButton && (
               <motion.button
                 onClick={() => {
                   selection();
@@ -187,7 +191,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                   <Shield className="w-5 h-5 text-white" />
                 </motion.button>
               )}
-              {showInfo && (
+              {showInfoButton && (
                 <motion.button
                   onClick={() => {
                     selection();

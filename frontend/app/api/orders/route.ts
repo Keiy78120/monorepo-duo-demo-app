@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { query, queryOne } from "@/lib/db/client";
+import { query, queryOne, execute } from "@/lib/db/client";
 import { verifyTelegramInitData } from "@/lib/telegram/verifyInitData";
 import { getSession } from "@/lib/auth/guard";
 import { z } from "zod";
 import { isMaintenanceMode } from "@/lib/maintenance";
-import type { Order, Driver } from "@/lib/supabase/database.types";
+import type { Order, Driver } from "@/lib/db/types";
 
 type OrderWithDriver = Order & {
   driver_name?: string | null;
@@ -14,6 +14,53 @@ interface ProductBasic {
   id: string;
   price: number;
   is_active: boolean;
+}
+
+async function cleanupOldOrders() {
+  await execute(`DELETE FROM orders WHERE created_at < NOW() - INTERVAL '1 day'`);
+}
+
+async function getOrderChatId(): Promise<string | null> {
+  const row = await queryOne<{ value: string }>(
+    `SELECT value FROM settings WHERE key = $1`,
+    ["order_chat_id"]
+  );
+
+  if (row?.value) {
+    let parsed: unknown = row.value;
+    if (typeof row.value === "string") {
+      try {
+        parsed = JSON.parse(row.value);
+      } catch {
+        parsed = row.value;
+      }
+    }
+    const normalized = typeof parsed === "number" ? String(parsed) : String(parsed || "").trim();
+    if (normalized) return normalized;
+  }
+
+  const fallback = process.env.ADMIN_TELEGRAM_IDS?.split(",")[0]?.trim();
+  return fallback || null;
+}
+
+function formatOrderMessage(input: {
+  address?: string | null;
+  items: Array<{ name: string; quantity: number }>;
+  username?: string | null;
+  telegramUserId: string;
+  dailyOrderNumber: number;
+}) {
+  const lines = input.items.map((item) => `- ${item.name} x${item.quantity}`);
+  const username = input.username ? `@${input.username}` : `user_${input.telegramUserId}`;
+  const address = input.address?.trim() || "Adresse non fournie";
+
+  return [
+    `ADRESSE: ${address}`,
+    "PRODUITS COMMANDÉS:",
+    lines.join("\n") || "-",
+    `USERNAME: ${username}`,
+    `NUMERO DE COMMANDE: #${input.dailyOrderNumber}`,
+  ].join("\n");
 }
 
 // Order item schema
@@ -37,6 +84,7 @@ const createOrderSchema = z.object({
 // GET /api/orders - List orders (admin only)
 export async function GET(request: NextRequest) {
   try {
+    await cleanupOldOrders();
     const session = await getSession();
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -108,6 +156,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    await cleanupOldOrders();
+
     const body = await request.json();
     const parsed = createOrderSchema.safeParse(body);
 
@@ -176,10 +226,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Order total mismatch" }, { status: 400 });
     }
 
-    // Insert order - database trigger will auto-set order_day and daily_order_number
+    const today = new Date().toISOString().split("T")[0];
+    const lastOrder = await queryOne<{ daily_order_number: number }>(
+      `SELECT daily_order_number FROM orders WHERE order_day = $1 ORDER BY daily_order_number DESC LIMIT 1`,
+      [today]
+    );
+    const dailyOrderNumber = (lastOrder?.daily_order_number ?? 0) + 1;
+
+    // Insert order
     const order = await queryOne<Order>(
-      `INSERT INTO orders (telegram_user_id, username, items, total, currency, notes, delivery_address, status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending')
+      `INSERT INTO orders (telegram_user_id, username, items, total, currency, notes, delivery_address, status, order_day, daily_order_number)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8, $9)
        RETURNING *`,
       [
         telegramUserId,
@@ -189,8 +246,48 @@ export async function POST(request: NextRequest) {
         parsed.data.currency,
         parsed.data.notes || null,
         parsed.data.delivery_address,
+        today,
+        dailyOrderNumber,
       ]
     );
+
+    const orderChatId = await getOrderChatId();
+    if (!orderChatId || !process.env.TELEGRAM_BOT_TOKEN) {
+      await execute(`DELETE FROM orders WHERE id = $1`, [order?.id]);
+      return NextResponse.json(
+        { error: "Order recipient not configured" },
+        { status: 400 }
+      );
+    }
+
+    const message = formatOrderMessage({
+      address: parsed.data.delivery_address,
+      items: parsed.data.items,
+      username,
+      telegramUserId,
+      dailyOrderNumber,
+    });
+
+    const sendResponse = await fetch(
+      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: orderChatId,
+          text: message,
+          disable_web_page_preview: true,
+        }),
+      }
+    );
+
+    if (!sendResponse.ok) {
+      await execute(`DELETE FROM orders WHERE id = $1`, [order?.id]);
+      return NextResponse.json(
+        { error: "Failed to notify Telegram" },
+        { status: 502 }
+      );
+    }
 
     return NextResponse.json({ order }, { status: 201 });
   } catch (error) {

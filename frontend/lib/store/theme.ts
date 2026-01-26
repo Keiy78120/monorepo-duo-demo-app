@@ -14,7 +14,7 @@ export const useThemeStore = create<ThemeState>()(
       setTheme: (theme: string) => set({ theme }),
     }),
     {
-      name: "vhash-theme",
+      name: "demo-app-theme",
     }
   )
 );

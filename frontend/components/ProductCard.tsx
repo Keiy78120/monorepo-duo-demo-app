@@ -12,7 +12,7 @@ import { useHapticFeedback } from "@/lib/store/telegram";
 import { ProductDetailModal } from "@/components/ProductDetailModal";
 import { DeliveryBadge } from "@/components/DeliveryBadge";
 import { CountryBadge } from "@/components/CountryBadge";
-import type { ProductWithPricing } from "@/lib/supabase/database.types";
+import type { ProductWithPricing } from "@/lib/db/types";
 
 interface ProductCardProps {
   product: ProductWithPricing;

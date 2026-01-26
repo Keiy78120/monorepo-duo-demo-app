@@ -1,4 +1,4 @@
--- vhash-cloudflare-app D1 Schema
+-- demo-app D1 Schema
 -- Migration from PostgreSQL to SQLite (D1)
 -- Conversions: UUID → TEXT, TIMESTAMPTZ → TEXT (ISO 8601), BOOLEAN → INTEGER (0/1), JSONB → TEXT, ENUM → TEXT with CHECK
 
@@ -175,6 +175,7 @@ INSERT OR IGNORE INTO settings (key, value, description) VALUES
   ('general', '{"storeName":"VHash","currency":"EUR","freeDeliveryThreshold":100,"telegramBotUsername":"vhash_bot","maintenanceMode":false}', 'General store settings'),
   ('info', '{"sections":[],"contact":{},"features":[]}', 'Store information'),
   ('order_warning_message', '"⚠️ Attention: Veuillez vérifier votre commande avant de confirmer."', 'Order warning message'),
+  ('order_chat_id', '""', 'Telegram chat id receiving orders'),
   ('delivery_start_time', '"14:00"', 'Delivery start time'),
   ('min_order_amount', '50', 'Minimum order amount in cents');
 

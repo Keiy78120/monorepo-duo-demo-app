@@ -11,8 +11,8 @@ interface PagesContext {
 
 // Allowed origins for CORS
 const ALLOWED_ORIGINS = [
-  'https://vhash.pages.dev',
-  'https://vhash-cloudflare-app.pages.dev',
+  'https://demo-app.pages.dev',
+  'https://demo-app-cloudflare-app.pages.dev',
   'http://localhost:3000',
   'http://localhost:8788',
   // Add your Telegram Mini App domain here

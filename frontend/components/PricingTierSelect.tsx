@@ -13,7 +13,7 @@ import {
 import { useCartStore, formatPrice } from "@/lib/store/cart";
 import { useHapticFeedback } from "@/lib/store/telegram";
 import { sortTiersByQuantity, calculateDiscountPercentage, calculateTierPriceFromCost } from "@/lib/pricing";
-import type { PricingTier, ProductWithPricing, ProductCategory } from "@/lib/supabase/database.types";
+import type { PricingTier, ProductWithPricing, ProductCategory } from "@/lib/db/types";
 import { cn } from "@/lib/utils";
 
 interface PricingTierSelectProps {

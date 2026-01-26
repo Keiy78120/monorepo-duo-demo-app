@@ -9,12 +9,9 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "db:dev": "docker-compose -f docker-compose.dev.yml up -d",
-    "db:dev:stop": "docker stop vhash-db-dev",
-    "db:dev:reset": "docker rm -f vhash-db-dev && docker volume rm mini-app_vhash_dev_data || true",
-    "db:generate": "supabase gen types typescript --project-id=$SUPABASE_PROJECT_ID > lib/supabase/database.types.ts",
-    "db:push": "supabase db push",
-    "db:seed": "psql \"$DATABASE_URL\" -f scripts/seed-test-orders.sql",
-    "db:migrate": "psql \"$DATABASE_URL\" -f supabase/migrations/003_orders_drivers.sql"
+    "db:dev:stop": "docker stop demo-app-db-dev",
+    "db:dev:reset": "docker rm -f demo-app-db-dev && docker volume rm mini-app_demo-app_dev_data || true",
+    "db:seed": "psql \"$DATABASE_URL\" -f scripts/seed-test-orders.sql"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
@@ -28,7 +25,6 @@
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-toast": "^1.2.14",
     "@radix-ui/react-tooltip": "^1.2.7",
-    "@supabase/supabase-js": "2.91.1",
     "@types/pg": "^8.16.0",
     "better-auth": "1.4.17",
     "class-variance-authority": "^0.7.1",

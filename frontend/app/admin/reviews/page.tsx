@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import type { Review } from "@/lib/supabase/database.types";
+import type { Review } from "@/lib/db/types";
 
 // Mock data
 const mockReviews: Review[] = [

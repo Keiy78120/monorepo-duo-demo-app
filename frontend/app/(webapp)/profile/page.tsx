@@ -20,7 +20,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTelegramStore } from "@/lib/store/telegram";
 import { formatPrice } from "@/lib/store/cart";
 import { cn } from "@/lib/utils";
-import type { Order } from "@/lib/supabase/database.types";
+import { useAppModeStore } from "@/lib/store/app-mode";
+import { ModeRestricted } from "@/components/ModeRestricted";
+import type { Order } from "@/lib/db/types";
 
 const statusConfig = {
   pending: {
@@ -186,6 +188,16 @@ export default function ProfilePage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const { firstName, lastName, username, userId } = useTelegramStore();
+  const mode = useAppModeStore((state) => state.mode);
+
+  if (mode === "simple") {
+    return (
+      <ModeRestricted
+        title="Profil indisponible"
+        description="Le suivi des commandes est masqué dans la démo simple."
+      />
+    );
+  }
 
   useEffect(() => {
     const fetchOrders = async () => {

@@ -59,7 +59,7 @@ components/
 lib/
 ├── auth/              # Better Auth + guards
 ├── store/             # Zustand stores (cart, telegram)
-├── supabase/          # Client + types DB
+├── db/                # Types DB partagés
 ├── telegram/          # Vérification initData
 └── integrations/      # Cannabis API, Groq
 ```
@@ -130,7 +130,7 @@ POST /api/admin/check       # Vérif accès admin
 
 ### useCartStore (Zustand)
 ```typescript
-// Clé localStorage: "vhash-cart"
+// Clé localStorage: "demo-app-cart"
 addItem(product, tier)
 removeItem(itemId)
 updateQuantity(itemId, quantity)

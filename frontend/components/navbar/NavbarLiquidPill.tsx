@@ -7,6 +7,7 @@ import { IoHome, IoCart, IoStar, IoPersonCircle } from "react-icons/io5";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/lib/store/cart";
 import { useHapticFeedback } from "@/lib/store/telegram";
+import { useAppModeStore } from "@/lib/store/app-mode";
 
 const navItems = [
   {
@@ -36,11 +37,14 @@ export function NavbarLiquidPill() {
   const pathname = usePathname();
   const itemCount = useCartStore((state) => state.getItemCount());
   const { selection } = useHapticFeedback();
+  const mode = useAppModeStore((state) => state.mode);
+  const isSimple = mode === "simple";
+  const visibleItems = isSimple ? navItems.filter((item) => item.href !== "/profile") : navItems;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 pb-safe px-4 py-3 flex justify-center">
       <div className="liquid-pill-nav flex items-center gap-1 px-2 py-2">
-        {navItems.map((item) => {
+        {visibleItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
           const showBadge = item.showBadge && itemCount > 0;

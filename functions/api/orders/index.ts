@@ -7,7 +7,7 @@
 import type { Env } from '../../../src/lib/db';
 import { query, queryOne, execute, generateUUID, nowISO, parseJSON } from '../../../src/lib/db';
 import { requireAdmin } from '../../../src/lib/auth';
-import { verifyTelegramInitData } from '../../../src/lib/telegram';
+import { verifyTelegramInitData, sendTelegramMessage } from '../../../src/lib/telegram';
 import type { OrderRow, Order, OrderItem, ProductRow } from '../../../src/lib/types';
 
 interface PagesContext {
@@ -23,12 +23,63 @@ function rowToOrder(row: OrderRow): Order {
   };
 }
 
+async function cleanupOldOrders(db: Env["DB"]) {
+  await execute(
+    db,
+    "DELETE FROM orders WHERE datetime(created_at) <= datetime('now', '-1 day')"
+  );
+}
+
+async function getOrderChatId(env: Env): Promise<string | null> {
+  const row = await queryOne<{ value: string }>(
+    env.DB,
+    "SELECT value FROM settings WHERE key = ?",
+    ["order_chat_id"]
+  );
+
+  if (row?.value) {
+    const parsed = parseJSON<string | number>(row.value, row.value);
+    const normalized = typeof parsed === "number" ? String(parsed) : String(parsed || "").trim();
+    if (normalized) return normalized;
+  }
+
+  const fallback = env.ADMIN_TELEGRAM_IDS?.split(",")[0]?.trim();
+  return fallback || null;
+}
+
+function formatOrderMessage(input: {
+  address?: string | null;
+  items: OrderItem[];
+  username?: string | null;
+  telegramUserId: string;
+  dailyOrderNumber: number;
+}) {
+  const lines = input.items.map((item) => {
+    const baseName = (item as { product_name?: string }).product_name || item.name || "Produit";
+    const grams = (item as { quantity_grams?: number }).quantity_grams;
+    const suffix = grams ? ` ${grams}g` : "";
+    return `- ${baseName}${suffix} x${item.quantity}`;
+  });
+
+  const username = input.username ? `@${input.username}` : `user_${input.telegramUserId}`;
+  const address = input.address?.trim() || "Adresse non fournie";
+
+  return [
+    `ADRESSE: ${address}`,
+    "PRODUITS COMMANDÉS:",
+    lines.join("\n") || "-",
+    `USERNAME: ${username}`,
+    `NUMERO DE COMMANDE: #${input.dailyOrderNumber}`,
+  ].join("\n");
+}
+
 export async function onRequestGet(context: PagesContext): Promise<Response> {
   const { request, env } = context;
   const url = new URL(request.url);
 
   try {
     await requireAdmin(request, env.DB, env.ADMIN_SESSION_SECRET, env.ADMIN_TELEGRAM_IDS);
+    await cleanupOldOrders(env.DB);
 
     const status = url.searchParams.get('status');
     const date = url.searchParams.get('date'); // YYYY-MM-DD
@@ -98,6 +149,8 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
   const { request, env } = context;
 
   try {
+    await cleanupOldOrders(env.DB);
+
     const body = await request.json() as {
       items: OrderItem[];
       total: number;
@@ -208,6 +261,32 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     );
 
     const order = await queryOne<OrderRow>(env.DB, 'SELECT * FROM orders WHERE id = ?', [id]);
+
+    const orderChatId = await getOrderChatId(env);
+    if (!orderChatId || !env.TELEGRAM_BOT_TOKEN) {
+      await execute(env.DB, "DELETE FROM orders WHERE id = ?", [id]);
+      return new Response(JSON.stringify({ error: "Order recipient not configured" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const message = formatOrderMessage({
+      address: body.delivery_address ?? null,
+      items: body.items,
+      username,
+      telegramUserId,
+      dailyOrderNumber,
+    });
+
+    const sent = await sendTelegramMessage(env.TELEGRAM_BOT_TOKEN, orderChatId, message);
+    if (!sent) {
+      await execute(env.DB, "DELETE FROM orders WHERE id = ?", [id]);
+      return new Response(JSON.stringify({ error: "Failed to notify Telegram" }), {
+        status: 502,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     return new Response(JSON.stringify({ order: rowToOrder(order!) }), {
       status: 201,

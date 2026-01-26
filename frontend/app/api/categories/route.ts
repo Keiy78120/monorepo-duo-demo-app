@@ -3,7 +3,7 @@ import { z } from "zod";
 import { query, execute } from "@/lib/db/client";
 import { getSession, requireAuth } from "@/lib/auth/guard";
 import { isMaintenanceMode } from "@/lib/maintenance";
-import type { ProductCategory } from "@/lib/supabase/database.types";
+import type { ProductCategory } from "@/lib/db/types";
 
 // GET /api/categories - List all categories
 export async function GET(request: NextRequest) {

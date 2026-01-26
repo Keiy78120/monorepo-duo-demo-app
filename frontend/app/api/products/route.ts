@@ -3,7 +3,7 @@ import { query, queryOne } from "@/lib/db/client";
 import { getSession } from "@/lib/auth/guard";
 import { isMaintenanceMode } from "@/lib/maintenance";
 import { z } from "zod";
-import type { Product } from "@/lib/supabase/database.types";
+import type { Product } from "@/lib/db/types";
 
 // GET /api/products - List all active products (public)
 export async function GET(request: NextRequest) {

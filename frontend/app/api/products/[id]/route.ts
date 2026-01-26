@@ -3,7 +3,7 @@ import { query, queryOne, execute } from "@/lib/db/client";
 import { getSession } from "@/lib/auth/guard";
 import { z } from "zod";
 import { isMaintenanceMode } from "@/lib/maintenance";
-import type { Product } from "@/lib/supabase/database.types";
+import type { Product } from "@/lib/db/types";
 
 type RouteContext = { params: Promise<{ id: string }> };
 

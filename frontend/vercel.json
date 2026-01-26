@@ -7,7 +7,7 @@
   "rewrites": [
     {
       "source": "/api/:path((?!auth|admin|upload|categories|products|orders|drivers|reviews|settings|pricing-tiers|telegram|address|setup|strain-data).*)",
-      "destination": "https://vhash.pages.dev/api/:path*"
+      "destination": "https://demo-app.pages.dev/api/:path*"
     }
   ]
 }

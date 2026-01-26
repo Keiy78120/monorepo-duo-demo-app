@@ -16,7 +16,7 @@ import type {
   ProductCategory,
   ProductWithPricing,
   PricingTier,
-} from "@/lib/supabase/database.types";
+} from "@/lib/db/types";
 
 export default function CatalogPage() {
   const [products, setProducts] = useState<ProductWithPricing[]>([]);

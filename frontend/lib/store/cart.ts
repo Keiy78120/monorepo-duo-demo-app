@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import type { Product, PricingTier, ProductWithPricing } from "@/lib/supabase/database.types";
+import type { Product, PricingTier, ProductWithPricing } from "@/lib/db/types";
 
 export interface CartItem {
   product: Product | ProductWithPricing;
@@ -102,7 +102,7 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      name: "vhash-cart",
+      name: "demo-app-cart",
       storage: createJSONStorage(() => {
         // Check if we're in browser
         if (typeof window === "undefined") {

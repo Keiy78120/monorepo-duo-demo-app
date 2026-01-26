@@ -4,7 +4,7 @@
  * Usage: npx ts-node scripts/migration/import-d1.ts
  *
  * This script generates SQL INSERT statements from exported JSON files
- * Run the generated SQL using: wrangler d1 execute vhash-prod --file=./data/import.sql
+ * Run the generated SQL using: wrangler d1 execute demo-app-prod --file=./data/import.sql
  */
 
 import * as fs from 'fs';
@@ -105,7 +105,7 @@ function main() {
 
   console.log(`\nSQL file generated: ${IMPORT_FILE}`);
   console.log('\nTo import to D1, run:');
-  console.log('  wrangler d1 execute vhash-prod --file=./data/import.sql');
+  console.log('  wrangler d1 execute demo-app-prod --file=./data/import.sql');
 }
 
 main();

@@ -8,6 +8,7 @@ import { IoHome, IoCart, IoStar, IoPersonCircle } from "react-icons/io5";
 import { cn } from "@/lib/utils";
 import { useCartStore, formatPrice } from "@/lib/store/cart";
 import { useTelegramStore, useHapticFeedback } from "@/lib/store/telegram";
+import { useAppModeStore } from "@/lib/store/app-mode";
 
 const navItems = [
   {
@@ -40,6 +41,9 @@ export function NavbarTelegramNative() {
   const itemCount = useCartStore((state) => state.getItemCount());
   const { webApp, isInTelegram } = useTelegramStore();
   const { selection } = useHapticFeedback();
+  const mode = useAppModeStore((state) => state.mode);
+  const isSimple = mode === "simple";
+  const visibleItems = isSimple ? navItems.filter((item) => item.href !== "/profile") : navItems;
 
   const total = getTotal();
   const hasItems = items.length > 0;
@@ -94,7 +98,7 @@ export function NavbarTelegramNative() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 pb-safe px-4 py-3 flex justify-center">
       <div className="telegram-liquid-nav flex items-center justify-around w-full max-w-sm px-2 py-2">
-        {navItems.map((item) => {
+        {visibleItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
           const showBadge = item.showBadge && itemCount > 0;

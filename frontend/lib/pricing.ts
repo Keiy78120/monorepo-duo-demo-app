@@ -3,7 +3,7 @@
  * All prices are in centimes (1€ = 100 centimes)
  */
 
-import type { PricingTier } from "@/lib/supabase/database.types";
+import type { PricingTier } from "@/lib/db/types";
 
 /**
  * Calculate selling price per gram based on cost and margin

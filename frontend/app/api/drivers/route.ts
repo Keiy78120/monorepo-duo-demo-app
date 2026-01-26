@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { query, queryOne } from "@/lib/db/client";
 import { getSession } from "@/lib/auth/guard";
 import { z } from "zod";
-import type { Driver } from "@/lib/supabase/database.types";
+import type { Driver } from "@/lib/db/types";
 
 // Create driver schema
 const createDriverSchema = z.object({

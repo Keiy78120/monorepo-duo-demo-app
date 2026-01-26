@@ -16,7 +16,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { adminFetch } from "@/lib/api/admin-fetch";
-import type { Driver } from "@/lib/supabase/database.types";
+import type { Driver } from "@/lib/db/types";
 
 interface DriverFormData {
   name: string;

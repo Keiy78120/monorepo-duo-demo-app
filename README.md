@@ -1,6 +1,6 @@
-# vhash-cloudflare-app
+# monorepo-duo-demo-app
 
-Telegram Mini App migrated to Cloudflare (Pages + Workers + D1 + R2).
+Monorepo for Telegram bot demos showcasing mini app integrations with Cloudflare (Pages + Workers + D1 + R2).
 
 ## Architecture
 
@@ -24,15 +24,15 @@ Telegram Mini App migrated to Cloudflare (Pages + Workers + D1 + R2).
 wrangler login
 
 # Create D1 databases
-wrangler d1 create vhash-prod
-wrangler d1 create vhash-staging
+wrangler d1 create demo-app-prod
+wrangler d1 create demo-app-staging
 
 # Create R2 buckets
-wrangler r2 bucket create vhash-media
-wrangler r2 bucket create vhash-media-staging
+wrangler r2 bucket create demo-app-media
+wrangler r2 bucket create demo-app-media-staging
 
 # Create Pages project
-wrangler pages project create vhash-cloudflare-app
+wrangler pages project create monorepo-duo-demo-app
 ```
 
 ### 2. Configure wrangler.toml
@@ -42,7 +42,7 @@ Update `wrangler.toml` with your database IDs:
 ```toml
 [[d1_databases]]
 binding = "DB"
-database_name = "vhash-prod"
+database_name = "demo-app-prod"
 database_id = "YOUR_PROD_DATABASE_ID"  # From step 1
 ```
 
@@ -50,13 +50,13 @@ database_id = "YOUR_PROD_DATABASE_ID"  # From step 1
 
 ```bash
 # Production
-wrangler d1 execute vhash-prod --file=./schema.sql
+wrangler d1 execute demo-app-prod --file=./schema.sql
 
 # Staging
-wrangler d1 execute vhash-staging --file=./schema.sql
+wrangler d1 execute demo-app-staging --file=./schema.sql
 
 # Local development
-wrangler d1 execute vhash-dev --local --file=./schema.sql
+wrangler d1 execute demo-app-dev --local --file=./schema.sql
 ```
 
 ### 4. Set Secrets
@@ -103,7 +103,7 @@ npm run migration:import
 
 2. Apply to D1:
 ```bash
-wrangler d1 execute vhash-prod --file=./data/import.sql
+wrangler d1 execute demo-app-prod --file=./data/import.sql
 ```
 
 ### Migrate Media
@@ -157,7 +157,7 @@ npm run deploy:staging
 ## Project Structure
 
 ```
-vhash-cloudflare-app/
+monorepo-duo-demo-app/
 ├── functions/api/          # API routes (Pages Functions)
 │   ├── products/
 │   ├── categories/
@@ -223,16 +223,16 @@ export async function onRequestGet(context: { request: Request; env: Env }) {
 
 ### "Browser not installed"
 ```bash
-wrangler pages dev --d1=DB=vhash-dev ./out
+wrangler pages dev --d1=DB=demo-app-dev ./out
 ```
 
 ### Database errors
 ```bash
 # Check D1 status
-wrangler d1 info vhash-prod
+wrangler d1 info demo-app-prod
 
 # Execute raw SQL
-wrangler d1 execute vhash-prod --command "SELECT * FROM settings"
+wrangler d1 execute demo-app-prod --command "SELECT * FROM settings"
 ```
 
 ### R2 upload errors
