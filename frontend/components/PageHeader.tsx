@@ -28,11 +28,24 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
   const userId = useTelegramStore((s) => s.userId);
   const mode = useAppModeStore((s) => s.mode);
   const { clearMode } = useAppModeStore();
-  const { clearDemoSession } = useDemoSessionStore();
+  const { sessionId: demoSessionId, loadDemoSession, clearDemoSession } = useDemoSessionStore();
   const isSimple = mode === "simple";
   const showInfoButton = showInfo && !isSimple;
 
+  // Load demo session on mount
   useEffect(() => {
+    loadDemoSession();
+  }, [loadDemoSession]);
+
+  // Check admin access (Telegram user OR demo session)
+  useEffect(() => {
+    // If demo session exists, grant admin access immediately
+    if (demoSessionId) {
+      setIsAdmin(true);
+      return;
+    }
+
+    // Otherwise, check via Telegram user ID
     if (!userId) return;
 
     const checkAdmin = async () => {
@@ -49,7 +62,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
     };
 
     checkAdmin();
-  }, [userId]);
+  }, [userId, demoSessionId]);
 
   const handleBack = () => {
     selection();
