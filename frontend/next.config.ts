@@ -41,7 +41,21 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.demo-app.pages.dev",
       },
+      {
+        protocol: "https",
+        hostname: "monorepo-duo-demo.pages.dev",
+      },
+      {
+        protocol: "https",
+        hostname: "monorepo-duo-demo-app.vercel.app",
+      },
+      {
+        protocol: "https",
+        hostname: "*.vercel.app",
+      },
     ],
+    // Allow local paths for product-media proxy
+    unoptimized: false,
   },
   experimental: {
     serverActions: {
