@@ -1632,11 +1632,40 @@ body {
 
 /* Protect header buttons from Memphis overflow - Limit animations */
 [data-vds-theme="memphis-retro"] motion-button,
-[data-vds-theme="memphis-retro"] .page-header-button {
-  max-width: 40px !important;
-  max-height: 40px !important;
+[data-vds-theme="memphis-retro"] .page-header-button,
+[data-vds-theme="memphis-retro"] nav button,
+[data-vds-theme="memphis-retro"] nav motion-div,
+[data-vds-theme="memphis-retro"] nav [class*="motion"] {
+  max-width: 80px !important;
+  max-height: 80px !important;
   overflow: hidden !important;
-  contain: layout size !important;
+  contain: layout size paint !important;
+}
+
+/* Disable Memphis button hover transforms on navbar and header elements */
+[data-vds-theme="memphis-retro"] nav button:hover,
+[data-vds-theme="memphis-retro"] .page-header-button:hover,
+[data-vds-theme="memphis-retro"] nav a:hover,
+[data-vds-theme="memphis-retro"] nav button,
+[data-vds-theme="memphis-retro"] .page-header-button,
+[data-vds-theme="memphis-retro"] nav a {
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Force disable all animations and transforms on motion children in Memphis */
+[data-vds-theme="memphis-retro"] .page-header-button *,
+[data-vds-theme="memphis-retro"] nav * {
+  animation: none !important;
+}
+
+/* Limit Memphis scale animations globally on motion elements */
+[data-vds-theme="memphis-retro"] motion-div[style*="transform"],
+[data-vds-theme="memphis-retro"] [data-projection-id] {
+  max-width: fit-content !important;
+  max-height: fit-content !important;
+  overflow: hidden !important;
+  will-change: transform !important;
 }
 
 /* Protect navbar from VDS borders */
