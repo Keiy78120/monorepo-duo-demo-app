@@ -119,6 +119,11 @@ export function ProductDetailModal({
           border: "none",
         }}
       >
+        {/* Accessible title for screen readers */}
+        <DialogHeader className="sr-only">
+          <DialogTitle>{product.variety || product.name}</DialogTitle>
+        </DialogHeader>
+
         {/* Close Button - Fixed position */}
         <DialogClose className="absolute right-3 top-3 z-20 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm hover:bg-black/70 transition-colors">
           <X className="h-5 w-5" />

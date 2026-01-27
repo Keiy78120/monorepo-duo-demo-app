@@ -106,10 +106,15 @@ export default function WhoAmIPage() {
 
         {/* Instructions */}
         <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
-          <p className="text-sm text-blue-600 dark:text-blue-400 leading-relaxed">
-            💡 <strong>Pour devenir admin :</strong><br />
-            Copie ton User ID et ajoute-le dans <code className="px-1 py-0.5 rounded bg-blue-500/20 font-mono text-xs">ADMIN_TELEGRAM_IDS</code> dans <code className="px-1 py-0.5 rounded bg-blue-500/20 font-mono text-xs">.env.local</code>
-          </p>
+          <div className="text-sm text-blue-600 dark:text-blue-400 space-y-2">
+            <p className="font-semibold">💡 Pour devenir admin :</p>
+            <p>
+              Copie ton User ID et ajoute-le dans{" "}
+              <code className="px-1 py-0.5 rounded bg-blue-500/20 font-mono text-xs">ADMIN_TELEGRAM_IDS</code>{" "}
+              dans{" "}
+              <code className="px-1 py-0.5 rounded bg-blue-500/20 font-mono text-xs">.env.local</code>
+            </p>
+          </div>
         </div>
 
         <Button

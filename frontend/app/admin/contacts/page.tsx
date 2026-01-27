@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { adminFetch } from "@/lib/api/admin-fetch";
+import { useAppModeStore } from "@/lib/store/app-mode";
+import { ModerationPanel } from "@/components/admin/ModerationPanel";
 
 type TelegramContact = {
   telegram_user_id: number;
@@ -32,6 +34,8 @@ function formatDate(value: string) {
 }
 
 export default function AdminContactsPage() {
+  const { mode } = useAppModeStore();
+  const isSimple = mode === "simple";
   const [contacts, setContacts] = useState<TelegramContact[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
@@ -113,6 +117,29 @@ export default function AdminContactsPage() {
     }
   };
 
+  // Show ModerationPanel in Simple mode
+  if (isSimple) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center">
+            <Shield className="h-5 w-5 text-[var(--color-primary)]" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-semibold text-[var(--color-foreground)]">
+              Modération
+            </h1>
+            <p className="text-sm text-[var(--color-muted-foreground)]">
+              Gérer les modérateurs et administrateurs
+            </p>
+          </div>
+        </div>
+        <ModerationPanel />
+      </div>
+    );
+  }
+
+  // Show ContactsTable in Advanced mode
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

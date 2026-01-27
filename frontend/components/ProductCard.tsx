@@ -12,6 +12,7 @@ import { useHapticFeedback } from "@/lib/store/telegram";
 import { ProductDetailModal } from "@/components/ProductDetailModal";
 import { DeliveryBadge } from "@/components/DeliveryBadge";
 import { CountryBadge } from "@/components/CountryBadge";
+import { getImageSrc } from "@/lib/placeholder";
 import type { ProductWithPricing } from "@/lib/db/types";
 
 interface ProductCardProps {
@@ -28,8 +29,8 @@ export function ProductCard({ product, index = 0, displayMode = "grid", bentoSpa
   const { impact, notification } = useHapticFeedback();
 
   const images = (product.images as string[]) || [];
-  const primaryImage = images[0] || "/placeholder.png";
-  const isVideo = primaryImage
+  const primaryImage = getImageSrc(images);
+  const isVideo = primaryImage && !primaryImage.startsWith('data:')
     ? [".mp4", ".webm", ".mov", ".m4v"].some((ext) =>
         primaryImage.split("?")[0].toLowerCase().endsWith(ext)
       )

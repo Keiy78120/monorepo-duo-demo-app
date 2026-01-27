@@ -14,6 +14,7 @@ import {
   ShoppingCart,
   Eye,
   Users,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -22,15 +23,6 @@ import { useTelegramStore } from "@/lib/store/telegram";
 import { adminFetch } from "@/lib/api/admin-fetch";
 import { useAppModeStore } from "@/lib/store/app-mode";
 import { useDemoSessionStore } from "@/lib/store/demo-session";
-
-const navItems = [
-  { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/admin/orders", icon: ShoppingCart, label: "Commandes" },
-  { href: "/admin/products", icon: Package, label: "Catalogue" },
-  { href: "/admin/reviews", icon: MessageSquare, label: "Avis" },
-  { href: "/admin/contacts", icon: Users, label: "Contacts" },
-  { href: "/admin/settings", icon: Settings, label: "Paramètres" },
-];
 
 export default function AdminLayout({
   children,
@@ -44,6 +36,23 @@ export default function AdminLayout({
   const { mode, loadMode } = useAppModeStore();
   const { sessionId, loadDemoSession } = useDemoSessionStore();
   const isSimple = mode === "simple";
+
+  const navItems = [
+    { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
+    { href: "/admin/orders", icon: ShoppingCart, label: "Commandes" },
+    { href: "/admin/products", icon: Package, label: "Catalogue" },
+    { href: "/admin/reviews", icon: MessageSquare, label: "Avis" },
+    {
+      href: "/admin/contacts",
+      icon: Users,
+      label: isSimple ? "Modération" : "Contacts",
+    },
+    { href: "/admin/settings", icon: Settings, label: "Paramètres" },
+    // AI Features (Advanced mode only)
+    ...(isSimple ? [] : [
+      { href: "/admin/ai-tools", icon: Sparkles, label: "AI Tools" }
+    ]),
+  ];
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [adminCheckDone, setAdminCheckDone] = useState(false);
   const [adminAccess, setAdminAccess] = useState(false);
@@ -142,6 +151,13 @@ export default function AdminLayout({
       // Skip check for public admin pages
       const publicAdminPages = ["/admin/login", "/admin/unauthorized"];
       if (publicAdminPages.includes(pathname)) {
+        setAdminCheckDone(true);
+        return;
+      }
+
+      // Skip admin check if demo session exists
+      if (sessionId) {
+        setAdminAccess(true);
         setAdminCheckDone(true);
         return;
       }

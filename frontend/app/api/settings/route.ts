@@ -107,6 +107,15 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Check if demo session - block maintenance mode changes in demo
+    const demoSessionId = request.headers.get("x-demo-session-id");
+    if (demoSessionId && parsed.data.key === "maintenance_mode") {
+      return NextResponse.json(
+        { error: "Maintenance mode cannot be changed in demo" },
+        { status: 403 }
+      );
+    }
+
     const setting = await queryOne<Setting>(
       `INSERT INTO settings (key, value, updated_at)
        VALUES ($1, $2, NOW())

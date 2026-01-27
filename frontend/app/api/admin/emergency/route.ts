@@ -21,6 +21,15 @@ const REQUIRED_CONFIRMATION = "je suis sur";
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if demo session - block emergency actions in demo mode
+    const demoSessionId = request.headers.get("x-demo-session-id");
+    if (demoSessionId) {
+      return NextResponse.json(
+        { error: "Emergency actions disabled in demo mode" },
+        { status: 403 }
+      );
+    }
+
     const session = await getSession();
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

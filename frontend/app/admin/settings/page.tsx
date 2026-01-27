@@ -24,6 +24,7 @@ import {
 import { adminFetch } from "@/lib/api/admin-fetch";
 import { useAppModeStore } from "@/lib/store/app-mode";
 import { useTelegramStore } from "@/lib/store/telegram";
+import { useDemoSessionStore } from "@/lib/store/demo-session";
 
 interface InfoSection {
   id: string;
@@ -119,6 +120,7 @@ export default function AdminSettingsPage() {
   const [aiDialogOpen, setAIDialogOpen] = useState(false);
   const { mode, setMode } = useAppModeStore();
   const { userId } = useTelegramStore();
+  const { sessionId: demoSessionId } = useDemoSessionStore();
   const isSimple = mode === "simple";
 
   // Fetch settings
@@ -756,13 +758,21 @@ export default function AdminSettingsPage() {
                       Mode maintenance
                     </p>
                     <p className="text-sm text-[var(--color-muted-foreground)]">
-                      Désactiver temporairement la boutique
+                      {demoSessionId
+                        ? "Désactivé en mode démo"
+                        : "Désactiver temporairement la boutique"}
                     </p>
                   </div>
                   <Switch
                     checked={maintenanceMode}
-                    onCheckedChange={(checked) => handleToggleMaintenance(checked)}
-                    disabled={maintenanceLoading}
+                    onCheckedChange={(checked) => {
+                      if (demoSessionId) {
+                        alert("Mode maintenance désactivé en démo");
+                        return;
+                      }
+                      handleToggleMaintenance(checked);
+                    }}
+                    disabled={maintenanceLoading || !!demoSessionId}
                   />
                 </div>
 
@@ -1177,15 +1187,23 @@ export default function AdminSettingsPage() {
                   Mode maintenance
                 </p>
                 <p className="text-xs text-[var(--color-muted-foreground)]">
-                  {maintenanceMode
+                  {demoSessionId
+                    ? "Désactivé en mode démo"
+                    : maintenanceMode
                     ? "Boutique désactivée - les clients ne peuvent pas accéder."
                     : "Boutique active - les clients peuvent accéder."}
                 </p>
               </div>
               <Switch
                 checked={maintenanceMode}
-                onCheckedChange={(checked) => handleToggleMaintenance(checked)}
-                disabled={maintenanceLoading}
+                onCheckedChange={(checked) => {
+                  if (demoSessionId) {
+                    alert("Mode maintenance désactivé en démo");
+                    return;
+                  }
+                  handleToggleMaintenance(checked);
+                }}
+                disabled={maintenanceLoading || !!demoSessionId}
               />
             </div>
 
@@ -1216,11 +1234,17 @@ export default function AdminSettingsPage() {
 
             <div className="flex items-center justify-between gap-3">
               <div className="text-xs text-[var(--color-muted-foreground)]">
-                Action irréversible. Cette opération est loggée côté serveur.
+                {demoSessionId
+                  ? "Action désactivée en mode démo"
+                  : "Action irréversible. Cette opération est loggée côté serveur."}
               </div>
               <Button
                 variant="destructive"
                 onClick={() => {
+                  if (demoSessionId) {
+                    alert("Nuke Action désactivé en démo");
+                    return;
+                  }
                   setEmergencyError(null);
                   setEmergencyOpen(true);
                   setPurgeData(false);
@@ -1229,6 +1253,7 @@ export default function AdminSettingsPage() {
                   setNukeCountdown(0);
                   setEmergencyConfirm("");
                 }}
+                disabled={!!demoSessionId}
               >
                 Nuke Action
               </Button>

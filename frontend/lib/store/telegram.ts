@@ -124,19 +124,57 @@ export const useTelegramStore = create<TelegramState>((set, get) => ({
   },
 }));
 
+// Check if HapticFeedback is supported
+function isHapticSupported(webApp: TelegramWebApp | null): boolean {
+  if (!webApp?.HapticFeedback) return false;
+
+  // Check if methods exist and are callable
+  try {
+    return (
+      typeof webApp.HapticFeedback.impactOccurred === 'function' ||
+      typeof webApp.HapticFeedback.notificationOccurred === 'function' ||
+      typeof webApp.HapticFeedback.selectionChanged === 'function'
+    );
+  } catch {
+    return false;
+  }
+}
+
 // Hook for haptic feedback
 export function useHapticFeedback() {
   const webApp = useTelegramStore((state) => state.webApp);
+  const isSupported = isHapticSupported(webApp);
 
   return {
     impact: (style: "light" | "medium" | "heavy" | "rigid" | "soft" = "light") => {
-      webApp?.HapticFeedback?.impactOccurred(style);
+      if (isSupported) {
+        try {
+          webApp?.HapticFeedback?.impactOccurred(style);
+        } catch (error) {
+          // Silently ignore haptic feedback errors
+          console.debug('Haptic feedback not available:', error);
+        }
+      }
     },
     notification: (type: "error" | "success" | "warning") => {
-      webApp?.HapticFeedback?.notificationOccurred(type);
+      if (isSupported) {
+        try {
+          webApp?.HapticFeedback?.notificationOccurred(type);
+        } catch (error) {
+          // Silently ignore haptic feedback errors
+          console.debug('Haptic feedback not available:', error);
+        }
+      }
     },
     selection: () => {
-      webApp?.HapticFeedback?.selectionChanged();
+      if (isSupported) {
+        try {
+          webApp?.HapticFeedback?.selectionChanged();
+        } catch (error) {
+          // Silently ignore haptic feedback errors
+          console.debug('Haptic feedback not available:', error);
+        }
+      }
     },
   };
 }
