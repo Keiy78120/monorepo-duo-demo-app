@@ -46,7 +46,20 @@ export async function onRequestGet(context: PagesContext): Promise<Response> {
 
     if (!file) {
       console.log('File not found in R2:', filePath);
-      return new Response('File not found', { status: 404 });
+
+      // Return a 1x1 transparent placeholder instead of 404
+      // This prevents broken images in the UI
+      const transparentPixel = Uint8Array.from(atob(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
+      ), c => c.charCodeAt(0));
+
+      return new Response(transparentPixel, {
+        status: 200,
+        headers: {
+          'Content-Type': 'image/png',
+          'Cache-Control': 'public, max-age=60', // Cache for 1 minute only
+        },
+      });
     }
 
     // Determine content type from extension
