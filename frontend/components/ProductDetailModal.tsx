@@ -109,15 +109,7 @@ export function ProductDetailModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="p-0 overflow-hidden flex flex-col gap-0"
-        style={{
-          width: "100vw",
-          maxWidth: "100vw",
-          height: "100dvh",
-          maxHeight: "100dvh",
-          borderRadius: 0,
-          border: "none",
-        }}
+        className="p-0 overflow-hidden flex flex-col gap-0 md:rounded-3xl"
       >
         {/* Accessible title for screen readers */}
         <DialogHeader className="sr-only">
@@ -137,7 +129,7 @@ export function ProductDetailModal({
             images={images}
             alt={varietyName}
             aspectRatio="square"
-            className="w-full"
+            className="w-full image-carousel-container"
           />
 
           {/* Content */}
