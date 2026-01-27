@@ -7,14 +7,89 @@ import { useUIStyleStore } from "@/lib/store/ui-style";
 import { themes, defaultThemeId } from "@/lib/themes";
 import { fonts, defaultFontId } from "@/lib/fonts";
 import { uiStyles, defaultUIStyleId } from "@/lib/ui-styles";
+import { getVisualDesignSystem, isVDSTheme } from "@/lib/visual-design-systems";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const theme = useThemeStore((s) => s.theme);
   const font = useFontStore((s) => s.font);
   const uiStyle = useUIStyleStore((s) => s.uiStyle);
 
-  // Apply color theme
+  // Apply Visual Design System (VDS) if applicable
   useEffect(() => {
+    const root = document.documentElement;
+
+    // Check if this is a VDS theme
+    if (isVDSTheme(theme)) {
+      const vds = getVisualDesignSystem(theme);
+      if (!vds) return;
+
+      // Mark as VDS theme
+      root.setAttribute("data-vds-theme", vds.id);
+
+      // Apply VDS colors
+      root.style.setProperty("--color-background", vds.colors.background);
+      root.style.setProperty("--color-foreground", vds.colors.foreground);
+      root.style.setProperty("--color-primary", vds.colors.primary);
+      root.style.setProperty("--color-accent", vds.colors.accent);
+      root.style.setProperty("--color-muted", vds.colors.muted);
+      root.style.setProperty("--color-muted-foreground", vds.colors.mutedForeground);
+      root.style.setProperty("--color-border", vds.colors.border);
+
+      if (vds.colors.secondary) {
+        root.style.setProperty("--color-secondary", vds.colors.secondary);
+      }
+      if (vds.colors.tertiary) {
+        root.style.setProperty("--color-tertiary", vds.colors.tertiary);
+      }
+      if (vds.colors.success) {
+        root.style.setProperty("--color-success", vds.colors.success);
+      }
+      if (vds.colors.warning) {
+        root.style.setProperty("--color-warning", vds.colors.warning);
+      }
+      if (vds.colors.error) {
+        root.style.setProperty("--color-destructive", vds.colors.error);
+      }
+
+      // Apply VDS layout
+      root.setAttribute("data-grid-style", vds.layout.grid);
+      root.setAttribute("data-spacing", vds.layout.spacing);
+      root.setAttribute("data-alignment", vds.layout.alignment);
+
+      // Apply VDS typography
+      root.setAttribute("data-typography-theme", vds.id);
+      root.style.setProperty("--vds-font-family", vds.typography.fontFamily);
+
+      // Apply VDS borders
+      root.style.setProperty("--vds-border-width", vds.borders.width);
+      root.style.setProperty("--vds-border-radius", vds.borders.radius);
+      if (vds.borders.glow) {
+        root.style.setProperty("--vds-border-glow", vds.borders.glow);
+      }
+
+      // Apply VDS shadows
+      root.setAttribute("data-shadow-style", vds.shadows);
+
+      // Apply VDS animations
+      root.setAttribute("data-animation-style", vds.animations);
+
+      return; // Skip classic theme application
+    }
+
+    // Remove VDS attributes if switching back to classic theme
+    root.removeAttribute("data-vds-theme");
+    root.removeAttribute("data-grid-style");
+    root.removeAttribute("data-spacing");
+    root.removeAttribute("data-alignment");
+    root.removeAttribute("data-typography-theme");
+    root.removeAttribute("data-shadow-style");
+    root.removeAttribute("data-animation-style");
+  }, [theme]);
+
+  // Apply classic color theme (only if not VDS)
+  useEffect(() => {
+    if (isVDSTheme(theme)) return; // Skip if VDS
+
     const def = themes[theme] || themes[defaultThemeId];
     if (!def) return;
 

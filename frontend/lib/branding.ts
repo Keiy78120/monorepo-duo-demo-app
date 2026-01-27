@@ -1,3 +1,7 @@
+"use client";
+
+import { useAppModeStore } from "./store/app-mode";
+
 /**
  * Centralized Branding Configuration
  *
@@ -7,6 +11,25 @@
  * All values can be overridden via environment variables.
  */
 
+// Mode-specific branding configurations
+export const MODE_BRANDING = {
+  simple: {
+    appName: process.env.NEXT_PUBLIC_SIMPLE_APP_NAME || "Demo Simple",
+    tagline: "L'essentiel. Rien de plus.",
+    logo: "/logo-simple.svg",
+    primaryColor: "#3b7cef",
+    description: "Interface épurée pour une expérience directe",
+  },
+  advanced: {
+    appName: process.env.NEXT_PUBLIC_ADVANCED_APP_NAME || "Demo Advanced",
+    tagline: "Toute la puissance. Tout le contrôle.",
+    logo: "/logo-advanced.svg",
+    primaryColor: "#8b5cf6",
+    description: "Fonctionnalités avancées et outils d'analyse",
+  },
+} as const;
+
+// Global branding (shared across all modes)
 export const BRANDING = {
   // App Information
   appName: process.env.NEXT_PUBLIC_APP_NAME || "YX Mini App",
@@ -32,6 +55,31 @@ export const BRANDING = {
     drivers: process.env.NEXT_PUBLIC_FEATURE_DRIVERS !== "false",
   },
 } as const;
+
+/**
+ * Hook to get mode-specific branding
+ * Returns branding configuration based on current app mode
+ */
+export function useBranding() {
+  const mode = useAppModeStore((s) => s.mode);
+
+  if (mode === "simple") {
+    return MODE_BRANDING.simple;
+  }
+
+  if (mode === "advanced") {
+    return MODE_BRANDING.advanced;
+  }
+
+  // Fallback to global branding if no mode selected
+  return {
+    appName: BRANDING.appName,
+    tagline: "Votre application de démonstration",
+    logo: BRANDING.logo,
+    primaryColor: BRANDING.primaryColor,
+    description: "Application de démonstration moderne",
+  };
+}
 
 /**
  * Get branding value with fallback

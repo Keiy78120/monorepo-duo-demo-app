@@ -6,6 +6,7 @@ import {
   buildDescriptionPrompt,
   generateGroqDescription,
 } from "@/lib/integrations/groq";
+import { checkRateLimit, getRateLimitHeaders } from "@/lib/integrations/rate-limiter";
 
 const bodySchema = z.object({
   strain_name: z.string().min(1).max(120),
@@ -49,6 +50,24 @@ export async function POST(request: NextRequest) {
     const session = await getSession();
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Rate limiting (10 requests per minute)
+    const identifier = session.user?.id || request.ip || "anonymous";
+    const rateLimitResult = await checkRateLimit(`ai:${identifier}`, 10, 60000);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          error: "Trop de requêtes. Réessayez dans quelques instants.",
+          reset: new Date(rateLimitResult.reset).toISOString(),
+          retryAfter: Math.ceil((rateLimitResult.reset - Date.now()) / 1000),
+        },
+        {
+          status: 429,
+          headers: getRateLimitHeaders(rateLimitResult),
+        }
+      );
     }
 
     const body = await request.json();
@@ -124,12 +143,22 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({
-      description,
-      source,
-      strain: strain || null,
-      warnings: warnings.length > 0 ? warnings : undefined,
-    });
+    return NextResponse.json(
+      {
+        description,
+        source,
+        strain: strain || null,
+        warnings: warnings.length > 0 ? warnings : undefined,
+      },
+      {
+        headers: {
+          ...getRateLimitHeaders(rateLimitResult),
+          "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
+          "CDN-Cache-Control": "max-age=86400",
+          "Vary": "Accept-Encoding",
+        },
+      }
+    );
   } catch (error) {
     console.error("AI description route error:", error);
     return NextResponse.json(

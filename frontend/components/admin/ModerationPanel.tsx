@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Shield, Trash2, UserPlus, RefreshCw } from "lucide-react";
+import { Shield, Trash2, UserPlus, RefreshCw, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminFetch } from "@/lib/api/admin-fetch";
+import { useAppModeStore } from "@/lib/store/app-mode";
 import {
   Select,
   SelectContent,
@@ -34,6 +35,7 @@ function formatDate(value: string) {
 }
 
 export function ModerationPanel() {
+  const mode = useAppModeStore((s) => s.mode);
   const [moderators, setModerators] = useState<Moderator[]>([]);
   const [loading, setLoading] = useState(true);
   const [newModeratorId, setNewModeratorId] = useState("");
@@ -117,6 +119,30 @@ export function ModerationPanel() {
 
   return (
     <div className="space-y-6">
+      {/* Telegram ID Instructions - Simple Mode Only */}
+      {mode === "simple" && (
+        <div className="glass-card rounded-3xl p-6 border-2 border-blue-500/20">
+          <div className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-2xl bg-blue-500/10 flex items-center justify-center shrink-0">
+              <Info className="h-5 w-5 text-blue-500" />
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-[var(--color-foreground)] mb-2">
+                Comment obtenir un Telegram ID
+              </h3>
+              <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed">
+                Pour modérer un utilisateur, vous avez besoin de son Telegram ID.
+                Demandez à l'utilisateur d'ouvrir l'app et de visiter la page{" "}
+                <code className="px-1.5 py-0.5 bg-[var(--color-muted)] rounded text-xs font-mono">
+                  /whoami
+                </code>{" "}
+                (ou Menu → Mon Profil) pour copier son ID Telegram.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Add Moderator Form */}
       <div className="glass-card rounded-3xl p-6">
         <div className="flex items-center gap-3 mb-4">

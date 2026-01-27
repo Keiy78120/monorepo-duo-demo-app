@@ -187,7 +187,7 @@ CREATE INDEX IF NOT EXISTS idx_admin_sessions_expires ON admin_sessions(expires_
 -- SEED DATA: Default Settings
 -- ============================================================================
 INSERT OR IGNORE INTO settings (key, value, description) VALUES
-  ('general', '{"storeName":"VHash","currency":"EUR","freeDeliveryThreshold":100,"telegramBotUsername":"vhash_bot","maintenanceMode":false}', 'General store settings'),
+  ('general', '{"storeName":"Demo Store","currency":"EUR","freeDeliveryThreshold":100,"telegramBotUsername":"demo_bot","maintenanceMode":false}', 'General store settings'),
   ('info', '{"sections":[],"contact":{},"features":[]}', 'Store information'),
   ('order_warning_message', '"⚠️ Attention: Veuillez vérifier votre commande avant de confirmer."', 'Order warning message'),
   ('order_chat_id', '""', 'Telegram chat id receiving orders'),

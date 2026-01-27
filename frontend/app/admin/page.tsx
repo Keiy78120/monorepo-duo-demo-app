@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { useAppModeStore } from "@/lib/store/app-mode";
 
 interface DashboardStats {
   totalProducts: number;
@@ -239,6 +240,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function AdminDashboardPage() {
+  const mode = useAppModeStore((s) => s.mode);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -439,63 +441,68 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Bottom Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Orders */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <Card className="glass-card">
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[var(--color-primary)]" />
-                  Commandes récentes
-                </CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="space-y-3">
-                  {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-12 rounded-lg" />)}
+      <div className={cn(
+        "grid gap-6",
+        mode === "simple" ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-2"
+      )}>
+        {/* Recent Orders - Hidden in Simple Mode */}
+        {mode !== "simple" && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <Card className="glass-card">
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-base font-semibold flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-[var(--color-primary)]" />
+                    Commandes récentes
+                  </CardTitle>
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  {recentOrders.map((order, i) => (
-                    <motion.div
-                      key={order.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.7 + i * 0.05 }}
-                      className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-muted)]/30 hover:bg-[var(--color-muted)]/50 transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
-                          <ShoppingCart className="w-4 h-4 text-[var(--color-primary)]" />
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <div className="space-y-3">
+                    {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-12 rounded-lg" />)}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {recentOrders.map((order, i) => (
+                      <motion.div
+                        key={order.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 + i * 0.05 }}
+                        className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-muted)]/30 hover:bg-[var(--color-muted)]/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
+                            <ShoppingCart className="w-4 h-4 text-[var(--color-primary)]" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-[var(--color-foreground)]">
+                              {order.id}
+                            </p>
+                            <p className="text-xs text-[var(--color-muted-foreground)]">
+                              {order.customer} • {order.time}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sm font-medium text-[var(--color-foreground)]">
-                            {order.id}
+                        <div className="flex items-center gap-3">
+                          <p className="text-sm font-semibold text-[var(--color-foreground)]">
+                            {formatCurrency(order.amount * 100)}
                           </p>
-                          <p className="text-xs text-[var(--color-muted-foreground)]">
-                            {order.customer} • {order.time}
-                          </p>
+                          <StatusBadge status={order.status} />
                         </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <p className="text-sm font-semibold text-[var(--color-foreground)]">
-                          {formatCurrency(order.amount * 100)}
-                        </p>
-                        <StatusBadge status={order.status} />
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {/* Top Products */}
         <motion.div

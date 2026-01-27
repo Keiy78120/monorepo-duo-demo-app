@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# VHash Cloudflare Setup Script
+# Demo App Cloudflare Setup Script
 # Run this script to set up all Cloudflare resources
 
 set -e
 
 echo "╔══════════════════════════════════════════════════╗"
-echo "║   VHash Cloudflare App Setup                     ║"
+echo "║   Demo App Cloudflare Setup                      ║"
 echo "╚══════════════════════════════════════════════════╝"
 echo ""
 

@@ -61,6 +61,8 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "10mb",
     },
+    // Optimize package imports for better bundle size
+    optimizePackageImports: ["motion", "lucide-react", "react-icons"],
   },
 };
 

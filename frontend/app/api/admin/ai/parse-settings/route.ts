@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getSession } from "@/lib/auth/guard";
 import { fetchWithTimeout } from "@/lib/integrations/http";
+import { checkRateLimit, getRateLimitHeaders } from "@/lib/integrations/rate-limiter";
 
 const bodySchema = z.object({
   text: z.string().min(1).max(10000),
@@ -181,6 +182,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Rate limiting (10 requests per minute)
+    const identifier = session.user?.id || request.ip || "anonymous";
+    const rateLimitResult = await checkRateLimit(`ai:parse-settings:${identifier}`, 10, 60000);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          error: "Trop de requêtes. Réessayez dans quelques instants.",
+          reset: new Date(rateLimitResult.reset).toISOString(),
+          retryAfter: Math.ceil((rateLimitResult.reset - Date.now()) / 1000),
+        },
+        {
+          status: 429,
+          headers: getRateLimitHeaders(rateLimitResult),
+        }
+      );
+    }
+
     const body = await request.json();
     const parsed = bodySchema.safeParse(body);
     if (!parsed.success) {
@@ -213,10 +232,20 @@ export async function POST(request: NextRequest) {
     try {
       const result = await callGroq(text, groqApiKey, groqModel);
 
-      return NextResponse.json({
-        settings: result.settings,
-        warnings: result.warnings || [],
-      });
+      return NextResponse.json(
+        {
+          settings: result.settings,
+          warnings: result.warnings || [],
+        },
+        {
+          headers: {
+            ...getRateLimitHeaders(rateLimitResult),
+            "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+            "CDN-Cache-Control": "max-age=3600",
+            "Vary": "Accept-Encoding",
+          },
+        }
+      );
     } catch (groqError) {
       console.error("Groq parsing error:", groqError);
       return NextResponse.json(

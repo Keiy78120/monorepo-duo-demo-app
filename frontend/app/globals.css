@@ -1136,3 +1136,352 @@ body {
     0 0 20px rgba(168, 85, 247, 0.08),
     0 4px 16px rgba(0, 0, 0, 0.4);
 }
+
+/* ============================================================================
+   VISUAL DESIGN SYSTEMS (VDS)
+   Revolutionary design systems beyond color changes
+   ============================================================================ */
+
+/* Layout Grid Variations */
+[data-grid-style="strict-grid"] .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  justify-items: stretch;
+}
+
+[data-grid-style="loose-masonry"] .product-grid {
+  column-count: 2;
+  column-gap: 2rem;
+  break-inside: avoid-column;
+}
+
+[data-grid-style="data-table"] .product-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+[data-grid-style="swiss-grid"] .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  justify-items: start;
+}
+
+[data-grid-style="asymmetric-collage"] .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+[data-grid-style="card-grid"] .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Typography Themes */
+[data-typography-theme="brutalist-pharmacy"] {
+  font-family: ui-monospace, 'Courier New', monospace;
+}
+
+[data-typography-theme="brutalist-pharmacy"] h1,
+[data-typography-theme="brutalist-pharmacy"] h2,
+[data-typography-theme="brutalist-pharmacy"] h3 {
+  font-family: ui-monospace, 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+[data-typography-theme="luxury-spa"] {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+}
+
+[data-typography-theme="luxury-spa"] h1,
+[data-typography-theme="luxury-spa"] h2,
+[data-typography-theme="luxury-spa"] h3 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-weight: 300;
+  font-size: 2.5rem;
+  letter-spacing: -0.025em;
+}
+
+[data-typography-theme="cyberpunk-terminal"] {
+  font-family: 'Fira Code', 'Courier New', monospace;
+}
+
+[data-typography-theme="cyberpunk-terminal"] h1,
+[data-typography-theme="cyberpunk-terminal"] h2,
+[data-typography-theme="cyberpunk-terminal"] h3 {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px currentColor;
+}
+
+[data-typography-theme="scandinavian-minimal"] {
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+[data-typography-theme="scandinavian-minimal"] h1,
+[data-typography-theme="scandinavian-minimal"] h2,
+[data-typography-theme="scandinavian-minimal"] h3 {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  letter-spacing: -0.025em;
+}
+
+[data-typography-theme="memphis-retro"] {
+  font-family: 'Arial Black', sans-serif;
+}
+
+[data-typography-theme="memphis-retro"] h1,
+[data-typography-theme="memphis-retro"] h2,
+[data-typography-theme="memphis-retro"] h3 {
+  font-family: 'Arial Black', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: -0.025em;
+  -webkit-text-stroke: 2px var(--color-foreground);
+  paint-order: stroke fill;
+}
+
+[data-typography-theme="neomorphism"] {
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+[data-typography-theme="neomorphism"] h1,
+[data-typography-theme="neomorphism"] h2,
+[data-typography-theme="neomorphism"] h3 {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: -0.025em;
+}
+
+/* Animation Styles */
+[data-animation-style="instant"] * {
+  transition: none !important;
+  animation: none !important;
+}
+
+[data-animation-style="subtle"] * {
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-animation-style="slow-ease"] * {
+  transition: all 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[data-animation-style="glitch"] {
+  animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(2px, -2px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 2px); }
+}
+
+[data-animation-style="bouncy"] * {
+  transition: all 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+[data-animation-style="spring"] * {
+  transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Shadow Variations */
+[data-shadow-style="none"] .glass-card,
+[data-shadow-style="none"] .card {
+  box-shadow: none !important;
+}
+
+[data-shadow-style="soft-ambient"] .glass-card,
+[data-shadow-style="soft-ambient"] .card {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+
+[data-shadow-style="neon-glow"] .glass-card,
+[data-shadow-style="neon-glow"] .card {
+  box-shadow:
+    0 0 10px var(--color-primary),
+    0 0 20px var(--color-primary),
+    0 0 40px var(--color-primary);
+}
+
+[data-shadow-style="hard-offset"] .glass-card,
+[data-shadow-style="hard-offset"] .card {
+  box-shadow: 8px 8px 0 var(--color-foreground);
+}
+
+[data-shadow-style="neumorphic"] .glass-card,
+[data-shadow-style="neumorphic"] .card {
+  box-shadow:
+    8px 8px 16px rgba(163, 177, 198, 0.6),
+    -8px -8px 16px rgba(255, 255, 255, 0.5);
+}
+
+/* VDS Border Styles */
+[data-vds-theme="brutalist-pharmacy"] .glass-card,
+[data-vds-theme="brutalist-pharmacy"] .card,
+[data-vds-theme="brutalist-pharmacy"] button {
+  border-width: 3px;
+  border-radius: 0;
+  border-color: var(--color-border);
+}
+
+[data-vds-theme="luxury-spa"] .glass-card,
+[data-vds-theme="luxury-spa"] .card,
+[data-vds-theme="luxury-spa"] button {
+  border-width: 0.5px;
+  border-radius: 2rem;
+  border-color: var(--color-border);
+}
+
+[data-vds-theme="cyberpunk-terminal"] .glass-card,
+[data-vds-theme="cyberpunk-terminal"] .card,
+[data-vds-theme="cyberpunk-terminal"] button {
+  border-width: 1px;
+  border-radius: 0.25rem;
+  border-style: dashed;
+  border-color: var(--color-border);
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+[data-vds-theme="scandinavian-minimal"] .glass-card,
+[data-vds-theme="scandinavian-minimal"] .card,
+[data-vds-theme="scandinavian-minimal"] button {
+  border-width: 1px;
+  border-radius: 0.5rem;
+  border-color: var(--color-border);
+}
+
+[data-vds-theme="memphis-retro"] .glass-card,
+[data-vds-theme="memphis-retro"] .card,
+[data-vds-theme="memphis-retro"] button {
+  border-width: 4px;
+  border-radius: 1rem;
+  border-color: var(--color-foreground);
+}
+
+[data-vds-theme="neomorphism"] .glass-card,
+[data-vds-theme="neomorphism"] .card,
+[data-vds-theme="neomorphism"] button {
+  border-width: 0;
+  border-radius: 1.5rem;
+  background: var(--color-background);
+}
+
+/* Memphis Retro: Asymmetric Rotation */
+[data-vds-theme="memphis-retro"] .glass-card:nth-child(3n+1) {
+  transform: rotate(-1deg);
+}
+
+[data-vds-theme="memphis-retro"] .glass-card:nth-child(3n+2) {
+  transform: rotate(1deg);
+}
+
+[data-vds-theme="memphis-retro"] .glass-card:nth-child(3n+3) {
+  transform: rotate(-0.5deg);
+}
+
+[data-vds-theme="memphis-retro"] .glass-card:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+/* Cyberpunk: Scan-line effect */
+[data-vds-theme="cyberpunk-terminal"]::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    0deg,
+    transparent 0%,
+    rgba(0, 255, 136, 0.03) 50%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes scan {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100vh; }
+}
+
+/* Brutalist: Dense spacing */
+[data-spacing="dense"] {
+  --spacing-base: 0.75rem;
+}
+
+[data-spacing="compact"] {
+  --spacing-base: 0.5rem;
+}
+
+[data-spacing="balanced"] {
+  --spacing-base: 1.25rem;
+}
+
+[data-spacing="comfortable"] {
+  --spacing-base: 1.5rem;
+}
+
+[data-spacing="generous"] {
+  --spacing-base: 2rem;
+}
+
+[data-spacing="chaotic"] {
+  --spacing-base: calc(0.75rem + (1.5rem - 0.75rem) * var(--random, 0.5));
+}
+
+/* VDS-specific page container adjustments */
+[data-spacing] .page-container {
+  padding: var(--spacing-base);
+}
+
+[data-spacing] .space-y-6 > * + * {
+  margin-top: var(--spacing-base);
+}
+
+/* ============================================================================
+   SHIMMER LOADING ANIMATION
+   ============================================================================ */
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted) 0%,
+    var(--color-background) 50%,
+    var(--color-muted) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+  border-radius: var(--radius-md);
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+}

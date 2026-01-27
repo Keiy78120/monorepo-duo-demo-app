@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { useDisplayModeStore } from "@/lib/store/display-mode";
 import { displayModes, getBentoSpan } from "@/lib/display-modes";
 import { cn } from "@/lib/utils";
+import { useBranding } from "@/lib/branding";
 import type {
   Product,
   ProductCategory,
@@ -25,6 +26,7 @@ export default function CatalogPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const displayModeRaw = useDisplayModeStore((s) => s.mode);
   const displayMode = displayModeRaw as "grid" | "compact" | "list" | "bento" | "featured";
+  const branding = useBranding();
 
   // Load products and categories
   useEffect(() => {
@@ -127,7 +129,7 @@ export default function CatalogPage() {
 
   return (
     <div className="page-container">
-      <PageHeader title="VHash" subtitle="Cannabis premium · Livraison sur mesure" />
+      <PageHeader title={branding.appName} subtitle={branding.tagline} />
 
       {/* Categories */}
       {!loading && categoryOptions.length > 1 && (

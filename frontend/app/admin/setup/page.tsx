@@ -7,9 +7,11 @@ import { Lock, Mail, User, Eye, EyeOff, AlertCircle, CheckCircle2 } from "lucide
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useBranding } from "@/lib/branding";
 
 export default function AdminSetupPage() {
   const router = useRouter();
+  const branding = useBranding();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -104,7 +106,7 @@ export default function AdminSetupPage() {
               <Lock className="w-8 h-8 text-white" />
             </motion.div>
             <h1 className="text-2xl font-bold text-[var(--color-foreground)]">
-              VHash Admin Setup
+              {branding.appName} - Admin Setup
             </h1>
             <p className="text-[var(--color-muted-foreground)] text-sm mt-2">
               Créer votre compte administrateur

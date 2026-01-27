@@ -1,5 +1,6 @@
 import { fetchWithTimeout } from "./http";
 import type { CannabisStrain } from "./cannabis";
+import { getCached, setCache, generateCacheKey } from "./groq-cache";
 
 export interface GroqOptions {
   apiKey: string;
@@ -52,6 +53,18 @@ export async function generateGroqDescription(
   prompt: string,
   { apiKey, model, timeoutMs = 30000 }: GroqOptions
 ): Promise<string> {
+  // Check cache first
+  const cacheKey = generateCacheKey(prompt, model);
+  const cached = getCached(cacheKey);
+
+  if (cached) {
+    console.log("✅ Groq cache hit:", cacheKey);
+    return cached;
+  }
+
+  console.log("❌ Groq cache miss, fetching from API:", cacheKey);
+
+  // Make API request
   const response = await fetchWithTimeout(
     "https://api.groq.com/openai/v1/chat/completions",
     {
@@ -97,5 +110,10 @@ export async function generateGroqDescription(
     throw new Error("Groq response missing content");
   }
 
-  return content.trim();
+  const trimmedContent = content.trim();
+
+  // Store in cache
+  setCache(cacheKey, trimmedContent);
+
+  return trimmedContent;
 }
