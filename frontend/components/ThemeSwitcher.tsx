@@ -59,13 +59,12 @@ function ThemePreviewCard({
           />
         </div>
       </div>
-      <div className="flex items-center gap-1.5">
-        <span className="text-sm">{theme.icon}</span>
-        <span className="text-[11px] font-medium text-[var(--color-foreground)] truncate">
+      <div className="flex items-center gap-1.5 justify-center">
+        <span className="text-xs font-semibold text-[var(--color-foreground)] truncate text-center w-full">
           {theme.name}
         </span>
         {isActive && (
-          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] ml-auto shrink-0" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] absolute top-1 right-1 shrink-0" />
         )}
       </div>
     </button>

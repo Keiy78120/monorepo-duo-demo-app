@@ -26,29 +26,43 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       // Mark as VDS theme
       root.setAttribute("data-vds-theme", vds.id);
 
-      // Apply VDS colors
+      // Apply VDS colors - COMPLETE COLOR SYSTEM
       root.style.setProperty("--color-background", vds.colors.background);
       root.style.setProperty("--color-foreground", vds.colors.foreground);
+      root.style.setProperty("--color-card", vds.colors.card);
+      root.style.setProperty("--color-card-foreground", vds.colors.cardForeground);
+      root.style.setProperty("--color-popover", vds.colors.card); // Use card color
+      root.style.setProperty("--color-popover-foreground", vds.colors.cardForeground);
       root.style.setProperty("--color-primary", vds.colors.primary);
+      root.style.setProperty("--color-primary-foreground", vds.colors.primaryForeground);
       root.style.setProperty("--color-accent", vds.colors.accent);
+      root.style.setProperty("--color-accent-foreground", vds.colors.accentForeground);
       root.style.setProperty("--color-muted", vds.colors.muted);
       root.style.setProperty("--color-muted-foreground", vds.colors.mutedForeground);
       root.style.setProperty("--color-border", vds.colors.border);
 
+      // Optional colors with fallbacks
+      root.style.setProperty("--color-input", vds.colors.input || vds.colors.card);
+      root.style.setProperty("--color-ring", vds.colors.ring || vds.colors.primary);
+
       if (vds.colors.secondary) {
         root.style.setProperty("--color-secondary", vds.colors.secondary);
+        root.style.setProperty("--color-secondary-foreground", vds.colors.primaryForeground); // Fallback
       }
       if (vds.colors.tertiary) {
         root.style.setProperty("--color-tertiary", vds.colors.tertiary);
       }
       if (vds.colors.success) {
         root.style.setProperty("--color-success", vds.colors.success);
+        root.style.setProperty("--color-success-foreground", vds.colors.background);
       }
       if (vds.colors.warning) {
         root.style.setProperty("--color-warning", vds.colors.warning);
+        root.style.setProperty("--color-warning-foreground", vds.colors.foreground);
       }
       if (vds.colors.error) {
         root.style.setProperty("--color-destructive", vds.colors.error);
+        root.style.setProperty("--color-destructive-foreground", vds.colors.background);
       }
 
       // Apply VDS layout

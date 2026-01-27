@@ -1381,6 +1381,40 @@ body {
   background: var(--color-background);
 }
 
+[data-vds-theme="vaporwave-aesthetic"] .glass-card,
+[data-vds-theme="vaporwave-aesthetic"] .card,
+[data-vds-theme="vaporwave-aesthetic"] button {
+  border-width: 2px;
+  border-radius: 0.75rem;
+  border-color: var(--color-border);
+  box-shadow: 0 0 15px rgba(185, 103, 255, 0.3);
+}
+
+[data-vds-theme="industrial-concrete"] .glass-card,
+[data-vds-theme="industrial-concrete"] .card,
+[data-vds-theme="industrial-concrete"] button {
+  border-width: 4px;
+  border-radius: 0.125rem;
+  border-color: var(--color-border);
+}
+
+[data-vds-theme="neon-tokyo"] .glass-card,
+[data-vds-theme="neon-tokyo"] .card,
+[data-vds-theme="neon-tokyo"] button {
+  border-width: 3px;
+  border-radius: 0.5rem;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 20px rgba(255, 42, 109, 0.4);
+}
+
+[data-vds-theme="organic-nature"] .glass-card,
+[data-vds-theme="organic-nature"] .card,
+[data-vds-theme="organic-nature"] button {
+  border-width: 1px;
+  border-radius: 1.25rem;
+  border-color: var(--color-border);
+}
+
 /* Memphis Retro: Asymmetric Rotation */
 [data-vds-theme="memphis-retro"] .glass-card:nth-child(3n+1) {
   transform: rotate(-1deg);
@@ -1706,6 +1740,151 @@ body {
   border-radius: 1rem !important;
 }
 
+/* ==================== VAPORWAVE AESTHETIC ==================== */
+[data-vds-theme="vaporwave-aesthetic"] .glass-card,
+[data-vds-theme="vaporwave-aesthetic"] .card {
+  background: linear-gradient(135deg, #2d1b4e 0%, #3d2563 100%);
+  border-width: 2px;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 0 15px rgba(185, 103, 255, 0.3);
+}
+
+[data-vds-theme="vaporwave-aesthetic"] .glass-card:hover,
+[data-vds-theme="vaporwave-aesthetic"] .card:hover {
+  box-shadow:
+    0 0 25px rgba(1, 205, 254, 0.5),
+    0 0 50px rgba(185, 103, 255, 0.3),
+    0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  border-color: var(--color-accent) !important;
+  transform: translateY(-4px) scale(1.02);
+  transition: all 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[data-vds-theme="vaporwave-aesthetic"] button {
+  border-radius: 0.75rem !important;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  box-shadow: 0 0 10px rgba(1, 205, 254, 0.3);
+}
+
+[data-vds-theme="vaporwave-aesthetic"] button:hover {
+  box-shadow:
+    0 0 20px rgba(1, 205, 254, 0.6),
+    0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  transform: scale(1.05);
+}
+
+[data-vds-theme="vaporwave-aesthetic"] input {
+  border-radius: 0.5rem !important;
+  background: rgba(45, 27, 78, 0.8);
+}
+
+/* ==================== INDUSTRIAL CONCRETE ==================== */
+[data-vds-theme="industrial-concrete"] .glass-card,
+[data-vds-theme="industrial-concrete"] .card,
+[data-vds-theme="industrial-concrete"] button {
+  border-width: 4px;
+  border-radius: 0.125rem !important;
+  border-color: var(--color-border);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+[data-vds-theme="industrial-concrete"] .glass-card:hover,
+[data-vds-theme="industrial-concrete"] .card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.15) !important;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-vds-theme="industrial-concrete"] button:hover {
+  background-color: var(--color-accent) !important;
+  color: var(--color-accent-foreground) !important;
+  transform: translate(-1px, -1px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-vds-theme="industrial-concrete"] input {
+  border-radius: 0.125rem !important;
+  border: 3px solid var(--color-border);
+}
+
+/* ==================== NEON TOKYO ==================== */
+[data-vds-theme="neon-tokyo"] .glass-card,
+[data-vds-theme="neon-tokyo"] .card {
+  border-width: 3px;
+  border-radius: 0.5rem !important;
+  border-color: var(--color-primary);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  box-shadow:
+    0 0 20px rgba(255, 42, 109, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+[data-vds-theme="neon-tokyo"] .glass-card:hover,
+[data-vds-theme="neon-tokyo"] .card:hover {
+  box-shadow:
+    0 0 30px rgba(255, 42, 109, 0.6),
+    0 0 60px rgba(0, 255, 245, 0.3),
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  border-color: var(--color-accent) !important;
+  transform: translateY(-3px) rotate(-0.5deg);
+  transition: all 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+[data-vds-theme="neon-tokyo"] button {
+  border-radius: 0.5rem !important;
+  box-shadow: 0 0 15px rgba(255, 42, 109, 0.4);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+}
+
+[data-vds-theme="neon-tokyo"] button:hover {
+  box-shadow:
+    0 0 25px rgba(255, 42, 109, 0.8),
+    0 0 50px rgba(0, 255, 245, 0.4) !important;
+  transform: rotate(1deg) scale(1.05);
+  background: var(--color-accent);
+}
+
+[data-vds-theme="neon-tokyo"] input {
+  border-radius: 0.25rem !important;
+  box-shadow: 0 0 10px rgba(255, 42, 109, 0.2);
+}
+
+/* ==================== ORGANIC NATURE ==================== */
+[data-vds-theme="organic-nature"] .glass-card,
+[data-vds-theme="organic-nature"] .card {
+  border-width: 1px;
+  border-radius: 1.25rem !important;
+  border-color: var(--color-border);
+  background: var(--color-card);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+[data-vds-theme="organic-nature"] .glass-card:hover,
+[data-vds-theme="organic-nature"] .card:hover {
+  box-shadow: 0 8px 32px rgba(95, 122, 61, 0.15) !important;
+  border-color: var(--color-primary);
+  transform: translateY(-6px);
+  transition: all 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[data-vds-theme="organic-nature"] button {
+  border-radius: 1.5rem !important;
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+[data-vds-theme="organic-nature"] button:hover {
+  background: var(--color-accent);
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(193, 124, 74, 0.25);
+}
+
+[data-vds-theme="organic-nature"] input {
+  border-radius: 1rem !important;
+  border: 1px solid var(--color-border);
+}
+
 /* ==================== VDS BADGES & SMALL ELEMENTS ==================== */
 [data-vds-theme="brutalist-pharmacy"] .badge {
   border-radius: 0 !important;
@@ -1736,6 +1915,30 @@ body {
   box-shadow:
     2px 2px 4px rgba(163, 177, 198, 0.3),
     -2px -2px 4px rgba(255, 255, 255, 0.5);
+}
+
+[data-vds-theme="vaporwave-aesthetic"] .badge {
+  border-radius: 0.5rem !important;
+  box-shadow: 0 0 10px rgba(1, 205, 254, 0.4);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+}
+
+[data-vds-theme="industrial-concrete"] .badge {
+  border-radius: 0.125rem !important;
+  border: 3px solid var(--color-border);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+[data-vds-theme="neon-tokyo"] .badge {
+  border-radius: 0.25rem !important;
+  box-shadow: 0 0 12px currentColor;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+}
+
+[data-vds-theme="organic-nature"] .badge {
+  border-radius: 0.75rem !important;
+  border: 1px solid var(--color-border);
+  background: var(--color-muted);
 }
 
 /* ============================================================================
