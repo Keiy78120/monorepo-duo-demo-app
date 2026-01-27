@@ -4,6 +4,8 @@ import * as React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useTransform, PanInfo } from "motion/react";
 import { cn } from "@/lib/utils";
+import { ImageZoomModal } from "./image-zoom-modal";
+import { ZoomIn } from "lucide-react";
 
 interface ImageCarouselProps {
   images: string[];
@@ -13,6 +15,7 @@ interface ImageCarouselProps {
   showPagination?: boolean;
   autoPlay?: boolean;
   autoPlayInterval?: number;
+  enableZoom?: boolean;
 }
 
 function isVideo(url: string): boolean {
@@ -30,10 +33,13 @@ export function ImageCarousel({
   showPagination = true,
   autoPlay = false,
   autoPlayInterval = 4000,
+  enableZoom = true,
 }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [direction, setDirection] = React.useState(0);
+  const [showZoomModal, setShowZoomModal] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const isDraggingRef = React.useRef(false);
 
   const validImages = React.useMemo(() => {
     const filtered = images.filter((img) => img && img.trim() !== "");
@@ -55,6 +61,14 @@ export function ImageCarousel({
   }, [autoPlay, autoPlayInterval, hasMultiple, validImages.length]);
 
   // Handle swipe
+  const handleDragStart = () => {
+    isDraggingRef.current = false;
+  };
+
+  const handleDrag = () => {
+    isDraggingRef.current = true;
+  };
+
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const threshold = 50;
     const velocity = info.velocity.x;
@@ -73,6 +87,17 @@ export function ImageCarousel({
         setCurrentIndex((prev) => prev - 1);
       }
     }
+  };
+
+  // Handle image tap to zoom
+  const handleImageClick = (e: React.MouseEvent | React.TouchEvent) => {
+    // Only open zoom if not dragging and zoom is enabled and not a video
+    if (!isDraggingRef.current && enableZoom && !isCurrentVideo) {
+      e.preventDefault();
+      e.stopPropagation();
+      setShowZoomModal(true);
+    }
+    isDraggingRef.current = false;
   };
 
   const goToIndex = (index: number) => {
@@ -105,47 +130,69 @@ export function ImageCarousel({
   const isCurrentVideo = isVideo(currentImage);
 
   return (
-    <div className={cn("relative overflow-hidden", aspectClass, className)} ref={containerRef}>
-      <AnimatePresence initial={false} custom={direction} mode="popLayout">
-        <motion.div
-          key={currentIndex}
-          custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 },
-          }}
-          drag={hasMultiple ? "x" : false}
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.1}
-          onDragEnd={handleDragEnd}
-          className="absolute inset-0 cursor-grab active:cursor-grabbing"
-        >
-          {isCurrentVideo ? (
-            <video
-              src={currentImage}
-              className="h-full w-full object-cover"
-              muted
-              playsInline
-              loop
-              autoPlay
-              preload="metadata"
-            />
-          ) : (
-            <Image
-              src={currentImage}
-              alt={`${alt} ${currentIndex + 1}`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority={currentIndex === 0}
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
+    <>
+      <div className={cn("relative overflow-hidden", aspectClass, className)} ref={containerRef}>
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={currentIndex}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 },
+            }}
+            drag={hasMultiple ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.1}
+            onDragStart={handleDragStart}
+            onDrag={handleDrag}
+            onDragEnd={handleDragEnd}
+            onClick={handleImageClick}
+            onTouchEnd={(e) => {
+              // Delay to allow drag detection
+              setTimeout(() => {
+                if (!isDraggingRef.current) {
+                  handleImageClick(e as any);
+                }
+              }, 50);
+            }}
+            className={cn(
+              "absolute inset-0",
+              hasMultiple ? "cursor-grab active:cursor-grabbing" : enableZoom && !isCurrentVideo ? "cursor-zoom-in" : ""
+            )}
+          >
+            {isCurrentVideo ? (
+              <video
+                src={currentImage}
+                className="h-full w-full object-cover"
+                muted
+                playsInline
+                loop
+                autoPlay
+                preload="metadata"
+              />
+            ) : (
+              <Image
+                src={currentImage}
+                alt={`${alt} ${currentIndex + 1}`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority={currentIndex === 0}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Zoom hint icon */}
+        {enableZoom && !isCurrentVideo && !hasMultiple && (
+          <div className="absolute top-3 left-3 z-10 bg-black/50 text-white p-2 rounded-full backdrop-blur-sm pointer-events-none">
+            <ZoomIn className="w-4 h-4" />
+          </div>
+        )}
 
       {/* Pagination dots */}
       {showPagination && hasMultiple && (
@@ -172,6 +219,17 @@ export function ImageCarousel({
           {currentIndex + 1} / {validImages.length}
         </div>
       )}
-    </div>
+      </div>
+
+      {/* Zoom Modal */}
+      {enableZoom && !isCurrentVideo && (
+        <ImageZoomModal
+          src={currentImage}
+          alt={`${alt} ${currentIndex + 1}`}
+          open={showZoomModal}
+          onOpenChange={setShowZoomModal}
+        />
+      )}
+    </>
   );
 }
