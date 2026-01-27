@@ -120,7 +120,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                   selection();
                   router.push("/admin");
                 }}
-                className="h-10 w-10 rounded-xl bg-red-600 flex items-center justify-center shadow-md shrink-0"
+                className="h-10 w-10 rounded-xl bg-red-600 flex items-center justify-center shadow-md shrink-0 page-header-button"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 animate={{
@@ -137,6 +137,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                     ease: "easeInOut",
                   },
                 }}
+                style={{ contain: "layout size paint", overflow: "hidden" }}
               >
                 <Shield className="w-5 h-5 text-white" />
               </motion.button>
@@ -164,20 +165,11 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                     ease: "easeInOut",
                   },
                 }}
-                style={{ contain: "layout size" }}
+                style={{ contain: "layout size paint", overflow: "hidden" }}
               >
-                <motion.div
-                  animate={{
-                    scale: [1, 1.05, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
+                <div className="pointer-events-none">
                   <IoInformationCircle className="w-6 h-6 text-white" />
-                </motion.div>
+                </div>
               </motion.button>
             )}
           </div>
@@ -259,20 +251,11 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                       ease: "easeInOut",
                     },
                   }}
-                  style={{ contain: "layout size" }}
+                  style={{ contain: "layout size paint", overflow: "hidden" }}
                 >
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.05, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  >
+                  <div className="pointer-events-none">
                     <IoInformationCircle className="w-6 h-6 text-white" />
-                  </motion.div>
+                  </div>
                 </motion.button>
               )}
             </div>
