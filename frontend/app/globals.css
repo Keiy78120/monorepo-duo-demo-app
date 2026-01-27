@@ -1138,6 +1138,135 @@ body {
 }
 
 /* ============================================================================
+   VDS THEME NAVBAR OVERRIDES - Dark Themes
+   ============================================================================ */
+
+/* Neon Tokyo - Pink/Cyan neon glow */
+[data-vds-theme="neon-tokyo"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(26, 26, 26, 0.85) 0%,
+    rgba(13, 13, 13, 0.90) 100%
+  );
+  border-top: 0.5px solid rgba(255, 42, 109, 0.3);
+  box-shadow:
+    0 0 20px rgba(255, 42, 109, 0.12),
+    0 0 40px rgba(0, 255, 245, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.5),
+    inset 0 0.5px 0 0.5px rgba(0, 255, 245, 0.1);
+}
+
+/* Cyberpunk Terminal - Matrix green glow */
+[data-vds-theme="cyberpunk-terminal"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 30, 0.85) 0%,
+    rgba(10, 10, 15, 0.90) 100%
+  );
+  border-top: 0.5px solid rgba(0, 255, 136, 0.2);
+  box-shadow:
+    0 0 20px rgba(0, 255, 136, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.5),
+    inset 0 0.5px 0 0.5px rgba(255, 0, 127, 0.08);
+}
+
+/* Vaporwave - Purple/Cyan gradient */
+[data-vds-theme="vaporwave-aesthetic"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(45, 27, 78, 0.85) 0%,
+    rgba(26, 0, 51, 0.90) 100%
+  );
+  border-top: 0.5px solid rgba(185, 103, 255, 0.3);
+  box-shadow:
+    0 0 20px rgba(185, 103, 255, 0.15),
+    0 0 40px rgba(1, 205, 254, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.5),
+    inset 0 0.5px 0 0.5px rgba(1, 205, 254, 0.1);
+}
+
+/* Brutalist Pharmacy - Stark black/white */
+[data-vds-theme="brutalist-pharmacy"] .telegram-liquid-nav {
+  background: rgba(255, 255, 255, 0.98);
+  border-top: 3px solid #000000;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Luxury Spa - Warm elegant cream */
+[data-vds-theme="luxury-spa"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(253, 252, 250, 0.90) 0%,
+    rgba(248, 246, 243, 0.95) 100%
+  );
+  border-top: 0.5px solid rgba(184, 165, 142, 0.15);
+  box-shadow:
+    0 0 20px rgba(184, 165, 142, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* Scandinavian Minimal - Clean functional */
+[data-vds-theme="scandinavian-minimal"] .telegram-liquid-nav {
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid rgba(229, 229, 229, 1);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Memphis Retro - Bold playful */
+[data-vds-theme="memphis-retro"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 245, 225, 0.98) 100%
+  );
+  border-top: 4px solid #2d2d2d;
+  box-shadow:
+    0 4px 16px rgba(255, 107, 157, 0.15),
+    0 8px 24px rgba(0, 217, 255, 0.08);
+}
+
+/* Neomorphism - Soft extruded */
+[data-vds-theme="neomorphism"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(224, 229, 236, 0.95) 0%,
+    rgba(209, 217, 230, 0.98) 100%
+  );
+  border-top: 0;
+  box-shadow:
+    inset 2px 2px 5px rgba(209, 217, 230, 0.5),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Industrial Concrete - Raw minimal */
+[data-vds-theme="industrial-concrete"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(232, 232, 232, 0.90) 0%,
+    rgba(212, 212, 212, 0.95) 100%
+  );
+  border-top: 4px solid #8a8a8a;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Organic Nature - Earthy botanical */
+[data-vds-theme="organic-nature"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(250, 247, 242, 0.90) 0%,
+    rgba(245, 240, 232, 0.95) 100%
+  );
+  border-top: 1px solid rgba(200, 188, 170, 0.3);
+  box-shadow:
+    0 0 20px rgba(95, 122, 61, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================================================
    VISUAL DESIGN SYSTEMS (VDS)
    Revolutionary design systems beyond color changes
    ============================================================================ */
@@ -2006,11 +2135,9 @@ body {
     max-width: 100% !important;
   }
 
-  /* Center dialog on desktop */
-  [role="dialog"][data-state="open"] {
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+  /* Dialog centering is handled by Radix UI + Tailwind in dialog.tsx */
+  /* DO NOT override transform here - it breaks animations */
+  [role="dialog"] {
     height: auto !important;
     max-height: 90vh !important;
   }
@@ -2030,4 +2157,229 @@ body {
   .image-carousel-container video {
     max-height: 65vh !important;
   }
+}
+
+/* ============================================================================
+   SAAS 2026 THEMES - NAVBAR STYLES
+   ============================================================================ */
+
+/* Cloud Dancer - Soft airy navbar */
+[data-vds-theme="cloud-dancer"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(252, 252, 252, 0.90) 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
+  border-top: 0.5px solid rgba(90, 159, 212, 0.15);
+  box-shadow:
+    0 0 20px rgba(90, 159, 212, 0.05),
+    0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+/* Transformative Teal - Earth tones */
+[data-vds-theme="transformative-teal"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(244, 248, 247, 0.90) 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
+  border-top: 0.5px solid rgba(45, 139, 122, 0.2);
+  box-shadow:
+    0 0 20px rgba(45, 139, 122, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* Neon Micro-Glow - Dark with neon accents */
+[data-vds-theme="neon-micro-glow"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(26, 26, 26, 0.85) 0%,
+    rgba(15, 15, 15, 0.90) 100%
+  );
+  border-top: 0.5px solid rgba(255, 107, 157, 0.3);
+  box-shadow:
+    0 0 12px rgba(255, 107, 157, 0.15),
+    0 0 24px rgba(0, 217, 255, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.5),
+    inset 0 0.5px 0 0.5px rgba(255, 170, 0, 0.08);
+}
+
+/* Apple Liquid Glass - iOS-style translucency */
+[data-vds-theme="apple-liquid-glass"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(245, 245, 247, 0.88) 0%,
+    rgba(255, 255, 255, 0.92) 100%
+  );
+  border-top: 0.5px solid rgba(0, 122, 255, 0.12);
+  box-shadow:
+    0 0 20px rgba(0, 122, 255, 0.06),
+    0 4px 20px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Cinematic Gradient - Purple/pink mesh glow */
+[data-vds-theme="cinematic-gradient"] .telegram-liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 18, 26, 0.85) 0%,
+    rgba(10, 10, 15, 0.90) 100%
+  );
+  border-top: 0.5px solid rgba(139, 92, 246, 0.2);
+  box-shadow:
+    0 0 20px rgba(139, 92, 246, 0.12),
+    0 0 40px rgba(236, 72, 153, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================================
+   CINEMATIC GRADIENT - Mesh Lighting Effects
+   ============================================================================ */
+
+[data-vds-theme="cinematic-gradient"] .product-card,
+[data-vds-theme="cinematic-gradient"] [data-product-card] {
+  background: linear-gradient(
+    135deg,
+    rgba(18, 18, 26, 0.95) 0%,
+    rgba(26, 18, 38, 0.95) 50%,
+    rgba(15, 15, 26, 0.95) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+[data-vds-theme="cinematic-gradient"] .product-card::before,
+[data-vds-theme="cinematic-gradient"] [data-product-card]::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(139, 92, 246, 0.08) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    circle at 70% 60%,
+    rgba(236, 72, 153, 0.06) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-vds-theme="cinematic-gradient"] .product-card > *,
+[data-vds-theme="cinematic-gradient"] [data-product-card] > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================================
+   NEON MICRO-GLOW - Subtle Neon Accents
+   ============================================================================ */
+
+/* Micro-glow on focus states */
+[data-vds-theme="neon-micro-glow"] button:focus-visible,
+[data-vds-theme="neon-micro-glow"] [role="button"]:focus-visible {
+  box-shadow:
+    0 0 0 2px rgba(255, 107, 157, 0.4),
+    0 0 12px rgba(255, 107, 157, 0.3),
+    0 0 24px rgba(0, 217, 255, 0.15);
+}
+
+/* Micro-glow on badges */
+[data-vds-theme="neon-micro-glow"] .badge,
+[data-vds-theme="neon-micro-glow"] [data-badge] {
+  box-shadow:
+    0 0 8px currentColor,
+    inset 0 0 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Micro-glow on primary buttons */
+[data-vds-theme="neon-micro-glow"] button[data-primary="true"],
+[data-vds-theme="neon-micro-glow"] .btn-primary {
+  box-shadow:
+    0 0 16px rgba(255, 107, 157, 0.25),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.2s ease;
+}
+
+[data-vds-theme="neon-micro-glow"] button[data-primary="true"]:hover,
+[data-vds-theme="neon-micro-glow"] .btn-primary:hover {
+  box-shadow:
+    0 0 24px rgba(255, 107, 157, 0.4),
+    0 0 48px rgba(0, 217, 255, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================================
+   APPLE LIQUID GLASS - Lensing Effect
+   ============================================================================ */
+
+/* Enhanced glass morphism on cards */
+[data-vds-theme="apple-liquid-glass"] .product-card,
+[data-vds-theme="apple-liquid-glass"] [data-product-card] {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.8);
+}
+
+/* Liquid button effects */
+[data-vds-theme="apple-liquid-glass"] button,
+[data-vds-theme="apple-liquid-glass"] [role="button"] {
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+[data-vds-theme="apple-liquid-glass"] button:active,
+[data-vds-theme="apple-liquid-glass"] [role="button"]:active {
+  transform: scale(0.96);
+  backdrop-filter: blur(15px) saturate(200%);
+  -webkit-backdrop-filter: blur(15px) saturate(200%);
+}
+
+/* ============================================================================
+   CLOUD DANCER - Soft Elevation
+   ============================================================================ */
+
+[data-vds-theme="cloud-dancer"] .product-card,
+[data-vds-theme="cloud-dancer"] [data-product-card] {
+  box-shadow:
+    0 2px 8px rgba(90, 159, 212, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.3s ease;
+}
+
+[data-vds-theme="cloud-dancer"] .product-card:hover,
+[data-vds-theme="cloud-dancer"] [data-product-card]:hover {
+  box-shadow:
+    0 8px 24px rgba(90, 159, 212, 0.08),
+    0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================================================
+   TRANSFORMATIVE TEAL - Earth Connection
+   ============================================================================ */
+
+[data-vds-theme="transformative-teal"] .product-card,
+[data-vds-theme="transformative-teal"] [data-product-card] {
+  box-shadow:
+    0 2px 8px rgba(45, 139, 122, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(45, 139, 122, 0.08);
+}
+
+[data-vds-theme="transformative-teal"] button[data-primary="true"],
+[data-vds-theme="transformative-teal"] .btn-primary {
+  box-shadow:
+    0 2px 8px rgba(45, 139, 122, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.05);
 }
