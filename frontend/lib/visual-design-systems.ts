@@ -59,48 +59,7 @@ export interface VisualDesignSystem {
 }
 
 export const visualDesignSystems: Record<string, VisualDesignSystem> = {
-  // 1. BRUTALIST PHARMACY
-  "brutalist-pharmacy": {
-    id: "brutalist-pharmacy",
-    name: "Brutalist Pharmacy",
-    description: "Design suisse brut, utilitaire, high-contrast",
-    colors: {
-      background: "#ffffff",
-      foreground: "#000000",
-      card: "#ffffff",
-      cardForeground: "#000000",
-      primary: "#000000",
-      primaryForeground: "#ffffff",
-      accent: "#ff0000", // Medical red
-      accentForeground: "#000000", // WCAG fix: was #ffffff (4.00:1) → now #000000 (21:1)
-      muted: "#f5f5f5",
-      mutedForeground: "#666666",
-      border: "#000000",
-      input: "#ffffff",
-      ring: "#000000",
-      error: "#ff0000",
-    },
-    layout: {
-      grid: "strict-grid",
-      spacing: "dense", // 0.75rem base
-      alignment: "left",
-    },
-    typography: {
-      headingClass: "font-mono uppercase tracking-widest font-medium text-sm",
-      bodyClass: "font-mono text-xs leading-relaxed",
-      fontFamily: "ui-monospace, 'Courier New', monospace",
-      effects: "none",
-    },
-    borders: {
-      width: "3px",
-      radius: "0", // Zero rounding
-      style: "solid",
-    },
-    shadows: "none",
-    animations: "instant", // No transitions
-  },
-
-  // 2. LUXURY SPA
+  // 1. LUXURY SPA
   "luxury-spa": {
     id: "luxury-spa",
     name: "Luxury Spa",

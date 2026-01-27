@@ -1185,14 +1185,6 @@ body {
     inset 0 0.5px 0 0.5px rgba(1, 205, 254, 0.1);
 }
 
-/* Brutalist Pharmacy - Stark black/white */
-[data-vds-theme="brutalist-pharmacy"] .telegram-liquid-nav {
-  background: rgba(255, 255, 255, 0.98);
-  border-top: 3px solid #000000;
-  box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
 /* Luxury Spa - Warm elegant cream */
 [data-vds-theme="luxury-spa"] .telegram-liquid-nav {
   background: linear-gradient(
@@ -1311,20 +1303,6 @@ body {
 }
 
 /* Typography Themes */
-[data-typography-theme="brutalist-pharmacy"] {
-  font-family: ui-monospace, 'Courier New', monospace;
-}
-
-[data-typography-theme="brutalist-pharmacy"] h1,
-[data-typography-theme="brutalist-pharmacy"] h2,
-[data-typography-theme="brutalist-pharmacy"] h3 {
-  font-family: ui-monospace, 'Courier New', monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
 [data-typography-theme="luxury-spa"] {
   font-family: 'Cormorant Garamond', 'Georgia', serif;
 }
@@ -1460,14 +1438,6 @@ body {
 }
 
 /* VDS Border Styles */
-[data-vds-theme="brutalist-pharmacy"] .glass-card,
-[data-vds-theme="brutalist-pharmacy"] .card,
-[data-vds-theme="brutalist-pharmacy"] button {
-  border-width: 3px;
-  border-radius: 0;
-  border-color: var(--color-border);
-}
-
 [data-vds-theme="luxury-spa"] .glass-card,
 [data-vds-theme="luxury-spa"] .card,
 [data-vds-theme="luxury-spa"] button {
@@ -1717,26 +1687,6 @@ body {
    VDS HOVER & BORDER RADIUS REFINEMENTS
    Theme-specific interactions and styling
    ============================================================================ */
-
-/* ==================== BRUTALIST PHARMACY ==================== */
-[data-vds-theme="brutalist-pharmacy"] .glass-card:hover,
-[data-vds-theme="brutalist-pharmacy"] .card:hover {
-  transform: none !important; /* No hover effect */
-  box-shadow: none !important;
-}
-
-[data-vds-theme="brutalist-pharmacy"] button:hover {
-  background-color: var(--color-foreground) !important;
-  color: var(--color-background) !important;
-  transform: none;
-}
-
-[data-vds-theme="brutalist-pharmacy"] .glass-card,
-[data-vds-theme="brutalist-pharmacy"] .card,
-[data-vds-theme="brutalist-pharmacy"] button,
-[data-vds-theme="brutalist-pharmacy"] input {
-  border-radius: 0 !important;
-}
 
 /* ==================== LUXURY SPA ==================== */
 [data-vds-theme="luxury-spa"] .glass-card:hover,
@@ -2024,11 +1974,6 @@ body {
 }
 
 /* ==================== VDS BADGES & SMALL ELEMENTS ==================== */
-[data-vds-theme="brutalist-pharmacy"] .badge {
-  border-radius: 0 !important;
-  border: 2px solid currentColor;
-}
-
 [data-vds-theme="luxury-spa"] .badge {
   border-radius: 1rem !important;
 }
@@ -2329,31 +2274,108 @@ body {
    APPLE LIQUID GLASS - Lensing Effect
    ============================================================================ */
 
-/* Enhanced glass morphism on cards */
+/* Enhanced glass morphism on cards - True Liquid Glass */
 [data-vds-theme="apple-liquid-glass"] .product-card,
 [data-vds-theme="apple-liquid-glass"] [data-product-card] {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  position: relative;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(18px) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(105%);
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.06),
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.8);
+    0 8px 32px rgba(0, 122, 255, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.6);
+  border: 0.5px solid rgba(255, 255, 255, 0.4);
 }
 
-/* Liquid button effects */
+/* Glass layers effect - Inner glow */
+[data-vds-theme="apple-liquid-glass"] .product-card::before,
+[data-vds-theme="apple-liquid-glass"] [data-product-card]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(0, 122, 255, 0.05) 100%
+  );
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Glass refraction hint on hover */
+[data-vds-theme="apple-liquid-glass"] .product-card:hover,
+[data-vds-theme="apple-liquid-glass"] [data-product-card]:hover {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(22px) saturate(190%) brightness(108%);
+  -webkit-backdrop-filter: blur(22px) saturate(190%) brightness(108%);
+  box-shadow:
+    0 12px 48px rgba(0, 122, 255, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+  transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Liquid button effects - Frosted glass buttons */
 [data-vds-theme="apple-liquid-glass"] button,
 [data-vds-theme="apple-liquid-glass"] [role="button"] {
-  backdrop-filter: blur(10px) saturate(150%);
-  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  background: rgba(0, 122, 255, 0.08);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 0.5px solid rgba(0, 122, 255, 0.2);
+  box-shadow:
+    0 2px 8px rgba(0, 122, 255, 0.08),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
   transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+[data-vds-theme="apple-liquid-glass"] button:hover,
+[data-vds-theme="apple-liquid-glass"] [role="button"]:hover {
+  background: rgba(0, 122, 255, 0.12);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow:
+    0 4px 16px rgba(0, 122, 255, 0.12),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 [data-vds-theme="apple-liquid-glass"] button:active,
 [data-vds-theme="apple-liquid-glass"] [role="button"]:active {
   transform: scale(0.96);
-  backdrop-filter: blur(15px) saturate(200%);
-  -webkit-backdrop-filter: blur(15px) saturate(200%);
+  background: rgba(0, 122, 255, 0.15);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+}
+
+/* Primary buttons - More prominent glass */
+[data-vds-theme="apple-liquid-glass"] button[data-primary="true"],
+[data-vds-theme="apple-liquid-glass"] .btn-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 122, 255, 0.7) 0%,
+    rgba(94, 92, 230, 0.7) 100%
+  );
+  backdrop-filter: blur(14px) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%) brightness(105%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 4px 16px rgba(0, 122, 255, 0.3),
+    0 2px 8px rgba(94, 92, 230, 0.2),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.5);
+  color: white;
+}
+
+[data-vds-theme="apple-liquid-glass"] button[data-primary="true"]:hover,
+[data-vds-theme="apple-liquid-glass"] .btn-primary:hover {
+  box-shadow:
+    0 6px 24px rgba(0, 122, 255, 0.4),
+    0 4px 12px rgba(94, 92, 230, 0.3),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.6);
 }
 
 /* ============================================================================

@@ -360,39 +360,6 @@ export const themes: Record<string, ThemeDefinition> = {
   // VISUAL DESIGN SYSTEMS (VDS) - Revolutionary Themes
   // ============================================================================
 
-  "brutalist-pharmacy": {
-    id: "brutalist-pharmacy",
-    name: "Brutalist Pharmacy",
-    icon: "⬛",
-    description: "Design suisse brut, high-contrast",
-    headerColor: "#ffffff",
-    colors: {
-      background: "#ffffff",
-      foreground: "#000000",
-      muted: "#f5f5f5",
-      mutedForeground: "#666666",
-      card: "#ffffff",
-      cardForeground: "#000000",
-      popover: "#ffffff",
-      popoverForeground: "#000000",
-      border: "#000000",
-      input: "#ffffff",
-      primary: "#000000",
-      primaryForeground: "#ffffff",
-      secondary: "#f5f5f5",
-      secondaryForeground: "#000000",
-      accent: "#ff0000",
-      accentForeground: "#000000", // WCAG fix: was #ffffff (4.00:1) → now #000000 (21:1)
-      destructive: "#ff0000",
-      destructiveForeground: "#ffffff",
-      ring: "rgba(0, 0, 0, 0.4)",
-      success: "#000000",
-      warning: "#ff0000",
-      successForeground: "#ffffff",
-      warningForeground: "#ffffff",
-    },
-  },
-
   "luxury-spa": {
     id: "luxury-spa",
     name: "Luxury Spa",
