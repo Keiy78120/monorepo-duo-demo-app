@@ -31,9 +31,9 @@ export function BottomNav() {
       return <NavbarNeonGlow />;
     case "liquid-pill":
       return <NavbarLiquidPill />;
-    case "telegram-native":
-      return <NavbarTelegramNative />;
+    // case "telegram-native":
+    //   return <NavbarTelegramNative />; // Disabled - not working
     default:
-      return <NavbarClassic />;
+      return <NavbarDock />; // Default to iOS Dock instead of Classic
   }
 }

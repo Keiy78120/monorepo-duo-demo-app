@@ -45,11 +45,11 @@ export const navbarStyles: Record<string, NavbarStyleDefinition> = {
     name: "Liquid",
     description: "Pilule liquide",
   },
-  "telegram-native": {
-    id: "telegram-native",
-    name: "Telegram",
-    description: "iOS Liquid Glass",
-  },
+  // "telegram-native": {
+  //   id: "telegram-native",
+  //   name: "Telegram",
+  //   description: "iOS Liquid Glass (Disabled - not working)",
+  // },
 };
 
 export const navbarStyleIds = Object.keys(navbarStyles) as string[];
