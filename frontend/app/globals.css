@@ -1540,3 +1540,200 @@ body {
 .telegram-liquid-nav {
   z-index: 9999 !important;
 }
+
+/* ============================================================================
+   VDS HOVER & BORDER RADIUS REFINEMENTS
+   Theme-specific interactions and styling
+   ============================================================================ */
+
+/* ==================== BRUTALIST PHARMACY ==================== */
+[data-vds-theme="brutalist-pharmacy"] .glass-card:hover,
+[data-vds-theme="brutalist-pharmacy"] .card:hover {
+  transform: none !important; /* No hover effect */
+  box-shadow: none !important;
+}
+
+[data-vds-theme="brutalist-pharmacy"] button:hover {
+  background-color: var(--color-foreground) !important;
+  color: var(--color-background) !important;
+  transform: none;
+}
+
+[data-vds-theme="brutalist-pharmacy"] .glass-card,
+[data-vds-theme="brutalist-pharmacy"] .card,
+[data-vds-theme="brutalist-pharmacy"] button,
+[data-vds-theme="brutalist-pharmacy"] input {
+  border-radius: 0 !important;
+}
+
+/* ==================== LUXURY SPA ==================== */
+[data-vds-theme="luxury-spa"] .glass-card:hover,
+[data-vds-theme="luxury-spa"] .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08) !important;
+  transition: all 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[data-vds-theme="luxury-spa"] button:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(184, 165, 142, 0.3);
+}
+
+[data-vds-theme="luxury-spa"] .glass-card,
+[data-vds-theme="luxury-spa"] .card {
+  border-radius: 2rem !important;
+}
+
+[data-vds-theme="luxury-spa"] button {
+  border-radius: 1.5rem !important;
+}
+
+[data-vds-theme="luxury-spa"] input {
+  border-radius: 1rem !important;
+}
+
+/* ==================== CYBERPUNK TERMINAL ==================== */
+[data-vds-theme="cyberpunk-terminal"] .glass-card:hover,
+[data-vds-theme="cyberpunk-terminal"] .card:hover {
+  box-shadow:
+    0 0 20px var(--color-primary),
+    0 0 40px var(--color-primary),
+    0 4px 16px rgba(0, 0, 0, 0.8) !important;
+  border-color: var(--color-accent) !important;
+  transform: translateY(-2px);
+}
+
+[data-vds-theme="cyberpunk-terminal"] button:hover {
+  box-shadow:
+    0 0 15px var(--color-primary),
+    0 0 30px var(--color-primary) !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-background) !important;
+}
+
+[data-vds-theme="cyberpunk-terminal"] .glass-card,
+[data-vds-theme="cyberpunk-terminal"] .card,
+[data-vds-theme="cyberpunk-terminal"] button {
+  border-radius: 0.25rem !important;
+}
+
+[data-vds-theme="cyberpunk-terminal"] input {
+  border-radius: 0.125rem !important;
+}
+
+/* ==================== SCANDINAVIAN MINIMAL ==================== */
+[data-vds-theme="scandinavian-minimal"] .glass-card:hover,
+[data-vds-theme="scandinavian-minimal"] .card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-vds-theme="scandinavian-minimal"] button:hover {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  transform: translateY(-1px);
+}
+
+[data-vds-theme="scandinavian-minimal"] .glass-card,
+[data-vds-theme="scandinavian-minimal"] .card {
+  border-radius: 0.5rem !important;
+}
+
+[data-vds-theme="scandinavian-minimal"] button {
+  border-radius: 0.5rem !important;
+}
+
+[data-vds-theme="scandinavian-minimal"] input {
+  border-radius: 0.375rem !important;
+}
+
+/* ==================== MEMPHIS RETRO ==================== */
+[data-vds-theme="memphis-retro"] .glass-card:hover,
+[data-vds-theme="memphis-retro"] .card:hover {
+  transform: rotate(0deg) scale(1.05) !important;
+  box-shadow: 12px 12px 0 var(--color-foreground) !important;
+  transition: all 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+[data-vds-theme="memphis-retro"] button:hover {
+  transform: rotate(-2deg) scale(1.1);
+  box-shadow: 6px 6px 0 var(--color-foreground);
+  background-color: var(--color-accent) !important;
+}
+
+[data-vds-theme="memphis-retro"] .glass-card,
+[data-vds-theme="memphis-retro"] .card {
+  border-radius: 1rem !important;
+}
+
+[data-vds-theme="memphis-retro"] button {
+  border-radius: 1.5rem !important;
+}
+
+[data-vds-theme="memphis-retro"] input {
+  border-radius: 0.75rem !important;
+}
+
+/* ==================== NEOMORPHISM ==================== */
+[data-vds-theme="neomorphism"] .glass-card:hover,
+[data-vds-theme="neomorphism"] .card:hover {
+  box-shadow:
+    4px 4px 8px rgba(163, 177, 198, 0.4),
+    -4px -4px 8px rgba(255, 255, 255, 0.8),
+    inset 2px 2px 4px rgba(163, 177, 198, 0.2) !important;
+  transform: translateY(-2px);
+  transition: all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+[data-vds-theme="neomorphism"] button:hover {
+  box-shadow:
+    inset 4px 4px 8px rgba(163, 177, 198, 0.4),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.8) !important;
+  transform: scale(0.98);
+}
+
+[data-vds-theme="neomorphism"] .glass-card,
+[data-vds-theme="neomorphism"] .card {
+  border-radius: 1.5rem !important;
+}
+
+[data-vds-theme="neomorphism"] button {
+  border-radius: 1.25rem !important;
+}
+
+[data-vds-theme="neomorphism"] input {
+  border-radius: 1rem !important;
+}
+
+/* ==================== VDS BADGES & SMALL ELEMENTS ==================== */
+[data-vds-theme="brutalist-pharmacy"] .badge {
+  border-radius: 0 !important;
+  border: 2px solid currentColor;
+}
+
+[data-vds-theme="luxury-spa"] .badge {
+  border-radius: 1rem !important;
+}
+
+[data-vds-theme="cyberpunk-terminal"] .badge {
+  border-radius: 0.125rem !important;
+  box-shadow: 0 0 8px currentColor;
+}
+
+[data-vds-theme="scandinavian-minimal"] .badge {
+  border-radius: 0.25rem !important;
+}
+
+[data-vds-theme="memphis-retro"] .badge {
+  border-radius: 0.75rem !important;
+  border: 3px solid var(--color-foreground);
+  transform: rotate(-2deg);
+}
+
+[data-vds-theme="neomorphism"] .badge {
+  border-radius: 1rem !important;
+  box-shadow:
+    2px 2px 4px rgba(163, 177, 198, 0.3),
+    -2px -2px 4px rgba(255, 255, 255, 0.5);
+}
