@@ -3,13 +3,17 @@
  * Handles /product-media/* paths by serving from R2
  */
 
-import type { Env } from '../src/lib/db';
+interface Env {
+  MEDIA: R2Bucket;
+  [key: string]: unknown;
+}
 
 interface PagesContext {
   request: Request;
   env: Env;
   params: {
-    catchall?: string[];
+    path?: string | string[];
+    [key: string]: unknown;
   };
 }
 
@@ -28,26 +32,38 @@ const MIME_TYPES: Record<string, string> = {
 };
 
 export async function onRequestGet(context: PagesContext): Promise<Response> {
-  const { request, env, params } = context;
-  const url = new URL(request.url);
-  const pathname = url.pathname;
-
-  // Only handle /product-media/* paths
-  if (!pathname.startsWith('/product-media/')) {
-    // Return null/undefined to let Pages handle it (show index.html)
-    return new Response(null, { status: 404 });
-  }
+  const { env, params } = context;
 
   try {
-    // Remove leading slash to get R2 key
-    const filePath = pathname.slice(1); // "product-media/..."
+    // Use params.path from [[path]].ts route
+    // params.path contains the captured path segments after /product-media/
+    const pathParam = params.path || [];
+    const filePath = Array.isArray(pathParam)
+      ? pathParam.join('/')
+      : String(pathParam);
+
+    if (!filePath) {
+      return new Response(JSON.stringify({
+        error: 'No file path provided',
+        params: params,
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
 
     // Get the file from R2
     const file = await env.MEDIA.get(filePath);
 
     if (!file) {
       console.log('File not found in R2:', filePath);
-      return new Response('File not found', { status: 404 });
+      return new Response(JSON.stringify({
+        error: 'File not found',
+        path: filePath,
+      }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     // Determine content type from extension
@@ -66,6 +82,12 @@ export async function onRequestGet(context: PagesContext): Promise<Response> {
     });
   } catch (error) {
     console.error('Error serving media:', error);
-    return new Response('Internal Server Error', { status: 500 });
+    return new Response(JSON.stringify({
+      error: 'Internal Server Error',
+      message: error instanceof Error ? error.message : 'Unknown error',
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
