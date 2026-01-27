@@ -167,7 +167,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Rate limiting (10 requests per minute)
-    const identifier = session.user?.id || request.ip || "anonymous";
+    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0] ||
+                     request.headers.get("x-real-ip") ||
+                     "anonymous";
+    const identifier = session.user?.id || clientIp;
     const rateLimitResult = await checkRateLimit(`ai:parse-menu:${identifier}`, 10, 60000);
 
     if (!rateLimitResult.success) {
