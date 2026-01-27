@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export interface MenuDockItem {
@@ -58,15 +58,25 @@ export function MenuDock({ items, className, onItemClick }: MenuDockProps) {
             <div className="relative flex items-center justify-center w-7 h-7 mb-1">
               <Icon className="w-6 h-6" />
               {/* Badge */}
-              {item.badge !== undefined && item.badge > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="absolute -top-1.5 -right-2 min-w-[16px] h-[16px] flex items-center justify-center rounded-full bg-[var(--color-primary)] text-[9px] font-bold text-white px-1"
-                >
-                  {item.badge > 99 ? "99+" : item.badge}
-                </motion.span>
-              )}
+              <AnimatePresence mode="wait">
+                {item.badge !== undefined && item.badge > 0 && (
+                  <motion.span
+                    key="badge"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 30,
+                      duration: 0.15
+                    }}
+                    className="absolute -top-1.5 -right-2 min-w-[16px] h-[16px] flex items-center justify-center rounded-full bg-[var(--color-primary)] text-[9px] font-bold text-white px-1"
+                  >
+                    {item.badge > 99 ? "99+" : item.badge}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Label */}

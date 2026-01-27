@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { IoGrid, IoCart, IoStar, IoPerson } from "react-icons/io5";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/lib/store/cart";
@@ -78,15 +78,25 @@ export function NavbarClassic() {
                   "w-6 h-6 transition-transform duration-300",
                   !isActive && "group-hover:scale-115"
                 )} />
-                {showBadge && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[var(--color-primary)] text-[10px] font-semibold text-white px-1 shadow-md"
-                  >
-                    {itemCount > 99 ? "99+" : itemCount}
-                  </motion.div>
-                )}
+                <AnimatePresence mode="wait">
+                  {showBadge && (
+                    <motion.div
+                      key="badge"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 30,
+                        duration: 0.15
+                      }}
+                      className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[var(--color-primary)] text-[10px] font-semibold text-white px-1 shadow-md"
+                    >
+                      {itemCount > 99 ? "99+" : itemCount}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
               <span className={cn(
                 "relative z-10 text-[11px] font-medium transition-all duration-300",
