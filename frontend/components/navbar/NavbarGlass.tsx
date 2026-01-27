@@ -15,6 +15,7 @@ const navItems = [
     icon: IoGridOutline,
     iconActive: IoGrid,
     label: "Catalogue",
+    tourId: "catalog",
   },
   {
     href: "/cart",
@@ -22,18 +23,21 @@ const navItems = [
     iconActive: IoCart,
     label: "Panier",
     showBadge: true,
+    tourId: "cart",
   },
   {
     href: "/reviews",
     icon: IoStarOutline,
     iconActive: IoStar,
     label: "Avis",
+    tourId: "favorites",
   },
   {
     href: "/profile",
     icon: IoPersonOutline,
     iconActive: IoPerson,
     label: "Profil",
+    tourId: "account",
   },
 ];
 
@@ -58,6 +62,7 @@ export function NavbarGlass() {
               key={item.href}
               href={item.href}
               onClick={() => selection()}
+              data-tour={item.tourId}
               className={cn(
                 "relative flex flex-col items-center justify-center gap-0.5 px-4 py-2 rounded-2xl transition-all duration-300",
                 isActive

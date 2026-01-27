@@ -3,6 +3,7 @@
 import { TelegramGate } from "@/components/TelegramGate";
 import { BottomNav } from "@/components/BottomNav";
 import { AdminPreviewBar } from "@/components/AdminPreviewBar";
+import { GuidedTour } from "@/components/GuidedTour";
 
 export default function WebAppLayout({
   children,
@@ -12,6 +13,7 @@ export default function WebAppLayout({
   return (
     <TelegramGate botUsername={process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || "demo-app94_bot"}>
       <AdminPreviewBar />
+      <GuidedTour />
       <main className="min-h-screen pb-nav">
         {children}
       </main>

@@ -1660,6 +1660,15 @@ body {
   animation: none !important;
 }
 
+/* Protect header buttons from Memphis overflow - Limit animations */
+[data-vds-theme="memphis-retro"] motion-button,
+[data-vds-theme="memphis-retro"] .page-header-button {
+  max-width: 40px !important;
+  max-height: 40px !important;
+  overflow: hidden !important;
+  contain: layout size !important;
+}
+
 /* Protect navbar from VDS borders */
 [data-vds-theme] .telegram-liquid-nav,
 [data-vds-theme] .telegram-liquid-nav button {
@@ -2130,7 +2139,7 @@ body {
   .image-carousel-container video {
     object-fit: contain !important; /* Show full image, no crop */
     max-height: 60vh !important;
-    width: auto !important;
+    width: 100% !important; /* Take full container width */
     height: auto !important;
     max-width: 100% !important;
   }
@@ -2204,19 +2213,20 @@ body {
     inset 0 0.5px 0 0.5px rgba(255, 170, 0, 0.08);
 }
 
-/* Apple Liquid Glass - iOS-style translucency */
+/* Apple Liquid Glass - iOS-style translucency with enhanced blur */
 [data-vds-theme="apple-liquid-glass"] .telegram-liquid-nav {
   background: linear-gradient(
     180deg,
-    rgba(245, 245, 247, 0.88) 0%,
-    rgba(255, 255, 255, 0.92) 100%
+    rgba(245, 245, 247, 0.72) 0%,
+    rgba(255, 255, 255, 0.78) 100%
   );
-  border-top: 0.5px solid rgba(0, 122, 255, 0.12);
+  border-top: 0.5px solid rgba(0, 122, 255, 0.18);
   box-shadow:
-    0 0 20px rgba(0, 122, 255, 0.06),
-    0 4px 20px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+    0 0 24px rgba(0, 122, 255, 0.08),
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    inset 0 0.5px 1px 0 rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(22px) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%) brightness(105%);
 }
 
 /* Cinematic Gradient - Purple/pink mesh glow */

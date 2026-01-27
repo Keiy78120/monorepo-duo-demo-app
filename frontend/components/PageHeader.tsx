@@ -30,7 +30,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
   const { clearMode } = useAppModeStore();
   const { sessionId: demoSessionId, loadDemoSession, clearDemoSession } = useDemoSessionStore();
   const isSimple = mode === "simple";
-  const showInfoButton = showInfo && !isSimple;
+  const showInfoButton = showInfo; // Show info button in both simple and advanced modes
 
   // Load demo session on mount
   useEffect(() => {
@@ -147,7 +147,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                   selection();
                   setInfoOpen(true);
                 }}
-                className="relative h-10 w-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-md"
+                className="relative h-10 w-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-md page-header-button overflow-hidden"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 animate={{
@@ -164,10 +164,11 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                     ease: "easeInOut",
                   },
                 }}
+                style={{ contain: "layout size" }}
               >
                 <motion.div
                   animate={{
-                    scale: [1, 1.08, 1],
+                    scale: [1, 1.05, 1],
                   }}
                   transition={{
                     duration: 2,
@@ -241,7 +242,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                     selection();
                     setInfoOpen(true);
                   }}
-                  className="relative h-10 w-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-md shrink-0"
+                  className="relative h-10 w-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-md shrink-0 page-header-button overflow-hidden"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   animate={{
@@ -258,10 +259,11 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                       ease: "easeInOut",
                     },
                   }}
+                  style={{ contain: "layout size" }}
                 >
                   <motion.div
                     animate={{
-                      scale: [1, 1.08, 1],
+                      scale: [1, 1.05, 1],
                     }}
                     transition={{
                       duration: 2,

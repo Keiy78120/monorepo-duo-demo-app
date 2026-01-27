@@ -213,6 +213,7 @@ export function ThemeSwitcher() {
           setOpen(!open);
           selection();
         }}
+        data-tour="theme-switcher"
         className="h-10 w-10 rounded-xl bg-[var(--color-secondary)] flex items-center justify-center shrink-0 transition-colors hover:bg-[var(--color-muted)]"
         whileTap={{ scale: 0.92 }}
       >
