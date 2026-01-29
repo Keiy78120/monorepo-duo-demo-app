@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
-import { IoArrowBack, IoInformationCircle } from "react-icons/io5";
-import { Shield, LayoutGrid } from "lucide-react";
+import { Shield, LayoutGrid, ArrowLeft, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useHapticFeedback, useTelegramStore } from "@/lib/store/telegram";
 import { InfoDialog } from "@/components/InfoDialog";
@@ -88,7 +87,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
               onClick={handleBack}
               className="h-9 w-9"
             >
-              <IoArrowBack className="w-5 h-5" />
+              <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-[var(--color-foreground)]">
@@ -120,26 +119,12 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                   selection();
                   router.push("/admin");
                 }}
-                className="h-10 w-10 rounded-xl bg-red-600 flex items-center justify-center shadow-md shrink-0 page-header-button"
+                className="h-10 w-10 rounded-xl bg-[var(--color-muted)]/20 flex items-center justify-center hover:bg-[var(--color-muted)]/30 transition-colors shrink-0"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                animate={{
-                  boxShadow: [
-                    "0 2px 8px rgba(220, 38, 38, 0.4)",
-                    "0 4px 12px rgba(220, 38, 38, 0.5)",
-                    "0 2px 8px rgba(220, 38, 38, 0.4)",
-                  ],
-                }}
-                transition={{
-                  boxShadow: {
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  },
-                }}
-                style={{ contain: "layout size paint", overflow: "hidden" }}
+                title="Panneau d'administration"
               >
-                <Shield className="w-5 h-5 text-white" />
+                <Shield className="w-5 h-5 text-[var(--color-foreground)]" />
               </motion.button>
             )}
             {showInfoButton && (
@@ -148,28 +133,12 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                   selection();
                   setInfoOpen(true);
                 }}
-                className="relative h-10 w-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-md page-header-button overflow-hidden"
+                className="h-10 w-10 rounded-xl bg-[var(--color-muted)]/20 flex items-center justify-center hover:bg-[var(--color-muted)]/30 transition-colors shrink-0"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                animate={{
-                  boxShadow: [
-                    "0 2px 8px oklch(0.50 0.12 20 / 0.3)",
-                    "0 4px 12px oklch(0.50 0.12 20 / 0.4)",
-                    "0 2px 8px oklch(0.50 0.12 20 / 0.3)",
-                  ],
-                }}
-                transition={{
-                  boxShadow: {
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  },
-                }}
-                style={{ contain: "layout size paint", overflow: "hidden" }}
+                title="Informations"
               >
-                <div className="pointer-events-none">
-                  <IoInformationCircle className="w-6 h-6 text-white" />
-                </div>
+                <Info className="w-5 h-5 text-[var(--color-foreground)]" />
               </motion.button>
             )}
           </div>
@@ -207,25 +176,12 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                     selection();
                     router.push("/admin");
                   }}
-                  className="h-10 w-10 rounded-xl bg-red-600 flex items-center justify-center shadow-md shrink-0"
+                  className="h-10 w-10 rounded-xl bg-[var(--color-muted)]/20 flex items-center justify-center hover:bg-[var(--color-muted)]/30 transition-colors shrink-0"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  animate={{
-                    boxShadow: [
-                      "0 2px 8px rgba(220, 38, 38, 0.4)",
-                      "0 4px 12px rgba(220, 38, 38, 0.5)",
-                      "0 2px 8px rgba(220, 38, 38, 0.4)",
-                    ],
-                  }}
-                  transition={{
-                    boxShadow: {
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                  }}
+                  title="Panneau d'administration"
                 >
-                  <Shield className="w-5 h-5 text-white" />
+                  <Shield className="w-5 h-5 text-[var(--color-foreground)]" />
                 </motion.button>
               )}
               {showInfoButton && (
@@ -234,28 +190,12 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                     selection();
                     setInfoOpen(true);
                   }}
-                  className="relative h-10 w-10 rounded-xl bg-[var(--color-primary)] flex items-center justify-center shadow-md shrink-0 page-header-button overflow-hidden"
+                  className="h-10 w-10 rounded-xl bg-[var(--color-muted)]/20 flex items-center justify-center hover:bg-[var(--color-muted)]/30 transition-colors shrink-0"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  animate={{
-                    boxShadow: [
-                      "0 2px 8px oklch(0.50 0.12 20 / 0.3)",
-                      "0 4px 12px oklch(0.50 0.12 20 / 0.4)",
-                      "0 2px 8px oklch(0.50 0.12 20 / 0.3)",
-                    ],
-                  }}
-                  transition={{
-                    boxShadow: {
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                  }}
-                  style={{ contain: "layout size paint", overflow: "hidden" }}
+                  title="Informations"
                 >
-                  <div className="pointer-events-none">
-                    <IoInformationCircle className="w-6 h-6 text-white" />
-                  </div>
+                  <Info className="w-5 h-5 text-[var(--color-foreground)]" />
                 </motion.button>
               )}
             </div>
