@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { IoArrowBack, IoInformationCircle } from "react-icons/io5";
-import { Shield, RotateCcw } from "lucide-react";
+import { Shield, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useHapticFeedback, useTelegramStore } from "@/lib/store/telegram";
 import { InfoDialog } from "@/components/InfoDialog";
@@ -112,7 +112,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
               whileTap={{ scale: 0.95 }}
               title="Retour à la sélection de démo"
             >
-              <RotateCcw className="w-5 h-5 text-[var(--color-foreground)]" />
+              <LayoutGrid className="w-5 h-5 text-[var(--color-foreground)]" />
             </motion.button>
             {isAdmin && (
               <motion.button
@@ -198,7 +198,7 @@ export function PageHeader({ title, subtitle, showBack = false, showInfo = true,
                 whileTap={{ scale: 0.95 }}
                 title="Retour à la sélection de démo"
               >
-                <RotateCcw className="w-5 h-5 text-[var(--color-foreground)]" />
+                <LayoutGrid className="w-5 h-5 text-[var(--color-foreground)]" />
               </motion.button>
               <ThemeSwitcher />
               {isAdmin && (
